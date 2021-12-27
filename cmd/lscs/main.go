@@ -38,7 +38,7 @@ func main() {
 		return
 
 	case errors.Is(cfgErr, config.ErrHelpRequested):
-		cfg.Help()
+		fmt.Println(cfg.Help())
 
 		return
 
