@@ -188,8 +188,9 @@ type Filter struct {
 // NewFromURL constructs a components Set by reading and decoding JSON data
 // from a specified URL using the specified number of bytes as the read limit.
 // If specified, unknown fields in the JSON file are ignored. An error is
-// returned if there are problems reading and decoding JSON data.
-func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFields bool) (*Set, error) {
+// returned if there are problems reading and decoding JSON data. If provided,
+// a custom user agent is supplied in place of the default Go user agent.
+func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFields bool, userAgent string) (*Set, error) {
 
 	logger.Printf("Validating URL %q before attempting to read data", apiURL)
 	parsedURL, err := url.Parse(apiURL)
@@ -216,6 +217,12 @@ func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFie
 
 	// Explicitly note that we want JSON content.
 	request.Header.Add("Content-Type", "application/json;charset=utf-8")
+
+	// If provided, override the default Go user agent ("Go-http-client/1.1")
+	// with custom value.
+	if userAgent != "" {
+		request.Header.Set("User-Agent", userAgent)
+	}
 
 	logger.Print("Submitting HTTP request")
 	response, err := c.Do(request)

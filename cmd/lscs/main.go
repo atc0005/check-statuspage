@@ -95,7 +95,13 @@ func main() {
 		log.Debug().Msg("Decoding JSON input")
 
 		var err error
-		componentsSet, err = components.NewFromURL(ctx, cfg.URL, cfg.ReadLimit, cfg.AllowUnknownJSONFields)
+		componentsSet, err = components.NewFromURL(
+			ctx,
+			cfg.URL,
+			cfg.ReadLimit,
+			cfg.AllowUnknownJSONFields,
+			cfg.UserAgent(),
+		)
 		if err != nil {
 			log.Error().Err(err).Msg("Error decoding JSON feed")
 
