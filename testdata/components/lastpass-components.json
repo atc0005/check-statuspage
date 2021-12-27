@@ -1,0 +1,56 @@
+{
+    "page": {
+        "id": "ytnz8gj3wjpg",
+        "name": "LastPass",
+        "url": "https://status.lastpass.com",
+        "time_zone": "Etc/UTC",
+        "updated_at": "2021-12-07T19:39:31.629Z"
+    },
+    "components": [
+        {
+            "id": "smkb83l7s73r",
+            "name": "LastPass - United States",
+            "status": "degraded_performance",
+            "created_at": "2017-10-27T14:51:29.924Z",
+            "updated_at": "2021-12-07T18:14:53.031Z",
+            "position": 1,
+            "description": "The United States-based instance of LastPass, serving customers in North and South America, Asia, Australia, and Africa.",
+            "showcase": false,
+            "start_date": null,
+            "group_id": null,
+            "page_id": "ytnz8gj3wjpg",
+            "group": false,
+            "only_show_if_degraded": false
+        },
+        {
+            "id": "6h6nrdd3m2cs",
+            "name": "LastPass - Europe",
+            "status": "degraded_performance",
+            "created_at": "2017-10-27T14:51:29.949Z",
+            "updated_at": "2021-12-07T18:20:58.739Z",
+            "position": 2,
+            "description": "The European-based instance of LastPass, serving customers across Europe.",
+            "showcase": false,
+            "start_date": null,
+            "group_id": null,
+            "page_id": "ytnz8gj3wjpg",
+            "group": false,
+            "only_show_if_degraded": false
+        },
+        {
+            "id": "bmwwq4dhqy7q",
+            "name": "LastPass - Australia",
+            "status": "degraded_performance",
+            "created_at": "2020-01-11T06:16:36.876Z",
+            "updated_at": "2021-12-07T18:21:09.590Z",
+            "position": 3,
+            "description": "The Australia based instance of LastPass Vault storage servers",
+            "showcase": false,
+            "start_date": null,
+            "group_id": null,
+            "page_id": "ytnz8gj3wjpg",
+            "group": false,
+            "only_show_if_degraded": false
+        }
+    ]
+}
