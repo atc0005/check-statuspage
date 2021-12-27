@@ -12,6 +12,8 @@ const myAppURL string = "https://github.com/atc0005/" + myAppName
 
 // Flag names. Exported so that they can be referenced from tests.
 const (
+	HelpFlagLong                    string = "help"
+	HelpFlagShort                   string = "h"
 	VersionFlagLong                 string = "version"
 	VersionFlagShort                string = "v"
 	BrandingFlag                    string = "branding"
@@ -41,6 +43,7 @@ const (
 
 // Common or shared flag help text
 const (
+	helpFlagHelp                   string = "Emit this help text"
 	versionFlagHelp                string = "Whether to display application version and then immediately exit application."
 	logLevelFlagHelp               string = "Sets log level to one of disabled, panic, fatal, error, warn, info, debug or trace."
 	urlFlagHelp                    string = "The fully-qualified URL of a Statuspage API/JSON feed (e.g., https://www.githubstatus.com/api/v2/components.json)."
@@ -70,6 +73,7 @@ const (
 	defaultFilename               string = ""
 	defaultLogLevel               string = "info"
 	defaultComponentGroup         string = ""
+	defaultHelp                   bool   = false
 	defaultBranding               bool   = false
 	defaultOmitOKComponents       bool   = false
 	defaultEvalAllComponents      bool   = false

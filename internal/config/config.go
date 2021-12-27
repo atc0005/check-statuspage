@@ -11,6 +11,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
@@ -25,6 +26,14 @@ var version = "x.y.z"
 // ErrVersionRequested indicates that the user requested application version
 // information.
 var ErrVersionRequested = errors.New("version information requested")
+
+// ErrHelpRequested indicates that the user requested application help/usage
+// information.
+var ErrHelpRequested = errors.New("help/usage information requested")
+
+// ErrConfigNotInitialized indicates that the configuration is not in a usable
+// state and application execution can not successfully proceed.
+var ErrConfigNotInitialized = errors.New("configuration not initialized")
 
 // AppType represents the type of application that is being
 // configured/initialized. Not all application types will use the same
@@ -212,11 +221,11 @@ type Config struct {
 	// project.
 	App AppInfo
 
-	// Flagset provides a useful hook to allow evaluating defined flags
+	// flagSet provides a useful hook to allow evaluating defined flags
 	// against a list of expected flags. This field is exported so that the
 	// flagset is accessible to tests from within this package and from
 	// outside of the config package.
-	// Flagset *flag.FlagSet
+	flagSet *flag.FlagSet
 
 	// componentGroup is a component group specified by the user. This field
 	// is set when the user opts to not specify sets, but rather a single
@@ -259,6 +268,10 @@ type Config struct {
 	// version string and then immediately exit the application.
 	ShowVersion bool
 
+	// ShowHelp indicates whether the user opted to display usage information
+	// and exit the application.
+	ShowHelp bool
+
 	// OmitOKComponents indicates whether the user opted to omit components in
 	// an OK or operational status from results output. This setting does not
 	// apply to all output formats.
@@ -271,19 +284,59 @@ type Config struct {
 
 // Usage is a custom override for the default Help text provided by the flag
 // package. Here we prepend some additional metadata to the existing output.
-var Usage = func(flagSet *flag.FlagSet) func() {
+func Usage(flagSet *flag.FlagSet, w io.Writer) func() {
 
-	return func() {
+	// Make one attempt to override output so that calling Config.Help() later
+	// will have a chance to also override the output destination.
+	flag.CommandLine.SetOutput(w)
 
-		// Override default of stderr as destination for help output. This allows
-		// Nagios XI and similar monitoring systems to call plugins with the
-		// `--help` flag and have it display within the Admin web UI.
-		flag.CommandLine.SetOutput(os.Stdout)
+	switch {
 
-		fmt.Fprintln(flag.CommandLine.Output(), "\n"+Version()+"\n")
-		fmt.Fprintf(flag.CommandLine.Output(), "Usage of %s:\n", os.Args[0])
-		flagSet.PrintDefaults()
+	// Unintialized flagset, provide stub usage information.
+	case flagSet == nil:
+		return func() {
+			fmt.Fprintln(w, "Failed to initialize configuration; nil FlagSet")
+		}
+
+	// Non-nil flagSet, proceed
+	default:
+
+		// Make one attempt to override output so that calling Config.Help()
+		// later will have a chance to also override the output destination.
+		flagSet.SetOutput(w)
+
+		return func() {
+			fmt.Fprintln(flag.CommandLine.Output(), "\n"+Version()+"\n")
+			fmt.Fprintf(flag.CommandLine.Output(), "Usage of %s:\n", os.Args[0])
+			flagSet.PrintDefaults()
+		}
 	}
+}
+
+// Help emits application usage information to the previously configured
+// destination for usage and error messages.
+func (c *Config) Help() string {
+
+	var helpTxt strings.Builder
+
+	// Override previously specified output destination, redirect to Builder.
+	flag.CommandLine.SetOutput(&helpTxt)
+
+	switch {
+
+	// Handle nil configuration initialization.
+	case c == nil || c.flagSet == nil:
+		// Fallback message noting the issue.
+		fmt.Fprintln(&helpTxt, ErrConfigNotInitialized)
+
+	default:
+		// Emit expected help output to builder.
+		c.flagSet.SetOutput(&helpTxt)
+		c.flagSet.Usage()
+
+	}
+
+	return helpTxt.String()
 }
 
 // Version emits application name, version and repo location.
@@ -330,15 +383,12 @@ func appTypeLabel(appType AppType) string {
 func New(appType AppType) (*Config, error) {
 	var config Config
 
-	// TODO: Should we store this in a Config field? Is it really needed for
-	// external tests like I originally thought?
-	//
-	// NOTE: Need to make sure we allow execution to continue on encounter
+	// NOTE: Need to make sure we allow execution to continue on encountered
 	// errors. This is so that we can check for those errors as return values
 	// both within the main apps and tests for this package.
-	flagSet := flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
+	config.flagSet = flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
 
-	if err := config.handleFlagsConfig(flagSet, appType); err != nil {
+	if err := config.handleFlagsConfig(appType); err != nil {
 		return nil, fmt.Errorf(
 			"failed to set flags configuration: %w",
 			err,
@@ -352,8 +402,17 @@ func New(appType AppType) (*Config, error) {
 		Plugin:  appTypeLabel(appType),
 	}
 
-	if config.ShowVersion {
-		return nil, ErrVersionRequested
+	switch {
+
+	// The configuration was successfully initialized, so we're good with
+	// returning it for use by the caller.
+	case config.ShowVersion:
+		return &config, ErrVersionRequested
+
+	// The configuration was successfully initialized, so we're good with
+	// returning it for use by the caller.
+	case config.ShowHelp:
+		return &config, ErrHelpRequested
 	}
 
 	if err := config.validate(appType); err != nil {

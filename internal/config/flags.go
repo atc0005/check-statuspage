@@ -8,7 +8,7 @@
 package config
 
 import (
-	"flag"
+	"fmt"
 	"os"
 )
 
@@ -17,61 +17,75 @@ import (
 // application type as set by each cmd. Based on the application's specified
 // type, a smaller subset of flags specific to each type are exposed along
 // with a set common to all application types.
-func (c *Config) handleFlagsConfig(flagSet *flag.FlagSet, appType AppType) error {
+func (c *Config) handleFlagsConfig(appType AppType) error {
+
+	if c == nil {
+		return fmt.Errorf(
+			"nil configuration, cannot process flags: %w",
+			ErrConfigNotInitialized,
+		)
+	}
 
 	// Flags specific to one plugin type or the other
 	switch {
 	case appType.PluginComponents:
 
-		flagSet.BoolVar(&c.EmitBranding, BrandingFlag, defaultBranding, brandingFlagHelp)
+		c.flagSet.BoolVar(&c.EmitBranding, BrandingFlag, defaultBranding, brandingFlagHelp)
 
-		flagSet.Var(&c.componentsList, ComponentsListFlagShort, componentsListFlagHelp+" (shorthand)")
-		flagSet.Var(&c.componentsList, ComponentsListFlagLong, componentsListFlagHelp)
+		c.flagSet.Var(&c.componentsList, ComponentsListFlagShort, componentsListFlagHelp+" (shorthand)")
+		c.flagSet.Var(&c.componentsList, ComponentsListFlagLong, componentsListFlagHelp)
 
-		flagSet.StringVar(&c.componentGroup, ComponentGroupFlagShort, defaultComponentGroup, componentGroupFlagHelp+" (shorthand)")
-		flagSet.StringVar(&c.componentGroup, ComponentGroupFlagLong, defaultComponentGroup, componentGroupFlagHelp)
+		c.flagSet.StringVar(&c.componentGroup, ComponentGroupFlagShort, defaultComponentGroup, componentGroupFlagHelp+" (shorthand)")
+		c.flagSet.StringVar(&c.componentGroup, ComponentGroupFlagLong, defaultComponentGroup, componentGroupFlagHelp)
 
-		flagSet.BoolVar(&c.EvalAllComponents, EvalAllComponentsFlagShort, defaultEvalAllComponents, evalAllComponentsFlagHelp+" (shorthand)")
-		flagSet.BoolVar(&c.EvalAllComponents, EvalAllComponentsFlagLong, defaultEvalAllComponents, evalAllComponentsFlagHelp)
+		c.flagSet.BoolVar(&c.EvalAllComponents, EvalAllComponentsFlagShort, defaultEvalAllComponents, evalAllComponentsFlagHelp+" (shorthand)")
+		c.flagSet.BoolVar(&c.EvalAllComponents, EvalAllComponentsFlagLong, defaultEvalAllComponents, evalAllComponentsFlagHelp)
 
 	case appType.InspectorComponents:
 
-		flagSet.StringVar(&c.InspectorOutputFormat, InspectorOutputFormatFlagShort, defaultInspectorOutputFormat, inspectorOutputFormatFlagHelp+" (shorthand)")
-		flagSet.StringVar(&c.InspectorOutputFormat, InspectorOutputFormatFlagLong, defaultInspectorOutputFormat, inspectorOutputFormatFlagHelp)
+		c.flagSet.StringVar(&c.InspectorOutputFormat, InspectorOutputFormatFlagShort, defaultInspectorOutputFormat, inspectorOutputFormatFlagHelp+" (shorthand)")
+		c.flagSet.StringVar(&c.InspectorOutputFormat, InspectorOutputFormatFlagLong, defaultInspectorOutputFormat, inspectorOutputFormatFlagHelp)
 
 	}
 
 	// Shared flags for all application types
 
-	flagSet.BoolVar(&c.OmitOKComponents, OmitOKComponentsFlagShort, defaultOmitOKComponents, omitOKComponentsFlagHelp+" (shorthand)")
-	flagSet.BoolVar(&c.OmitOKComponents, OmitOKComponentsFlagLong, defaultOmitOKComponents, omitOKComponentsFlagHelp)
+	c.flagSet.BoolVar(&c.ShowHelp, HelpFlagShort, defaultHelp, helpFlagHelp+" (shorthand)")
+	c.flagSet.BoolVar(&c.ShowHelp, HelpFlagLong, defaultHelp, helpFlagHelp)
 
-	flagSet.StringVar(&c.URL, URLFlagShort, defaultURL, urlFlagHelp+" (shorthand)")
-	flagSet.StringVar(&c.URL, URLFlagLong, defaultURL, urlFlagHelp)
+	c.flagSet.BoolVar(&c.OmitOKComponents, OmitOKComponentsFlagShort, defaultOmitOKComponents, omitOKComponentsFlagHelp+" (shorthand)")
+	c.flagSet.BoolVar(&c.OmitOKComponents, OmitOKComponentsFlagLong, defaultOmitOKComponents, omitOKComponentsFlagHelp)
 
-	flagSet.StringVar(&c.Filename, FilenameFlagShort, defaultFilename, filenameFlagHelp+" (shorthand)")
-	flagSet.StringVar(&c.Filename, FilenameFlagLong, defaultFilename, filenameFlagHelp)
+	c.flagSet.StringVar(&c.URL, URLFlagShort, defaultURL, urlFlagHelp+" (shorthand)")
+	c.flagSet.StringVar(&c.URL, URLFlagLong, defaultURL, urlFlagHelp)
 
-	flagSet.BoolVar(&c.AllowUnknownJSONFields, AllowUnknownJSONFieldsFlagShort, defaultAllowUnknownJSONFields, allowUnknownJSONFieldsFlagHelp+" (shorthand)")
-	flagSet.BoolVar(&c.AllowUnknownJSONFields, AllowUnknownJSONFieldsFlagLong, defaultAllowUnknownJSONFields, allowUnknownJSONFieldsFlagHelp)
+	c.flagSet.StringVar(&c.Filename, FilenameFlagShort, defaultFilename, filenameFlagHelp+" (shorthand)")
+	c.flagSet.StringVar(&c.Filename, FilenameFlagLong, defaultFilename, filenameFlagHelp)
 
-	flagSet.Int64Var(&c.ReadLimit, ReadLimitFlagShort, defaultReadLimit, readLimitFlagHelp+" (shorthand)")
-	flagSet.Int64Var(&c.ReadLimit, ReadLimitFlagLong, defaultReadLimit, readLimitFlagHelp)
+	c.flagSet.BoolVar(&c.AllowUnknownJSONFields, AllowUnknownJSONFieldsFlagShort, defaultAllowUnknownJSONFields, allowUnknownJSONFieldsFlagHelp+" (shorthand)")
+	c.flagSet.BoolVar(&c.AllowUnknownJSONFields, AllowUnknownJSONFieldsFlagLong, defaultAllowUnknownJSONFields, allowUnknownJSONFieldsFlagHelp)
 
-	flagSet.IntVar(&c.timeout, TimeoutFlagShort, defaultRuntimeTimeout, timeoutRuntimeFlagHelp+" (shorthand)")
-	flagSet.IntVar(&c.timeout, TimeoutFlagLong, defaultRuntimeTimeout, timeoutRuntimeFlagHelp)
+	c.flagSet.Int64Var(&c.ReadLimit, ReadLimitFlagShort, defaultReadLimit, readLimitFlagHelp+" (shorthand)")
+	c.flagSet.Int64Var(&c.ReadLimit, ReadLimitFlagLong, defaultReadLimit, readLimitFlagHelp)
 
-	flagSet.StringVar(&c.LoggingLevel, LogLevelFlagShort, defaultLogLevel, logLevelFlagHelp+" (shorthand)")
-	flagSet.StringVar(&c.LoggingLevel, LogLevelFlagLong, defaultLogLevel, logLevelFlagHelp)
+	c.flagSet.IntVar(&c.timeout, TimeoutFlagShort, defaultRuntimeTimeout, timeoutRuntimeFlagHelp+" (shorthand)")
+	c.flagSet.IntVar(&c.timeout, TimeoutFlagLong, defaultRuntimeTimeout, timeoutRuntimeFlagHelp)
 
-	flagSet.BoolVar(&c.ShowVersion, VersionFlagShort, defaultDisplayVersionAndExit, versionFlagHelp+" (shorthand)")
-	flagSet.BoolVar(&c.ShowVersion, VersionFlagLong, defaultDisplayVersionAndExit, versionFlagHelp)
+	c.flagSet.StringVar(&c.LoggingLevel, LogLevelFlagShort, defaultLogLevel, logLevelFlagHelp+" (shorthand)")
+	c.flagSet.StringVar(&c.LoggingLevel, LogLevelFlagLong, defaultLogLevel, logLevelFlagHelp)
 
-	// Allow our function to override the default Help output
-	flagSet.Usage = Usage(flagSet)
+	c.flagSet.BoolVar(&c.ShowVersion, VersionFlagShort, defaultDisplayVersionAndExit, versionFlagHelp+" (shorthand)")
+	c.flagSet.BoolVar(&c.ShowVersion, VersionFlagLong, defaultDisplayVersionAndExit, versionFlagHelp)
+
+	// Allow our function to override the default Help output.
+	//
+	// Override default of stderr as destination for help output. This allows
+	// Nagios XI and similar monitoring systems to call plugins with the
+	// `--help` flag and have it display within the Admin web UI.
+	c.flagSet.Usage = Usage(c.flagSet, os.Stdout)
 
 	// parse flag definitions from the argument list
-	if err := flagSet.Parse(os.Args[1:]); err != nil {
+	if err := c.flagSet.Parse(os.Args[1:]); err != nil {
 		return err
 	}
 
