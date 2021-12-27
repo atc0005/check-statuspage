@@ -1,0 +1,19 @@
+# github.com/atc0005/go-nagios v0.8.1
+## explicit
+github.com/atc0005/go-nagios
+# github.com/google/go-cmp v0.5.6
+## explicit
+github.com/google/go-cmp/cmp
+github.com/google/go-cmp/cmp/internal/diff
+github.com/google/go-cmp/cmp/internal/flags
+github.com/google/go-cmp/cmp/internal/function
+github.com/google/go-cmp/cmp/internal/value
+# github.com/rs/zerolog v1.26.0
+## explicit
+github.com/rs/zerolog
+github.com/rs/zerolog/internal/cbor
+github.com/rs/zerolog/internal/json
+github.com/rs/zerolog/log
+# github.com/sanity-io/litter v1.5.1
+## explicit
+github.com/sanity-io/litter
