@@ -851,7 +851,7 @@ are defined for
 # Evaluate all components for a specified component group.
 define command{
     command_name    check_statuspage_components_group
-    command_line    $USER1$/check_statuspage_tools --url '$ARG1$' --group '$ARG2$' --log-level info
+    command_line    $USER1$/check_statuspage_components --url '$ARG1$' --group '$ARG2$' --log-level info
     }
 
 # Evaluate one or more components for a (single) specified component group.
@@ -860,7 +860,7 @@ define command{
 # a mix of component names and/or ID values.
 define command{
     command_name    check_statuspage_components_group_and_select_subcomponents
-    command_line    $USER1$/check_statuspage_tools --url '$ARG1$' --group '$ARG2$' --component '$ARG3$' --log-level info
+    command_line    $USER1$/check_statuspage_components --url '$ARG1$' --group '$ARG2$' --component '$ARG3$' --log-level info
     }
 
 # Evaluate one or more components regardless of component group.
@@ -869,7 +869,7 @@ define command{
 # a mix of component names and/or ID values.
 define command{
     command_name    check_statuspage_components_list
-    command_line    $USER1$/check_statuspage_tools --url '$ARG1$' --component '$ARG2$' --log-level info
+    command_line    $USER1$/check_statuspage_components --url '$ARG1$' --component '$ARG2$' --log-level info
     }
 ```
 
