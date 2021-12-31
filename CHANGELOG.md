@@ -26,6 +26,30 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.1] - 2021-12-31
+
+### Overview
+
+- Dependency updates
+- built using Go 1.17.5
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - (GH-35) Update go.mod file, canary Dockerfile to reflect Go 1.17
+    - `1.16.12` to `1.17.5`
+  - `actions/setup-node`
+    - `v2.5.0` to `v2.5.1`
+
+- (GH-33) Drop `Group ID`, `Component ID`, `Evaluated` columns from
+  `reports.ComponentsReport()` output
+
+- (GH-30) Update Nagios command definition examples to use `--omit-ok` flag
+
 ## [v0.1.0] - 2021-12-27
 
 Initial release!
@@ -40,5 +64,6 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.1...HEAD
+[v0.1.1]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.1
 [v0.1.0]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.0
