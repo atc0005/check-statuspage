@@ -131,7 +131,18 @@ func main() {
 		fmt.Print(reports.ComponentsOverview(componentsSet, cfg.OmitOKComponents))
 
 	case config.InspectorOutputFormatTable:
-		fmt.Print(reports.ComponentsTable(componentsSet, cfg.OmitOKComponents))
+		// Enable all columns in filter
+		columnFilter := reports.ComponentsTableColumnFilter{
+			GroupName:     true,
+			GroupID:       true,
+			ComponentName: true,
+			ComponentID:   true,
+			Evaluated:     true,
+			Status:        true,
+		}
+
+		// Generate table, providing our "use everything" filter.
+		fmt.Print(reports.ComponentsTable(componentsSet, cfg.OmitOKComponents, &columnFilter))
 
 	case config.InspectorOutputFormatVerbose:
 		fmt.Print(reports.ComponentsVerbose(componentsSet, cfg.OmitOKComponents))
