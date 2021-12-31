@@ -20,6 +20,213 @@ import (
 	"github.com/atc0005/go-nagios"
 )
 
+// ComponentsTableColumnFilter specifies what columns should be emitted from
+// the table output format. If not provided to applicable functions (e.g. a
+// nil value), a default set of columns is used.
+type ComponentsTableColumnFilter struct {
+	GroupName     bool
+	GroupID       bool
+	ComponentName bool
+	ComponentID   bool
+	Evaluated     bool
+	Status        bool
+}
+
+// componentsTable represents the tabular output generated for a components
+// report. A constructor should be used in order to properly initialize
+// embedded fields.
+type componentsTable struct {
+
+	// report is used directly and by the embedded *tabwriter.Writer to
+	// accumulate formatted component details for display as a final report.
+	report strings.Builder
+
+	// tabWriter uses the embedded strings.Builder to collect formatted
+	// component details.
+	tabWriter *tabwriter.Writer
+
+	// filter controls which columns are emitted by the final report.
+	filter ComponentsTableColumnFilter
+
+	// header collects the fields used as a table header.
+	header componentsTableRow
+}
+
+// componentsTableRow represents a table row in the components table output.
+// Fields may be omitted if a value is not intended for use.
+type componentsTableRow struct {
+	GroupName     string
+	GroupID       string
+	ComponentName string
+	ComponentID   string
+	Evaluated     string
+	Status        string
+}
+
+// FieldsEnabled indicates how many column fields are enabled for display.
+func (ctf ComponentsTableColumnFilter) FieldsEnabled() int {
+	var num int
+
+	if ctf.GroupName {
+		num++
+	}
+
+	if ctf.GroupID {
+		num++
+	}
+
+	if ctf.ComponentName {
+		num++
+	}
+
+	if ctf.ComponentID {
+		num++
+	}
+
+	if ctf.Evaluated {
+		num++
+	}
+
+	if ctf.Status {
+		num++
+	}
+
+	return num
+
+}
+
+// newComponentsTable handles constructing a new components table for use in
+// building a report. This constructor should be used instead of attempting to
+// directly instantiate the componentsTable type. The provided filter is used
+// to control which columns are emitted in the report.
+func newComponentsTable(columnsList ComponentsTableColumnFilter) *componentsTable {
+	var table componentsTable
+
+	table.filter = columnsList
+
+	w := tabwriter.NewWriter(&table.report, 4, 4, 4, ' ', 0)
+	table.tabWriter = w
+
+	return &table
+}
+
+// addHeaderRow is used to add a header to the report. Any provided fields not
+// enabled for display are ignored when generating the report.
+func (ctr *componentsTable) addHeaderRow(headerRow componentsTableRow) {
+	// Save as-is for later use.
+	ctr.header = headerRow
+
+	// Add row normally.
+	ctr.addRow(headerRow)
+}
+
+// headerRow returns the components table header as a formatted string with
+// tab terminators after each column header.
+func (ctr *componentsTable) headerRow() string {
+	var output strings.Builder
+
+	if ctr.filter.GroupName {
+		fmt.Fprint(&output, ctr.header.GroupName, "\t")
+	}
+
+	if ctr.filter.GroupID {
+		fmt.Fprint(&output, ctr.header.GroupID, "\t")
+	}
+
+	if ctr.filter.ComponentName {
+		fmt.Fprint(&output, ctr.header.ComponentName, "\t")
+	}
+
+	if ctr.filter.ComponentID {
+		fmt.Fprint(&output, ctr.header.ComponentID, "\t")
+	}
+
+	if ctr.filter.Evaluated {
+		fmt.Fprint(&output, ctr.header.Evaluated, "\t")
+	}
+
+	if ctr.filter.Status {
+		fmt.Fprint(&output, ctr.header.Status, "\t")
+	}
+
+	fmt.Fprint(&output, nagios.CheckOutputEOL)
+
+	return output.String()
+
+}
+
+// addHeaderSeperator generates a separator row between the header and data
+// rows. Each "column" in the generated separator row template is of the same
+// length as the header row column above it. Any columns not enabled for
+// display are also omitted from the separator row.
+func (ctr *componentsTable) addHeaderSeperator() {
+
+	var headerSepRowTmpl strings.Builder
+
+	headerTmplItems := strings.Split(ctr.headerRow(), "\t")
+
+	// Drop the last trailing tab character from the slice.
+	if len(headerTmplItems) > 0 {
+		headerTmplItems = headerTmplItems[:len(headerTmplItems)-1]
+	}
+
+	for _, item := range headerTmplItems {
+		headerSepRowTmpl.WriteString(strings.Repeat("-", len(item)))
+		headerSepRowTmpl.WriteString("\t")
+	}
+
+	headerSepRowTmpl.WriteString(nagios.CheckOutputEOL)
+
+	fmt.Fprint(ctr.tabWriter, headerSepRowTmpl.String())
+
+}
+
+// addCollectionSeperator generates a separator row between collections of
+// components. The number of "columns" in the generated separator row is of
+// the same length as the header row (or any other in the table). Any columns
+// not enabled for display are also omitted from the separator row.
+func (ctr *componentsTable) addCollectionSeperator() {
+	numFields := ctr.filter.FieldsEnabled()
+
+	fmt.Fprint(
+		ctr.tabWriter,
+		strings.Repeat("\t", numFields),
+		nagios.CheckOutputEOL,
+	)
+}
+
+// addRow adds a new row to the components table output. Any columns not
+// enabled for display are omitted from the output.
+func (ctr *componentsTable) addRow(row componentsTableRow) {
+
+	if ctr.filter.GroupName {
+		fmt.Fprint(ctr.tabWriter, row.GroupName, "\t")
+	}
+
+	if ctr.filter.GroupID {
+		fmt.Fprint(ctr.tabWriter, row.GroupID, "\t")
+	}
+
+	if ctr.filter.ComponentName {
+		fmt.Fprint(ctr.tabWriter, row.ComponentName, "\t")
+	}
+
+	if ctr.filter.ComponentID {
+		fmt.Fprint(ctr.tabWriter, row.ComponentID, "\t")
+	}
+
+	if ctr.filter.Evaluated {
+		fmt.Fprint(ctr.tabWriter, row.Evaluated, "\t")
+	}
+
+	if ctr.filter.Status {
+		fmt.Fprint(ctr.tabWriter, row.Status, "\t")
+	}
+
+	fmt.Fprint(ctr.tabWriter, nagios.CheckOutputEOL)
+
+}
+
 // printStartDate is a helper function to display a component's creation or
 // start date (if set) in the desired format for inclusion in summary output.
 // func printStartDate(csd components.ComponentStartDate) string {
@@ -56,74 +263,6 @@ func printVerboseComponent(component *components.Component, num int) string {
 		printStatus(component.Status),
 		nagios.CheckOutputEOL,
 	)
-}
-
-// printTableHeaderSeparatorRowTmpl is a helper function to generate a
-// separator row template for use between the header and data rows. Each
-// "column" in the generated separator row template is of the same length as
-// the header row column above it.
-func printTableHeaderSeparatorRowTmpl(headerRowTmpl string) string {
-
-	var headerSepRowTmpl strings.Builder
-
-	headerTmplItems := strings.Split(headerRowTmpl, "\t")
-
-	// Drop the last trailing tab character from the slice.
-	if len(headerTmplItems) > 0 {
-		headerTmplItems = headerTmplItems[:len(headerTmplItems)-1]
-	}
-	for _, item := range headerTmplItems {
-		headerSepRowTmpl.WriteString(strings.Repeat("-", len(item)))
-		headerSepRowTmpl.WriteString("\t")
-	}
-
-	// Ensure that the row template has a trailing slash and a placeholder for
-	// a nagios.CheckOutputEOL string.
-	headerSepRowTmpl.WriteString("\t%s")
-
-	return headerSepRowTmpl.String()
-}
-
-// printTableDataRowTmpl is a helper function to generate a separator row
-// template for use between collections of components. The number of "columns"
-// in the generated separator row template  is of the same length as the
-// header row (or any other in the table).
-func printTableDataRowTmpl(headerRowTmpl string) string {
-
-	var dataRowTmpl strings.Builder
-
-	// Don't count the trailing tab as a column when calculating the header
-	// row length.
-	headerTmplLen := len(strings.Split(headerRowTmpl, "\t")) - 1
-	if headerTmplLen < 0 {
-		headerTmplLen = 0
-	}
-
-	dataRowTmpl.WriteString(strings.Repeat("%s\t", headerTmplLen))
-	dataRowTmpl.WriteString("%s")
-
-	return dataRowTmpl.String()
-}
-
-// printTableCollectionSeparatorTmpl is a helper function to generate a
-// separator row template between collections of components. The number of
-// "columns" in the generated separator row template is of the same length as
-// the header row (or any other in the table).
-func printTableCollectionSeparatorTmpl(headerRowTmpl string) string {
-
-	var separatorTmpl strings.Builder
-
-	// Don't count the trailing tab as a column when calculating the header
-	// row length.
-	headerTmplLen := len(strings.Split(headerRowTmpl, "\t")) - 1
-	if headerTmplLen < 0 {
-		headerTmplLen = 0
-	}
-
-	separatorTmpl.WriteString(strings.Repeat("\t", headerTmplLen))
-	separatorTmpl.WriteString("%s")
-
-	return separatorTmpl.String()
 }
 
 // ComponentsVerbose generates a verbose report for use as LongServiceOutput
@@ -463,10 +602,11 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool) st
 // non-operational status components will be listed, otherwise all components
 // defined for the given Statuspage will be displayed.
 //
-// This report provides component details in a quick reference format with the
-// intention of making it easier to craft service checks using name or ID
-// values.
-func ComponentsTable(componentsSet *components.Set, omitOKComponents bool) string {
+// If provided, the given columns list filter will be used to determine which
+// details are emitted for applicable components. If not specified (e.g., a
+// nil value is given), a default set of details are emitted for each
+// applicable component.
+func ComponentsTable(componentsSet *components.Set, omitOKComponents bool, columnsList *ComponentsTableColumnFilter) string {
 
 	funcTimeStart := time.Now()
 
@@ -477,9 +617,25 @@ func ComponentsTable(componentsSet *components.Set, omitOKComponents bool) strin
 		)
 	}()
 
-	var report strings.Builder
+	// If not specified, assume that all columns should be displayed.
+	var chosenColumns ComponentsTableColumnFilter
+	switch {
+	case columnsList != nil:
+		chosenColumns = *columnsList
+	default:
+		chosenColumns = ComponentsTableColumnFilter{
+			GroupName:     true,
+			GroupID:       true,
+			ComponentName: true,
+			ComponentID:   true,
+			Evaluated:     true,
+			Status:        true,
+		}
+	}
+
+	componentsTable := newComponentsTable(chosenColumns)
+
 	// w := tabwriter.NewWriter(&report, 4, 4, 4, ' ', 0)
-	w := tabwriter.NewWriter(&report, 4, 4, 4, ' ', 0)
 
 	// A collection of errors (if any) encountered while generating this
 	// report.
@@ -487,35 +643,48 @@ func ComponentsTable(componentsSet *components.Set, omitOKComponents bool) strin
 
 	// Add some lead-in spacing to better separate any (potential) earlier log
 	// messages from summary output.
-	fmt.Fprint(w, nagios.CheckOutputEOL)
+	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
-	componentsReportHeader(&report, componentsSet)
+	componentsReportHeader(&componentsTable.report, componentsSet)
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
+	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
 
 	if omitOKComponents {
 		fmt.Fprint(
-			&report,
+			&componentsTable.report,
 			"NOTE: Omitting OK/operational components as requested.",
 			nagios.CheckOutputEOL,
 			nagios.CheckOutputEOL,
 		)
 	}
 
-	var headerRowTmpl string
 	switch {
 	case componentsSet.NumGroups() > 0:
-		headerRowTmpl = "GROUP NAME\tGROUP ID\tCOMPONENT NAME\tCOMPONENT ID\tEVALUATED\tSTATUS\t%s"
+
+		headerRow := componentsTableRow{
+			GroupName:     "GROUP NAME",
+			GroupID:       "GROUP ID",
+			ComponentName: "COMPONENT NAME",
+			ComponentID:   "COMPONENT ID",
+			Evaluated:     "EVALUATED",
+			Status:        "STATUS",
+		}
+
+		componentsTable.addHeaderRow(headerRow)
+
 	default:
-		headerRowTmpl = "COMPONENT NAME\tID\tEVALUATED\tSTATUS\t%s"
+
+		headerRow := componentsTableRow{
+			ComponentName: "COMPONENT NAME",
+			ComponentID:   "COMPONENT ID",
+			Evaluated:     "EVALUATED",
+			Status:        "STATUS",
+		}
+
+		componentsTable.addHeaderRow(headerRow)
 	}
 
-	separatorHeaderTmpl := printTableHeaderSeparatorRowTmpl(headerRowTmpl)
-	separatorRowTmpl := printTableCollectionSeparatorTmpl(headerRowTmpl)
-	rowTmpl := printTableDataRowTmpl(headerRowTmpl)
-
-	fmt.Fprintf(w, headerRowTmpl, nagios.CheckOutputEOL)
-	fmt.Fprintf(w, separatorHeaderTmpl, nagios.CheckOutputEOL)
+	componentsTable.addHeaderSeperator()
 
 	// Used to indicate whether a component has been evaluated or not excluded
 	// from eligibility of determining the overall plugin state by its componentsSet.
@@ -548,17 +717,17 @@ func ComponentsTable(componentsSet *components.Set, omitOKComponents bool) strin
 					evaluated = strconv.FormatBool(!component.Exclude)
 				}
 
-				fmt.Fprintf(
-					w,
-					rowTmpl,
-					"",
-					"",
-					component.Name,
-					component.ID,
-					evaluated,
-					printStatus(component.Status),
-					nagios.CheckOutputEOL,
-				)
+				componentsTable.addRow(componentsTableRow{
+					// Empty group name and id column values specified here
+					// since this is a top-level component and there are
+					// groups defined.
+					GroupName:     "",
+					GroupID:       "",
+					ComponentName: component.Name,
+					ComponentID:   component.ID,
+					Evaluated:     evaluated,
+					Status:        printStatus(component.Status),
+				})
 			}
 		default:
 			for _, component := range componentsSet.TopLevel() {
@@ -573,21 +742,18 @@ func ComponentsTable(componentsSet *components.Set, omitOKComponents bool) strin
 					evaluated = strconv.FormatBool(!component.Exclude)
 				}
 
-				fmt.Fprintf(
-					w,
-					rowTmpl,
-					component.Name,
-					component.ID,
-					evaluated,
-					printStatus(component.Status),
-					nagios.CheckOutputEOL,
-				)
+				componentsTable.addRow(componentsTableRow{
+					ComponentName: component.Name,
+					ComponentID:   component.ID,
+					Evaluated:     evaluated,
+					Status:        printStatus(component.Status),
+				})
 			}
 		}
 
 		if separatorRowNeeded {
 			componentsEmitted = true
-			fmt.Fprintf(w, separatorRowTmpl, nagios.CheckOutputEOL)
+			componentsTable.addCollectionSeperator()
 		}
 
 	}
@@ -622,21 +788,19 @@ func ComponentsTable(componentsSet *components.Set, omitOKComponents bool) strin
 						evaluated = strconv.FormatBool(!subcomponent.Exclude)
 					}
 
-					fmt.Fprintf(
-						w,
-						rowTmpl,
-						group.Parent.Name,
-						group.Parent.ID,
-						subcomponent.Name,
-						subcomponent.ID,
-						evaluated,
-						printStatus(subcomponent.Status),
-						nagios.CheckOutputEOL,
-					)
+					componentsTable.addRow(componentsTableRow{
+						GroupName:     group.Parent.Name,
+						GroupID:       group.Parent.ID,
+						ComponentName: subcomponent.Name,
+						ComponentID:   subcomponent.ID,
+						Evaluated:     evaluated,
+						Status:        printStatus(subcomponent.Status),
+					})
+
 				}
 
 				if separatorRowNeeded {
-					fmt.Fprintf(w, separatorRowTmpl, nagios.CheckOutputEOL)
+					componentsTable.addCollectionSeperator()
 				}
 
 			}
@@ -648,37 +812,33 @@ func ComponentsTable(componentsSet *components.Set, omitOKComponents bool) strin
 	}
 
 	if !componentsEmitted {
-		fmt.Fprintf(
-			w,
-			rowTmpl,
-			"N/A",
-			"N/A",
-			"N/A",
-			"N/A",
-			"N/A",
-			"N/A",
-			nagios.CheckOutputEOL,
-		)
+		componentsTable.addRow(componentsTableRow{
+			GroupName:     "N/A",
+			GroupID:       "N/A",
+			ComponentName: "N/A",
+			ComponentID:   "N/A",
+			Evaluated:     "N/A",
+			Status:        "N/A",
+		})
 	}
 
-	fmt.Fprint(w, nagios.CheckOutputEOL)
+	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
-	if err := w.Flush(); err != nil {
+	if err := componentsTable.tabWriter.Flush(); err != nil {
 		errsEncountered = append(errsEncountered, err)
-		// logger.Printf("Error flushing tabwriter: %v", err)
 	}
 
 	if len(errsEncountered) > 0 {
-		fmt.Fprint(w, nagios.CheckOutputEOL)
+		fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
 		fmt.Fprintf(
-			w,
+			&componentsTable.report,
 			"Errors encountered while generating this report:%s",
 			nagios.CheckOutputEOL,
 		)
 		for i, err := range errsEncountered {
 			fmt.Fprintf(
-				w,
+				&componentsTable.report,
 				"* %02d): %s%s",
 				i+1,
 				err,
@@ -687,13 +847,13 @@ func ComponentsTable(componentsSet *components.Set, omitOKComponents bool) strin
 		}
 	}
 
-	fmt.Fprint(w, nagios.CheckOutputEOL)
+	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
-	componentsStatusSummary(w, componentsSet, omitOKComponents)
+	componentsStatusSummary(&componentsTable.report, componentsSet, omitOKComponents)
 
-	fmt.Fprint(w, nagios.CheckOutputEOL)
+	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
-	return report.String()
+	return componentsTable.report.String()
 
 }
 
@@ -975,12 +1135,38 @@ func ComponentsReport(
 		)
 	}
 
+	// Skip emitting ID values in report in order to generate less "noisy"
+	// output for quick review.
+	columnFilter := ComponentsTableColumnFilter{
+		GroupName:     true,
+		GroupID:       false,
+		ComponentName: true,
+		ComponentID:   false,
+		Evaluated:     false,
+		Status:        true,
+	}
+
 	fullTableOutputComponentsLimit := 50
 	switch {
-	case componentsSet.NumComponents() <= fullTableOutputComponentsLimit || !omitOKComponents:
-		fmt.Fprint(&report, ComponentsTable(componentsSet, false))
+
+	case omitOKComponents:
+		fmt.Fprint(&report, ComponentsTable(componentsSet, true, &columnFilter))
+
+	case componentsSet.NumComponents() > fullTableOutputComponentsLimit:
+
+		fmt.Fprintf(
+			&report,
+			"NOTE: Component count (%d) is higher than display limit (%d);"+
+				" overriding default display of OK components.%s",
+			componentsSet.NumComponents(),
+			fullTableOutputComponentsLimit,
+			nagios.CheckOutputEOL,
+		)
+
+		fmt.Fprint(&report, ComponentsTable(componentsSet, true, &columnFilter))
+
 	default:
-		fmt.Fprint(&report, ComponentsTable(componentsSet, true))
+		fmt.Fprint(&report, ComponentsTable(componentsSet, false, &columnFilter))
 	}
 
 	return report.String()
