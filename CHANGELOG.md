@@ -26,6 +26,21 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.3] - 2022-01-02
+
+### Overview
+
+- Formatting tweak
+- built using Go 1.17.5
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- (GH-44) Using tabs instead of spaces does not appear to improve
+  `LongServiceOutput` formatting
+
 ## [v0.1.2] - 2022-01-01
 
 ### Overview
@@ -82,7 +97,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.3...HEAD
+[v0.1.3]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.3
 [v0.1.2]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.2
 [v0.1.1]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.1
 [v0.1.0]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.0
