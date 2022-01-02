@@ -104,9 +104,13 @@ func newComponentsTable(columnsList ComponentsTableColumnFilter) *componentsTabl
 
 	table.filter = columnsList
 
-	// w := tabwriter.NewWriter(&table.report, 4, 4, 4, ' ', 0)
+	w := tabwriter.NewWriter(&table.report, 4, 4, 4, ' ', 0)
 	// w := tabwriter.NewWriter(&table.report, 4, 4, 4, ' ', tabwriter.Debug|tabwriter.DiscardEmptyColumns)
-	w := tabwriter.NewWriter(&table.report, 0, 8, 2, '\t', 0)
+
+	// See GH-44 regarding issues with lack of spacing between columns in
+	// email notifications (when using tabs).
+	//
+	// w := tabwriter.NewWriter(&table.report, 0, 8, 2, '\t', 0)
 	table.tabWriter = w
 
 	return &table
