@@ -26,7 +26,7 @@ SHELL = /bin/bash
 WHAT 					= check_statuspage_components \
 							lscs \
 
-
+PROJECT_NAME			= check-statuspage
 
 # What package holds the "version" variable used in branding/version output?
 # VERSION_VAR_PKG			= $(shell go list .)
@@ -43,7 +43,7 @@ VERSION 				= $(shell git describe --always --long --dirty)
 # Used when generating download URLs when building assets for public release
 RELEASE_TAG 			= $(shell git describe --exact-match --tags)
 
-BASE_URL				= https://github.com/atc0005/check-statuspage/releases/download
+BASE_URL				= https://github.com/atc0005/$(PROJECT_NAME)/releases/download
 
 # The default `go build` process embeds debugging information. Building
 # without that debugging information reduces the binary size by around 28%.
@@ -209,8 +209,8 @@ windows-x86-links:
 
 	@for target in $(WHAT); do \
 		echo "  Generating $$target download links" && \
-		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-windows-386.exe" >> $(ROOT_PATH)/$(VERSION)-links.txt && \
-		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-windows-386.exe.sha256" >> $(ROOT_PATH)/$(VERSION)-links.txt; \
+		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-windows-386.exe" >> $(ROOT_PATH)/$(PROJECT_NAME)-$(VERSION)-links.txt && \
+		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-windows-386.exe.sha256" >> $(ROOT_PATH)/$(PROJECT_NAME)-$(VERSION)-links.txt; \
 	done
 
 	@echo "Completed generating download links for windows x86 assets"
@@ -239,8 +239,8 @@ windows-x64-links:
 
 	@for target in $(WHAT); do \
 		echo "  Generating $$target download links" && \
-		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-windows-amd64.exe" >> $(ROOT_PATH)/$(VERSION)-links.txt && \
-		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-windows-amd64.exe.sha256" >> $(ROOT_PATH)/$(VERSION)-links.txt; \
+		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-windows-amd64.exe" >> $(ROOT_PATH)/$(PROJECT_NAME)-$(VERSION)-links.txt && \
+		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-windows-amd64.exe.sha256" >> $(ROOT_PATH)/$(PROJECT_NAME)-$(VERSION)-links.txt; \
 	done
 
 	@echo "Completed generating download links for windows x64 assets"
@@ -278,8 +278,8 @@ linux-x86-links:
 
 	@for target in $(WHAT); do \
 		echo "  Generating $$target download links" && \
-		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-linux-386" >> $(ROOT_PATH)/$(VERSION)-links.txt && \
-		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-linux-386.sha256" >> $(ROOT_PATH)/$(VERSION)-links.txt; \
+		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-linux-386" >> $(ROOT_PATH)/$(PROJECT_NAME)-$(VERSION)-links.txt && \
+		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-linux-386.sha256" >> $(ROOT_PATH)/$(PROJECT_NAME)-$(VERSION)-links.txt; \
 	done
 
 	@echo "Completed generating download links for linux x86 assets"
@@ -307,8 +307,8 @@ linux-x64-links:
 
 	@for target in $(WHAT); do \
 		echo "  Generating $$target download links" && \
-		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-linux-amd64" >> $(ROOT_PATH)/$(VERSION)-links.txt && \
-		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-linux-amd64.sha256" >> $(ROOT_PATH)/$(VERSION)-links.txt; \
+		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-linux-amd64" >> $(ROOT_PATH)/$(PROJECT_NAME)-$(VERSION)-links.txt && \
+		echo "$(BASE_URL)/$(RELEASE_TAG)/$$target-$(VERSION)-linux-amd64.sha256" >> $(ROOT_PATH)/$(PROJECT_NAME)-$(VERSION)-links.txt; \
 	done
 
 	@echo "Completed generating download links for linux x64 assets"
