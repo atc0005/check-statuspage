@@ -145,11 +145,11 @@ func main() {
 		var err error
 		componentsSet, err = components.NewFromFile(cfg.Filename, cfg.ReadLimit, cfg.AllowUnknownJSONFields)
 		if err != nil {
-			log.Error().Msg("Error decoding JSON feed")
+			log.Error().Err(err).Msg("Error decoding JSON feed")
 
 			nagiosExitState.LastError = err
 			nagiosExitState.ServiceOutput = fmt.Sprintf(
-				"%s: Error decoding JSON feed from %q",
+				"%s: Failed to decode JSON feed from %q",
 				nagios.StateCRITICALLabel,
 				cfg.Filename,
 			)
@@ -175,6 +175,14 @@ func main() {
 		)
 		if err != nil {
 			log.Error().Err(err).Msg("Error decoding JSON feed")
+
+			nagiosExitState.LastError = err
+			nagiosExitState.ServiceOutput = fmt.Sprintf(
+				"%s: Failed to decode JSON feed from %q",
+				nagios.StateCRITICALLabel,
+				cfg.Filename,
+			)
+			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 
 			return
 		}
