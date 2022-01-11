@@ -56,7 +56,8 @@ func filterErrAdvice(err error, cs *components.Set, filter components.Filter, fe
 	case errors.Is(err, components.ErrComponentIsNotValidSubcomponent):
 		fmt.Fprintf(
 			&tryAgainMsg,
-			"Double-check provided component group name or ID values (provided value not found).%s",
+			"Double-check provided component group and subcomponent name or ID values "+
+				"(mismatch between group/subcomponent values).%s",
 			nagios.CheckOutputEOL,
 		)
 
@@ -67,7 +68,7 @@ func filterErrAdvice(err error, cs *components.Set, filter components.Filter, fe
 			nagios.CheckOutputEOL,
 		)
 
-	// NOTE: While this plugin supports evaluating all plugins (and
+	// NOTE: While this plugin supports evaluating all components (and
 	// therefore results in an empty filter), this error is only
 	// returned if filtering is enabled, but an empty filter provided
 	// for the filtering stage. While unlikely to occur, we can offer
@@ -75,20 +76,22 @@ func filterErrAdvice(err error, cs *components.Set, filter components.Filter, fe
 	case errors.Is(err, components.ErrComponentSetFilterEmpty):
 		fmt.Fprintf(
 			&tryAgainMsg,
-			"While both component group and components list are optional, one is required.%s",
+			"While both component group and components list are optional, "+
+				"one is required unless evaluating all components.%s",
 			nagios.CheckOutputEOL,
 		)
 
 		fmt.Fprintf(
 			&tryAgainMsg,
-			"If you wish to evaluate all components, use the eval-all flag and omit filtering options.%s",
+			"If you wish to evaluate all components, use the %s flag and omit filtering options.%s",
+			config.EvalAllComponentsFlagLong,
 			nagios.CheckOutputEOL,
 		)
 
 	default:
 		fmt.Fprintf(
 			&tryAgainMsg,
-			"%sPlease recheck provided filter values. .%s",
+			"%sPlease recheck provided filter values.%s",
 			nagios.CheckOutputEOL,
 			nagios.CheckOutputEOL,
 		)
