@@ -310,8 +310,7 @@ func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFie
 	err = decode(&set, response.Body, apiURL, limit, allowUnknownFields)
 	if err != nil {
 		return &Set{}, fmt.Errorf(
-			"failed to decode JSON data from %q: %w",
-			apiURL,
+			"failed to decode JSON data: %w",
 			err,
 		)
 	}
@@ -364,8 +363,7 @@ func NewFromFile(filename string, limit int64, allowUnknownFields bool) (*Set, e
 	err = decode(&set, fh, filename, limit, allowUnknownFields)
 	if err != nil {
 		return &Set{}, fmt.Errorf(
-			"failed to decode filename %s: %w",
-			filename,
+			"failed to decode JSON data: %w",
 			err,
 		)
 	}
