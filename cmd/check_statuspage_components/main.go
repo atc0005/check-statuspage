@@ -180,7 +180,7 @@ func main() {
 			nagiosExitState.ServiceOutput = fmt.Sprintf(
 				"%s: Failed to decode JSON feed from %q",
 				nagios.StateCRITICALLabel,
-				cfg.Filename,
+				cfg.URL,
 			)
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 
