@@ -26,6 +26,20 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.6] - 2022-01-13
+
+### Overview
+
+- Bugfix
+- built using Go 1.17.6
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Fixed
+
+- (GH-66) Incorrect "success" HTTP status code range identification
+
 ## [v0.1.5] - 2022-01-13
 
 ### Overview
@@ -147,7 +161,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.5...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.6...HEAD
+[v0.1.6]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.6
 [v0.1.5]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.5
 [v0.1.4]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.4
 [v0.1.3]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.3
