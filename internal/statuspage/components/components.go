@@ -266,7 +266,7 @@ func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFie
 		logger.Printf("Status code %d received as expected", response.StatusCode)
 
 	// Success status range, but not in API docs for listing components.
-	case response.StatusCode > 200 || response.StatusCode <= 299:
+	case response.StatusCode > 200 && response.StatusCode <= 299:
 		logger.Printf(
 			"Status code %d (%s) received; expected %d (%s), but received value within success range",
 			response.StatusCode,
