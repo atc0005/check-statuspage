@@ -26,6 +26,32 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.7] - 2022-02-11
+
+### Overview
+
+- Bugfix
+- Dependency updates
+- built using Go 1.17.7
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.17.6` to `1.17.7`
+  - `github/codeql-action`
+    - `v1.0.27` to `v1.0.32`
+  - `google/go-cmp`
+    - `v0.5.6` to `v0.5.7`
+
+- (GH-76) Switch Docker image source from Docker Hub to GitHub Container
+  Registry (GHCR)
+- (GH-77) Expand linting GitHub Actions Workflow to include `oldstable`,
+  `unstable` container images
+
 ## [v0.1.6] - 2022-01-13
 
 ### Overview
@@ -161,7 +187,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.6...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.7...HEAD
+[v0.1.7]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.7
 [v0.1.6]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.6
 [v0.1.5]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.5
 [v0.1.4]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.4
