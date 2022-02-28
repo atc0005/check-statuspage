@@ -879,10 +879,6 @@ func ComponentsIDList(componentsSet *components.Set) string {
 
 	var report strings.Builder
 
-	// A collection of errors (if any) encountered while generating this
-	// report.
-	var errsEncountered []error
-
 	columnsPerRow := 4
 
 	fmt.Fprint(&report, nagios.CheckOutputEOL)
@@ -904,25 +900,6 @@ func ComponentsIDList(componentsSet *components.Set) string {
 			i++
 		}
 		fmt.Fprintln(&report)
-	}
-
-	if len(errsEncountered) > 0 {
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
-
-		fmt.Fprintf(
-			&report,
-			"Errors encountered while generating this report:%s",
-			nagios.CheckOutputEOL,
-		)
-		for i, err := range errsEncountered {
-			fmt.Fprintf(
-				&report,
-				"* %02d): %s%s",
-				i+1,
-				err,
-				nagios.CheckOutputEOL,
-			)
-		}
 	}
 
 	fmt.Fprint(&report, nagios.CheckOutputEOL)
