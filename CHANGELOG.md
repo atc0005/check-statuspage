@@ -26,6 +26,32 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.8] - 2022-03-01
+
+### Overview
+
+- Bugfixes
+- Dependency updates
+- built using Go 1.17.7
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `github/codeql-action`
+    - `v1.0.32` to `v1.1.3`
+  - `actions/setup-node`
+    - `v2.5.1` to `v3`
+
+### Fixed
+
+- (GH-86) internal/reports/reports.go:917:23: nilness: nil dereference in
+  index operation (govet)
+- (GH-89) `ServiceOutput` (i.e., "one liner" output) is too vague when
+  failures to read or decode JSON data occur
+
 ## [v0.1.7] - 2022-02-11
 
 ### Overview
@@ -187,7 +213,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.7...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.8...HEAD
+[v0.1.8]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.8
 [v0.1.7]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.7
 [v0.1.6]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.6
 [v0.1.5]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.5
