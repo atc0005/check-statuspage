@@ -7,7 +7,10 @@
 
 package components
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 // ErrComponentSetFilterEmpty indicates that a given components set filter is
 // empty.
@@ -110,3 +113,65 @@ var ErrComponentStatusUnderMaintenance = errors.New(
 var ErrComponentWithProblemStatusNotExcluded = errors.New(
 	"component with non-operational status not excluded from evaluation",
 )
+
+// ErrResponseOutsideRange indicates that a response was received which falls
+// outside of an acceptable range.
+var ErrResponseOutsideRange = errors.New(
+	"response is outside acceptable range",
+)
+
+// PrepError represents a class of errors encountered while performing tasks
+// related to preparing a components Set.
+type PrepError struct {
+
+	// Step indicates the specific prep task which failed.
+	//
+	// NOTE: Constants should be used to make comparisons more reliable.
+	Task string
+
+	// Message provides additional (brief) context describing why the error
+	// occurred.
+	//
+	// e.g., "error parsing URL" or "error preparing request for URL"
+	Message string
+
+	// Source associated with the prep task.
+	//
+	// e.g., "/tmp/components.json",
+	// "https://status.example.com/api/v2/components.json"
+	Source string
+
+	// Cause is the underlying error which occurred while performing a task as
+	// part of preparing a components set. This error is "bundled" for later
+	// evaluation.
+	Cause error
+}
+
+// Error provides a human readable explanation for a components Set
+// preparation task failure.
+func (s *PrepError) Error() string {
+	return fmt.Sprintf(
+		"task: %q: %s: source: %s cause: %v",
+		s.Task,
+		s.Message,
+		s.Source,
+		s.Cause,
+	)
+}
+
+// Is supports error wrapping by indicating whether a given error matches the
+// specific failed task associated with this error.
+func (s *PrepError) Is(target error) bool {
+	t, ok := target.(*PrepError)
+	if !ok {
+		return false
+	}
+
+	return t.Task == s.Task
+}
+
+// Unwrap supports error wrapping by returning the enclosed error associated
+// with the specific failed task  was encountered as part of preparing a components Set.
+func (s *PrepError) Unwrap() error {
+	return s.Cause
+}
