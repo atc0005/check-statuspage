@@ -59,6 +59,15 @@ const (
 	ComponentIDLength int = 12
 )
 
+// Prep tasks for creation of a components Set.
+const (
+	PrepTaskParseURL        string = "parse URL"
+	PrepTaskPrepareRequest  string = "prepare request"
+	PrepTaskDecode          string = "decode JSON data"
+	PrepTaskSubmitRequest   string = "submit request"
+	PrepTaskProcessResponse string = "process response"
+)
+
 // Set represents the collection of components for a Statuspage-enabled site.
 //
 // Initial version generated via:
@@ -185,34 +194,30 @@ type Filter struct {
 	Components []string
 }
 
-// NewFromURL constructs a components Set by reading and decoding JSON data
-// from a specified URL using the specified number of bytes as the read limit.
-// If specified, unknown fields in the JSON file are ignored. An error is
-// returned if there are problems reading and decoding JSON data. If provided,
-// a custom user agent is supplied in place of the default Go user agent.
-func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFields bool, userAgent string) (*Set, error) {
-
+// prepareRequest is a helper function that prepares a http.Request (including
+// all desired headers) for submission to an endpoint.
+func prepareRequest(ctx context.Context, apiURL string, userAgent string) (*http.Request, error) {
 	logger.Printf("Validating URL %q before attempting to read data", apiURL)
 	parsedURL, err := url.Parse(apiURL)
 	if err != nil {
-		return &Set{}, fmt.Errorf(
-			"error parsing specified URL %q: %w",
-			apiURL,
-			err,
-		)
+		return nil, &PrepError{
+			Task:    PrepTaskParseURL,
+			Message: "error parsing URL",
+			Source:  apiURL,
+			Cause:   err,
+		}
 	}
 	logger.Printf("Successfully validated URL %q", apiURL)
-
-	c := &http.Client{}
 
 	logger.Print("Preparing HTTP request")
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, parsedURL.String(), nil)
 	if err != nil {
-		return &Set{}, fmt.Errorf(
-			"error preparing request for specified URL %q: %w",
-			apiURL,
-			err,
-		)
+		return nil, &PrepError{
+			Task:    PrepTaskPrepareRequest,
+			Source:  apiURL,
+			Message: "error preparing request for URL",
+			Cause:   err,
+		}
 	}
 
 	// Explicitly note that we want JSON content.
@@ -224,38 +229,33 @@ func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFie
 		request.Header.Set("User-Agent", userAgent)
 	}
 
-	logger.Print("Submitting HTTP request")
-	response, err := c.Do(request)
-	if err != nil {
-		return &Set{}, fmt.Errorf(
-			"error submitting HTTP request for specified URL %q: %w",
-			apiURL,
-			err,
-		)
-	}
+	return request, nil
+}
 
-	logger.Print("Successfully submitted HTTP request")
+// processResponse is a helper function responsible for validating a response
+// from an endpoint after submitting a message.
+func processResponse(ctx context.Context, response *http.Response, limit int64) error {
 
-	// Make sure that we close the response body once we're done with it
-	defer func() {
-		if err := response.Body.Close(); err != nil {
-			logger.Printf("error closing response body: %v", err)
-		}
-	}()
+	feedSource := response.Request.URL.RequestURI()
 
 	if err := ctx.Err(); err != nil {
 		logger.Print("context has expired")
-		return &Set{}, fmt.Errorf("timeout reached: %w", err)
+		return &PrepError{
+			Task:    PrepTaskProcessResponse,
+			Message: "timeout reached",
+			Source:  feedSource,
+			Cause:   err,
+		}
 	}
 
 	switch {
 	case response.ContentLength == -1:
-		logger.Printf("Response indicates unknown length of content from %q", apiURL)
+		logger.Printf("Response indicates unknown length of content from %q", feedSource)
 	default:
 		logger.Printf(
 			"Response indicates %d bytes available to be read from %q",
 			response.ContentLength,
-			apiURL,
+			feedSource,
 		)
 	}
 
@@ -264,6 +264,8 @@ func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFie
 	// Successful / expected response.
 	case response.StatusCode == http.StatusOK:
 		logger.Printf("Status code %d received as expected", response.StatusCode)
+
+		return nil
 
 	// Success status range, but not in API docs for listing components.
 	case response.StatusCode > 200 && response.StatusCode <= 299:
@@ -275,7 +277,9 @@ func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFie
 			http.StatusText(http.StatusOK),
 		)
 
-	// Everything else is assumed to be an error.
+		return nil
+
+	// Everything else is assumed to be an error (outside of success range).
 	default:
 
 		// Get the response body, then convert to string for use with extended
@@ -283,21 +287,70 @@ func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFie
 		responseData, readErr := ioutil.ReadAll(io.LimitReader(response.Body, limit))
 		if readErr != nil {
 			logger.Print(readErr)
-			return &Set{}, readErr
+
+			return &PrepError{
+				Task:    PrepTaskProcessResponse,
+				Message: "error reading response data",
+				Source:  feedSource,
+				Cause:   readErr,
+			}
 		}
 		responseString := string(responseData)
 
 		statusCodeErr := fmt.Errorf(
-			"unexpected response from %q API: %v (%s)",
-			apiURL,
+			"response %v (%s) from API: %w",
 			response.Status,
 			responseString,
+			ErrResponseOutsideRange,
 		)
 
-		logger.Print(statusCodeErr)
+		return &PrepError{
+			Task:    PrepTaskProcessResponse,
+			Message: "unexpected response",
+			Source:  feedSource,
+			Cause:   statusCodeErr,
+		}
 
-		return &Set{}, statusCodeErr
+	}
 
+}
+
+// NewFromURL constructs a components Set by reading and decoding JSON data
+// from a specified URL using the specified number of bytes as the read limit.
+// If specified, unknown fields in the JSON file are ignored. An error is
+// returned if there are problems reading and decoding JSON data. If provided,
+// a custom user agent is supplied in place of the default Go user agent.
+func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFields bool, userAgent string) (*Set, error) {
+
+	request, err := prepareRequest(ctx, apiURL, userAgent)
+	if err != nil {
+		return &Set{}, err
+	}
+
+	logger.Print("Submitting HTTP request")
+	c := &http.Client{}
+	response, err := c.Do(request)
+	if err != nil {
+		return &Set{}, &PrepError{
+			Task:    PrepTaskSubmitRequest,
+			Message: "error submitting HTTP request",
+			Source:  apiURL,
+			Cause:   err,
+		}
+	}
+
+	logger.Print("Successfully submitted HTTP request")
+
+	// Make sure that we close the response body once we're done with it
+	defer func() {
+		if err := response.Body.Close(); err != nil {
+			logger.Printf("error closing response body: %v", err)
+		}
+	}()
+
+	// Evaluate the response
+	if err := processResponse(ctx, response, limit); err != nil {
+		return &Set{}, err
 	}
 
 	logger.Printf(
@@ -309,10 +362,12 @@ func NewFromURL(ctx context.Context, apiURL string, limit int64, allowUnknownFie
 	var set Set
 	err = decode(&set, response.Body, apiURL, limit, allowUnknownFields)
 	if err != nil {
-		return &Set{}, fmt.Errorf(
-			"failed to decode JSON data: %w",
-			err,
-		)
+		return &Set{}, &PrepError{
+			Task:    PrepTaskDecode,
+			Message: "failed to decode JSON data",
+			Source:  apiURL,
+			Cause:   err,
+		}
 	}
 
 	logger.Printf(

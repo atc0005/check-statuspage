@@ -140,30 +140,34 @@ func main() {
 
 		feedSource = cfg.Filename
 
-		log.Debug().Msg("Decoding JSON input")
+		log.Debug().Msg("Processing JSON file")
 
 		var err error
 		componentsSet, err = components.NewFromFile(cfg.Filename, cfg.ReadLimit, cfg.AllowUnknownJSONFields)
 		if err != nil {
-			log.Error().Err(err).Msg("Error decoding JSON feed")
+			log.Error().Err(err).Msg("Error occurred processing input file")
 
 			nagiosExitState.LastError = err
 			nagiosExitState.ServiceOutput = fmt.Sprintf(
-				"%s: Failed to decode JSON feed from %q",
+				"%s: Failed to process JSON feed from file",
 				nagios.StateCRITICALLabel,
-				cfg.Filename,
 			)
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 
+			var prepErr *components.PrepError
+			if errors.As(err, &prepErr) {
+				nagiosExitState.ServiceOutput += ": " + prepErr.Message
+			}
+
 			return
 		}
-		log.Debug().Msg("Successfully decoded JSON input")
+		log.Debug().Msg("Successfully processed JSON file")
 
 	case cfg.URL != "":
 
 		feedSource = cfg.URL
 
-		log.Debug().Msg("Decoding JSON input")
+		log.Debug().Msg("Processing JSON feed")
 
 		var err error
 		componentsSet, err = components.NewFromURL(
@@ -174,19 +178,23 @@ func main() {
 			cfg.UserAgent(),
 		)
 		if err != nil {
-			log.Error().Err(err).Msg("Error decoding JSON feed")
+			log.Error().Err(err).Msg("Error processing JSON feed")
 
 			nagiosExitState.LastError = err
 			nagiosExitState.ServiceOutput = fmt.Sprintf(
-				"%s: Failed to decode JSON feed from %q",
+				"%s: Failed to process JSON feed from URL",
 				nagios.StateCRITICALLabel,
-				cfg.URL,
 			)
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 
+			var prepErr *components.PrepError
+			if errors.As(err, &prepErr) {
+				nagiosExitState.ServiceOutput += ": " + prepErr.Message
+			}
+
 			return
 		}
-		log.Debug().Msg("Successfully decoded JSON input")
+		log.Debug().Msg("Successfully processed JSON feed")
 
 	}
 
