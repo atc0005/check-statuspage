@@ -20,6 +20,18 @@ import (
 // https://stackoverflow.com/questions/31048557/assigning-null-to-json-fields-instead-of-empty-strings
 // https://stackoverflow.com/questions/25087960/json-unmarshal-time-that-isnt-in-rfc-3339-format/
 
+// Add an "implements assertion" to fail the build if the json.Unmarshaler
+// implementation isn't correct.
+//
+// This resolves the unparam linter error:
+// (*NullString).UnmarshalJSON - result 0 (error) is always nil (unparam)
+//
+// https://github.com/mvdan/unparam/issues/52
+var _ json.Unmarshaler = (*NullString)(nil)
+
+// Perform similar "implements assertion" for the json.Marshaler interface.
+var _ json.Marshaler = (*NullString)(nil)
+
 // NullString represents a string value used in component fields that may
 // potentially be null in the input JSON feed.
 type NullString string
