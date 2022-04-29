@@ -26,6 +26,38 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.9] - 2022-04-29
+
+### Overview
+
+- Bugfixes
+- Dependency updates
+- built using Go 1.17.9
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.17.7` to `1.17.9`
+  - `sanity-io/litter`
+    - `v1.5.2` to `v1.5.5`
+  - `google/go-cmp`
+    - `v0.5.7` to `v0.5.8`
+  - `github/codeql-action`
+    - `v1.1.3` to `v2.1.9`
+  - `actions/checkout`
+    - `v2.4.0` to `v3`
+
+### Fixed
+
+- (GH-107) (*NullString).UnmarshalJSON - result 0 (error) is always nil
+  (unparam)
+- (GH-109) cmd/check_statuspage_components/main_test.go:108:28:
+  shouldIgnoreCmpResult - t is unused (unparam)
+
 ## [v0.1.8] - 2022-03-01
 
 ### Overview
@@ -213,7 +245,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.8...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.9...HEAD
+[v0.1.9]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.9
 [v0.1.8]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.8
 [v0.1.7]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.7
 [v0.1.6]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.6
