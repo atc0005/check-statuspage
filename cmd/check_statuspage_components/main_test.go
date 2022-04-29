@@ -80,7 +80,9 @@ type evalPluginStatusTestdataFile struct {
 
 // itemsFromList1NotInList2 is a helper function to quickly identify items
 // from one list that are not in a second list.
-func itemsFromList1NotInList2(list1 []string, list2 []string) []string {
+func itemsFromList1NotInList2(t *testing.T, list1 []string, list2 []string) []string {
+	t.Helper()
+
 	var diff []string
 
 	for _, item := range list1 {
@@ -92,7 +94,9 @@ func itemsFromList1NotInList2(list1 []string, list2 []string) []string {
 	return diff
 }
 
-func shouldIgnoreError(err error, errorExpected bool) bool {
+func shouldIgnoreError(t *testing.T, err error, errorExpected bool) bool {
+	t.Helper()
+
 	errorOccurred := err != nil
 
 	switch {
@@ -106,6 +110,8 @@ func shouldIgnoreError(err error, errorExpected bool) bool {
 }
 
 func shouldIgnoreCmpResult(t *testing.T, isEqual bool, mismatchExpected bool) bool {
+	t.Helper()
+
 	mismatch := !isEqual
 
 	// t.Log("DEBUG: isEqual:", isEqual)
@@ -222,7 +228,7 @@ func TestLoadButNotDecodeTestdataFiles(t *testing.T) {
 			}
 
 			_, err = components.NewFromFile(cfg.Filename, cfg.ReadLimit, cfg.AllowUnknownJSONFields)
-			switch shouldIgnoreError(err, test.errorExpected) {
+			switch shouldIgnoreError(t, err, test.errorExpected) {
 			case true:
 				t.Logf(
 					"OK | test: %q; got: %v, expected error: %t",
@@ -797,7 +803,7 @@ func TestLoadAndDecodeAndValidateTestdataFiles(t *testing.T) {
 			}
 
 			componentsSet, err := components.NewFromFile(cfg.Filename, cfg.ReadLimit, cfg.AllowUnknownJSONFields)
-			switch shouldIgnoreError(err, test.errorLoadingFileExpected) {
+			switch shouldIgnoreError(t, err, test.errorLoadingFileExpected) {
 			case true:
 				t.Logf(
 					"OK | test: %q; got: %v, expected error: %t",
@@ -815,7 +821,7 @@ func TestLoadAndDecodeAndValidateTestdataFiles(t *testing.T) {
 			}
 
 			err = componentsSet.Validate()
-			switch shouldIgnoreError(err, test.errorDecodingFileExpected) {
+			switch shouldIgnoreError(t, err, test.errorDecodingFileExpected) {
 			case true:
 				t.Logf(
 					"OK | test: %q; got: %v, expected error: %t",
@@ -937,7 +943,7 @@ func TestEvalComponentsFromTestdataFiles(t *testing.T) {
 				// Apply filter (success depdendent on specific test case)
 				csFilter := components.Filter(cfg.ComponentFilter())
 				err := componentsSet.Filter(csFilter)
-				switch shouldIgnoreError(err, test.filterErrorExpected) {
+				switch shouldIgnoreError(t, err, test.filterErrorExpected) {
 				case true:
 					// Don't mark a filter error as "OK", but rather note that
 					// we're ignoring it if requested by the test case.
@@ -1071,7 +1077,7 @@ func TestEvalComponentsFromTestdataFiles(t *testing.T) {
 
 				// Triggered when more items are matched by a filter (and not
 				// excluded) than the test case indicates is expected.
-				notExcludedAsExpected := itemsFromList1NotInList2(test.expectedExcludedComponentIDs, excludedIDs)
+				notExcludedAsExpected := itemsFromList1NotInList2(t, test.expectedExcludedComponentIDs, excludedIDs)
 				for _, componentID := range notExcludedAsExpected {
 
 					// Expected to succeed (no potential failure allowance)
