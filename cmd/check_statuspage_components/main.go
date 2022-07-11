@@ -79,7 +79,7 @@ func main() {
 			"%s: Error initializing application",
 			nagios.StateCRITICALLabel,
 		)
-		nagiosExitState.LastError = cfgErr
+		nagiosExitState.AddError(cfgErr)
 		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 
 		return
@@ -147,7 +147,7 @@ func main() {
 		if err != nil {
 			log.Error().Err(err).Msg("Error occurred processing input file")
 
-			nagiosExitState.LastError = err
+			nagiosExitState.AddError(err)
 			nagiosExitState.ServiceOutput = fmt.Sprintf(
 				"%s: Failed to process JSON feed from file",
 				nagios.StateCRITICALLabel,
@@ -180,7 +180,7 @@ func main() {
 		if err != nil {
 			log.Error().Err(err).Msg("Error processing JSON feed")
 
-			nagiosExitState.LastError = err
+			nagiosExitState.AddError(err)
 			nagiosExitState.ServiceOutput = fmt.Sprintf(
 				"%s: Failed to process JSON feed from URL",
 				nagios.StateCRITICALLabel,
@@ -202,7 +202,7 @@ func main() {
 
 		log.Error().Msg("Failed to validate JSON feed")
 
-		nagiosExitState.LastError = err
+		nagiosExitState.AddError(err)
 		nagiosExitState.ServiceOutput = fmt.Sprintf(
 			"%s: Error validating JSON feed from %q",
 			nagios.StateCRITICALLabel,
@@ -235,7 +235,7 @@ func main() {
 				Err(err).
 				Msg("Error applying search terms as filter to components set")
 
-			nagiosExitState.LastError = err
+			nagiosExitState.AddError(err)
 			nagiosExitState.ServiceOutput = fmt.Sprintf(
 				"%s: Error filtering components set using specified search terms",
 				nagios.StateUNKNOWNLabel,
@@ -352,17 +352,17 @@ func main() {
 		case componentsSet.HasCriticalState(false):
 			stateLabel = nagios.StateCRITICALLabel
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
-			nagiosExitState.LastError = components.ErrComponentWithProblemStatusNotExcluded
+			nagiosExitState.AddError(components.ErrComponentWithProblemStatusNotExcluded)
 
 		case componentsSet.HasWarningState(false):
 			stateLabel = nagios.StateWARNINGLabel
 			nagiosExitState.ExitStatusCode = nagios.StateWARNINGExitCode
-			nagiosExitState.LastError = components.ErrComponentWithProblemStatusNotExcluded
+			nagiosExitState.AddError(components.ErrComponentWithProblemStatusNotExcluded)
 
 		case componentsSet.HasUnknownState(false):
 			stateLabel = nagios.StateUNKNOWNLabel
 			nagiosExitState.ExitStatusCode = nagios.StateUNKNOWNExitCode
-			nagiosExitState.LastError = components.ErrComponentWithProblemStatusNotExcluded
+			nagiosExitState.AddError(components.ErrComponentWithProblemStatusNotExcluded)
 		}
 
 		nagiosExitState.ServiceOutput = reports.ComponentsOneLineCheckSummary(
@@ -392,7 +392,6 @@ func main() {
 
 		log.Debug().Msg("Evaluated components are in an operational state")
 
-		nagiosExitState.LastError = nil
 		nagiosExitState.ExitStatusCode = nagios.StateOKExitCode
 
 		nagiosExitState.ServiceOutput = reports.ComponentsOneLineCheckSummary(
