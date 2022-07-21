@@ -26,6 +26,34 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.11] - 2022-07-23
+
+### Overview
+
+- Bug fixes
+- Dependency updates
+- built using Go 1.17.12
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.17.10` to `1.17.12`
+  - `rs/zerolog`
+    - `v1.26.1` to `v1.27.0`
+  - `atc0005/go-nagios`
+    - `v0.8.2` to `v0.9.1`
+  - `github/codeql-action`
+    - `v2.1.10` to `v2.1.16`
+
+### Fixed
+
+- (GH-128) Fix various atc0005/go-nagios usage linting errors
+- (GH-132) Fix Markdownlint link linting errors
+
 ## [v0.1.10] - 2022-05-11
 
 ### Overview
@@ -263,7 +291,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.10...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.11...HEAD
+[v0.1.11]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.11
 [v0.1.10]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.10
 [v0.1.9]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.9
 [v0.1.8]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.8
