@@ -250,8 +250,8 @@ been tested.
      - look in `/tmp/check-statuspage/release_assets/lscs/`
    - if using `go build`
      - look in `/tmp/check-statuspage/`
-1. Review [configuration options](#configuration-options),
-   [`examples`](#examples) and [`contrib`](#contrib) sections usage details.
+1. Review [configuration options](#configuration-options) and
+   [examples](#examples) sections usage details.
 
 ### Using provided binaries
 
@@ -260,8 +260,8 @@ been tested.
 1. Download plugins from the [Latest
    release](https://github.com/atc0005/check-statuspage/releases/latest) that you
    are interested in
-1. Review [configuration options](#configuration-options),
-   [`examples`](#examples) and [`contrib`](#contrib) sections usage details.
+1. Review [configuration options](#configuration-options) and
+   [examples](#examples) sections usage details.
 
 #### Other operating systems
 
