@@ -26,6 +26,30 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.12] - 2022-08-24
+
+### Overview
+
+- Bug fixes
+- Dependency updates
+- built using Go 1.17.13
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.17.12` to `1.17.13`
+  - `github/codeql-action`
+    - `v2.1.16` to `v2.1.20`
+
+### Fixed
+
+- (GH-139) Apply Go 1.19 specific doc comments linting fixes
+- (GH-140) Swap io/ioutil package for io package
+
 ## [v0.1.11] - 2022-07-23
 
 ### Overview
@@ -291,7 +315,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.11...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.12...HEAD
+[v0.1.12]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.12
 [v0.1.11]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.11
 [v0.1.10]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.10
 [v0.1.9]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.9
