@@ -13,7 +13,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -284,7 +283,7 @@ func processResponse(ctx context.Context, response *http.Response, limit int64) 
 
 		// Get the response body, then convert to string for use with extended
 		// error messages
-		responseData, readErr := ioutil.ReadAll(io.LimitReader(response.Body, limit))
+		responseData, readErr := io.ReadAll(io.LimitReader(response.Body, limit))
 		if readErr != nil {
 			logger.Print(readErr)
 
