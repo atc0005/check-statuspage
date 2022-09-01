@@ -45,4 +45,5 @@ jobs:
         # potential linting issues in bundled documentation to fail linting CI
         # runs for *our* documentation
         run: |
+          echo "markdownlint version: $(markdownlint --version)"
           markdownlint '**/*.md' --ignore node_modules --ignore vendor
