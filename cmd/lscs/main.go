@@ -142,7 +142,7 @@ func main() {
 		}
 
 		// Generate table, providing our "use everything" filter.
-		fmt.Print(reports.ComponentsTable(componentsSet, cfg.OmitOKComponents, &columnFilter))
+		fmt.Print(reports.ComponentsTable(componentsSet, cfg.OmitOKComponents, cfg.OmitSummaryResults, &columnFilter))
 
 	case config.InspectorOutputFormatVerbose:
 		fmt.Print(reports.ComponentsVerbose(componentsSet, cfg.OmitOKComponents))

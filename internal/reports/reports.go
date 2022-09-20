@@ -612,7 +612,12 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool) st
 // details are emitted for applicable components. If not specified (e.g., a
 // nil value is given), a default set of details are emitted for each
 // applicable component.
-func ComponentsTable(componentsSet *components.Set, omitOKComponents bool, columnsList *ComponentsTableColumnFilter) string {
+func ComponentsTable(
+	componentsSet *components.Set,
+	omitOKComponents bool,
+	omitResultsSummary bool,
+	columnsList *ComponentsTableColumnFilter,
+) string {
 
 	funcTimeStart := time.Now()
 
@@ -855,7 +860,9 @@ func ComponentsTable(componentsSet *components.Set, omitOKComponents bool, colum
 
 	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
-	componentsStatusSummary(&componentsTable.report, componentsSet, omitOKComponents)
+	if !omitResultsSummary {
+		componentsStatusSummary(&componentsTable.report, componentsSet, omitOKComponents)
+	}
 
 	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
@@ -1090,6 +1097,7 @@ func ComponentsReport(
 	filter components.Filter,
 	componentsSet *components.Set,
 	omitOKComponents bool,
+	omitSummaryResults bool,
 ) string {
 	funcTimeStart := time.Now()
 
@@ -1133,7 +1141,7 @@ func ComponentsReport(
 	switch {
 
 	case omitOKComponents:
-		fmt.Fprint(&report, ComponentsTable(componentsSet, true, &columnFilter))
+		fmt.Fprint(&report, ComponentsTable(componentsSet, true, omitSummaryResults, &columnFilter))
 
 	case componentsSet.NumComponents() > fullTableOutputComponentsLimit:
 
@@ -1146,10 +1154,10 @@ func ComponentsReport(
 			nagios.CheckOutputEOL,
 		)
 
-		fmt.Fprint(&report, ComponentsTable(componentsSet, true, &columnFilter))
+		fmt.Fprint(&report, ComponentsTable(componentsSet, true, omitSummaryResults, &columnFilter))
 
 	default:
-		fmt.Fprint(&report, ComponentsTable(componentsSet, false, &columnFilter))
+		fmt.Fprint(&report, ComponentsTable(componentsSet, false, omitSummaryResults, &columnFilter))
 	}
 
 	return report.String()

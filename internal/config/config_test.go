@@ -39,6 +39,8 @@ var expectedSharedFlags = []string{
 	HelpFlagShort,
 	OmitOKComponentsFlagShort,
 	OmitOKComponentsFlagLong,
+	OmitSummaryResultsFlagShort,
+	OmitSummaryResultsFlagLong,
 	URLFlagShort,
 	URLFlagLong,
 	FilenameFlagShort,

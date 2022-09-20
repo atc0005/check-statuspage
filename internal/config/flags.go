@@ -77,6 +77,9 @@ func (c *Config) handleFlagsConfig(appType AppType) error {
 	c.flagSet.BoolVar(&c.ShowVersion, VersionFlagShort, defaultDisplayVersionAndExit, versionFlagHelp+" (shorthand)")
 	c.flagSet.BoolVar(&c.ShowVersion, VersionFlagLong, defaultDisplayVersionAndExit, versionFlagHelp)
 
+	c.flagSet.BoolVar(&c.OmitSummaryResults, OmitSummaryResultsFlagShort, defaultOmitSummaryResults, omitSummaryResultsFlagHelp+" (shorthand)")
+	c.flagSet.BoolVar(&c.OmitSummaryResults, OmitSummaryResultsFlagLong, defaultOmitSummaryResults, omitSummaryResultsFlagHelp)
+
 	// Allow our function to override the default Help output.
 	//
 	// Override default of stderr as destination for help output. This allows
