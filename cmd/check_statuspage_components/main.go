@@ -376,6 +376,7 @@ func main() {
 			csFilter,
 			componentsSet,
 			cfg.OmitOKComponents,
+			cfg.OmitSummaryResults,
 		)
 
 		if err := nagiosExitState.AddPerfData(false, pd...); err != nil {
@@ -405,6 +406,7 @@ func main() {
 			csFilter,
 			componentsSet,
 			cfg.OmitOKComponents,
+			cfg.OmitSummaryResults,
 		)
 
 		if err := nagiosExitState.AddPerfData(false, pd...); err != nil {

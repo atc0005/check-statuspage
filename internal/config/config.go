@@ -277,6 +277,10 @@ type Config struct {
 	// apply to all output formats.
 	OmitOKComponents bool
 
+	// OmitSummaryResults indicates whether the user opted to omit Summary
+	// results at the end of plugin execution.
+	OmitSummaryResults bool
+
 	// EvalAllComponents indicates whether the user opted to evaluate all
 	// components instead of specific components.
 	EvalAllComponents bool

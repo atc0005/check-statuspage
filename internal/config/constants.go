@@ -27,6 +27,8 @@ const (
 	InspectorOutputFormatFlagShort  string = "fmt"
 	OmitOKComponentsFlagLong        string = "omit-ok"
 	OmitOKComponentsFlagShort       string = "ook"
+	OmitSummaryResultsFlagLong      string = "omit-summary"
+	OmitSummaryResultsFlagShort     string = "os"
 	URLFlagLong                     string = "url"
 	URLFlagShort                    string = "u"
 	FilenameFlagLong                string = "filename"
@@ -52,6 +54,7 @@ const (
 	readLimitFlagHelp              string = "Limit in bytes used to help prevent abuse when reading input that could be larger than expected. The default value is nearly 4x the largest observed (formatted) feed size."
 	allowUnknownJSONFieldsFlagHelp string = "Whether unknown JSON fields encountered while decoding JSON data should be ignored."
 	omitOKComponentsFlagHelp       string = "Whether listed components in results output should be limited to just those in a non-operational state. Does not apply to all output formats."
+	omitSummaryResultsFlagHelp     string = "Whether summary in results output should be omitted."
 )
 
 // Inspector type application flag help text
@@ -76,6 +79,7 @@ const (
 	defaultHelp                   bool   = false
 	defaultBranding               bool   = false
 	defaultOmitOKComponents       bool   = false
+	defaultOmitSummaryResults     bool   = false
 	defaultEvalAllComponents      bool   = false
 	defaultDisplayVersionAndExit  bool   = false
 	defaultAllowUnknownJSONFields bool   = false
