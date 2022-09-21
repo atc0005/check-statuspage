@@ -26,6 +26,39 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.2.0] - 2022-09-21
+
+### Overview
+
+- Bug fixes
+- Dependency updates
+- GitHub Actions Workflows updates
+- built using Go 1.19.1
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Added
+
+- (GH-121) Add flag to omit Summary results
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.17.13` to `1.19.1`
+  - `atc0005/go-nagios`
+    - `v0.9.1` to `v0.10.0`
+  - `rs/zerolog`
+    - `v1.27.0` to `v1.28.0`
+  - `google/go-cmp`
+    - `v0.5.8` to `v0.5.9`
+  - `github/codeql-action`
+    - `v2.1.20` to `v2.1.24`
+- (GH-145) Update project to Go 1.19
+- (GH-146) Update Makefile and GitHub Actions Workflows
+- (GH-147) Minor CI tool version output tweaks
+
 ## [v0.1.12] - 2022-08-24
 
 ### Overview
@@ -315,7 +348,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.1.12...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.2.0...HEAD
+[v0.2.0]: https://github.com/atc0005/check-statuspage/releases/tag/v0.2.0
 [v0.1.12]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.12
 [v0.1.11]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.11
 [v0.1.10]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.10
