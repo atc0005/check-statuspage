@@ -49,7 +49,7 @@ type AppType struct {
 	// InspectorComponents represents an application used for one-off or
 	// isolated checks against Statuspage components. Unlike a Nagios plugin
 	// which is focused on specific attributes resulting in a severity-based
-	// outcome, an inspecter application is intended for examining targets for
+	// outcome, an inspector application is intended for examining targets for
 	// informational/troubleshooting purposes.
 	InspectorComponents bool
 }
@@ -296,7 +296,7 @@ func Usage(flagSet *flag.FlagSet, w io.Writer) func() {
 
 	switch {
 
-	// Unintialized flagset, provide stub usage information.
+	// Uninitialized flagset, provide stub usage information.
 	case flagSet == nil:
 		return func() {
 			fmt.Fprintln(w, "Failed to initialize configuration; nil FlagSet")
