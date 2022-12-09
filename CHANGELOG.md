@@ -26,6 +26,38 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.2.1] - 2022-12-09
+
+### Overview
+
+- Bug fixes
+- Dependency updates
+- GitHub Actions Workflows updates
+- built using Go 1.19.4
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.19.1` to `1.19.4`
+  - `atc0005/go-nagios`
+    - `v0.10.0` to `v0.10.2`
+  - `github.com/mattn/go-colorable`
+    - `v0.1.12` to `v0.1.13`
+  - `github.com/mattn/go-isatty`
+    - `v0.0.14` to `v0.0.16`
+  - `golang.org/x/sys`
+    - `v0.0.0-20210927094055-39ccf1dd6fa6` to `v0.3.0`
+- (GH-160) Refactor GitHub Actions workflows to import logic
+
+### Fixed
+
+- (GH-170) Fix typos in config package doc comments
+- (GH-172) Fix Makefile Go module base path detection
+
 ## [v0.2.0] - 2022-09-21
 
 ### Overview
@@ -348,7 +380,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.2.1...HEAD
+[v0.2.1]: https://github.com/atc0005/check-statuspage/releases/tag/v0.2.1
 [v0.2.0]: https://github.com/atc0005/check-statuspage/releases/tag/v0.2.0
 [v0.1.12]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.12
 [v0.1.11]: https://github.com/atc0005/check-statuspage/releases/tag/v0.1.11
