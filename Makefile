@@ -333,10 +333,6 @@ links: windows-x86-links windows-x64-links linux-x86-links linux-x64-links
 
 .PHONY: release-build
 ## release-build: generates assets for public release
-# release-build: clean linux-x64 linux-x64-links
-
-# Build everything for now until the quantity/size of binaries becomes
-# prohibitive.
-release-build: all links
+release-build: clean all links
 
 	@echo "Completed all tasks for release build"
