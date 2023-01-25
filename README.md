@@ -20,6 +20,8 @@ Statuspage; NOT affiliated with or endorsed by Atlassian.
   - [Overview](#overview)
     - [Output](#output)
     - [Performance Data](#performance-data)
+      - [`check_statuspage_components` Plugin](#check_statuspage_components-plugin)
+        - [NOTES](#notes)
     - [`check_statuspage_components`](#check_statuspage_components)
     - [`lscs`](#lscs)
   - [Features](#features)
@@ -96,7 +98,7 @@ output. For those cases, you may wish to explicitly disable the output to
 Initial support has been added for emitting Performance Data / Metrics, but
 refinement suggestions are welcome.
 
-Consult the table below for the metrics implemented thus far.
+Consult the tables below for the metrics implemented thus far.
 
 Please add to an existing
 [Discussion](https://github.com/atc0005/check-statuspage/discussions) thread
@@ -104,9 +106,39 @@ Please add to an existing
 one](https://github.com/atc0005/check-statuspage/discussions/new) with any
 feedback that you may have. Thanks in advance!
 
-| Plugin                        | Emitted Performance Data / Metrics                                                                                                                                                                                                                                                                                                                                        |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `check_statuspage_components` | `time`, `all_component_groups`, `all_components`, `all_components_critical`, `all_components_ok`, `all_components_unknown`, `all_components_warning`, `all_problem_components`, `excluded_problem_components`, `remaining_components_critical`, `remaining_components_ok`, `remaining_components_unknown`, `remaining_components_warning`, `remaining_problem_components` |
+#### `check_statuspage_components` Plugin
+
+| Emitted Performance Data / Metric | Meaning                                                                           |
+| --------------------------------- | --------------------------------------------------------------------------------- |
+| `time`                            | Runtime for plugin                                                                |
+| `all_component_groups`            | Number of non-excluded component Groups                                           |
+| `all_components`                  | Number of non-excluded components `*`                                             |
+| `all_components_critical`         | Number of non-excluded components in a `CRITICAL` state                           |
+| `all_components_ok`               | Number of non-excluded components in an `OK` state                                |
+| `all_components_unknown`          | Number of non-excluded components in an `UNKNOWN` state                           |
+| `all_components_warning`          | Number of non-excluded components in a `WARNING` state                            |
+| `all_problem_components`          | Number of non-excluded components in a "problem" (non-`OK`) state                 |
+| `excluded_problem_components`     | Number of excluded components (all states)                                        |
+| `remaining_components_critical`   | Number of components in a `CRITICAL` state remaining *after* exclusions           |
+| `remaining_components_ok`         | Number of components in an `OK` state remaining *after* exclusions                |
+| `remaining_components_unknown`    | Number of components in an `UNKNOWN` state remaining *after* exclusions           |
+| `remaining_components_warning`    | Number of components in a `WARNING` state remaining *after* exclusions            |
+| `remaining_problem_components`    | Number of components in a "problem" (non-`OK`) state remaining *after* exclusions |
+
+##### NOTES
+
+- the `all_components` metric (`*`)
+  - includes top-level components (not part of a component Group)
+  - includes subcomponents (part of a component Group)
+  - *includes* component Groups
+- the `*_components_STATE` metrics (where `STATE` is `critical`, `ok`,
+  `unknown`, `warning`)
+  - includes top-level components (not part of a component Group)
+  - includes subcomponents (part of a component Group)
+  - *excludes* component Groups
+- subcomponents are not currently reported as independent values
+- top-level / standalone components (those outside of a component Group) are
+  not currently reported as independent values
 
 ### `check_statuspage_components`
 

@@ -775,7 +775,8 @@ func (cs *Set) NotExcludedComponents() []*Component {
 }
 
 // AllIDsInListExcluded asserts that all component IDs in a given list have
-// been excluded from the components set.
+// been excluded from the components set. This method does not distinguish
+// between top-level, sub or group component values.
 func (cs *Set) AllIDsInListExcluded(componentIDs []string) bool {
 
 	// If we're not given a list of component IDs to evaluate, we have to
@@ -823,6 +824,9 @@ func (cs *Set) AllIDsInListExcluded(componentIDs []string) bool {
 // AreOnlyIDsInListExcluded asserts that all component IDs in a given list
 // have been excluded from the components set and vice versa, that all
 // excluded components are in the given list.
+//
+// This method does not distinguish between top-level, sub or group component
+// values.
 func (cs *Set) AreOnlyIDsInListExcluded(componentIDs []string) bool {
 
 	// If we're not given a list of component IDs to evaluate, we have to
@@ -868,9 +872,11 @@ func (cs *Set) AreOnlyIDsInListExcluded(componentIDs []string) bool {
 }
 
 // HasCriticalState indicates whether components in the collection have a
-// specific non-operational status which maps to an CRITICAL state. A boolean
-// value is accepted which indicates whether component values marked for
-// exclusion (during filtering) should also be considered. The caller is
+// specific non-operational status which maps to an CRITICAL state. component
+// Groups are not included since groups mirror the status of subcomponents.
+//
+// A boolean value is accepted which indicates whether component values marked
+// for exclusion (during filtering) should also be considered. The caller is
 // responsible for filtering the collection prior to calling this method.
 func (cs *Set) HasCriticalState(evalExcluded bool) bool {
 
@@ -895,6 +901,9 @@ func (cs *Set) HasCriticalState(evalExcluded bool) bool {
 	for i := range cs.Components {
 
 		switch {
+		case cs.Components[i].Group:
+			continue
+
 		case cs.Components[i].Exclude && !evalExcluded:
 			continue
 
@@ -910,10 +919,13 @@ func (cs *Set) HasCriticalState(evalExcluded bool) bool {
 }
 
 // NumCriticalState indicates how many components in the collection have a
-// specific non-operational status which maps to a CRITICAL state. A boolean
-// value is accepted which indicates whether all component values are
-// evaluated or only those not marked for exclusion. The caller is responsible
-// for filtering the collection prior to calling this method.
+// specific non-operational status which maps to a CRITICAL state. component
+// Groups are not included in the count since groups mirror the status of
+// subcomponents.
+//
+// A boolean value is accepted which indicates whether all component values
+// are evaluated or only those not marked for exclusion. The caller is
+// responsible for filtering the collection prior to calling this method.
 func (cs *Set) NumCriticalState(evalExcluded bool) int {
 
 	funcTimeStart := time.Now()
@@ -937,6 +949,9 @@ func (cs *Set) NumCriticalState(evalExcluded bool) int {
 	for i := range cs.Components {
 
 		switch {
+		case cs.Components[i].Group:
+			continue
+
 		case cs.Components[i].Exclude && !evalExcluded:
 			continue
 
@@ -953,9 +968,11 @@ func (cs *Set) NumCriticalState(evalExcluded bool) int {
 }
 
 // HasWarningState indicates whether components in the collection have a
-// specific non-operational status which maps to an WARNING state. A boolean
-// value is accepted which indicates whether component values marked for
-// exclusion (during filtering) should also be considered. The caller is
+// specific non-operational status which maps to an WARNING state. component
+// Groups are not included since groups mirror the status of subcomponents.
+//
+// A boolean value is accepted which indicates whether component values marked
+// for exclusion (during filtering) should also be considered. The caller is
 // responsible for filtering the collection prior to calling this method.
 func (cs *Set) HasWarningState(evalExcluded bool) bool {
 
@@ -980,6 +997,9 @@ func (cs *Set) HasWarningState(evalExcluded bool) bool {
 	for i := range cs.Components {
 
 		switch {
+		case cs.Components[i].Group:
+			continue
+
 		case cs.Components[i].Exclude && !evalExcluded:
 			continue
 
@@ -995,10 +1015,13 @@ func (cs *Set) HasWarningState(evalExcluded bool) bool {
 }
 
 // NumWarningState indicates how many components in the collection have a
-// specific non-operational status which maps to a WARNING state. A boolean
-// value is accepted which indicates whether all component values are
-// evaluated or only those not marked for exclusion. The caller is responsible
-// for filtering the collection prior to calling this method.
+// specific non-operational status which maps to a WARNING state. component
+// Groups are not included in the count since groups mirror the status of
+// subcomponents.
+//
+// A boolean value is accepted which indicates whether all component values
+// are evaluated or only those not marked for exclusion. The caller is
+// responsible for filtering the collection prior to calling this method.
 func (cs *Set) NumWarningState(evalExcluded bool) int {
 
 	funcTimeStart := time.Now()
@@ -1022,6 +1045,9 @@ func (cs *Set) NumWarningState(evalExcluded bool) int {
 	for i := range cs.Components {
 
 		switch {
+		case cs.Components[i].Group:
+			continue
+
 		case cs.Components[i].Exclude && !evalExcluded:
 			continue
 
@@ -1038,9 +1064,11 @@ func (cs *Set) NumWarningState(evalExcluded bool) int {
 }
 
 // HasUnknownState indicates whether components in the collection have a
-// specific non-operational status which maps to an UNKNOWN state. A boolean
-// value is accepted which indicates whether component values marked for
-// exclusion (during filtering) should also be considered. The caller is
+// specific non-operational status which maps to an UNKNOWN state. component
+// Groups are not included since groups mirror the status of subcomponents.
+//
+// A boolean value is accepted which indicates whether component values marked
+// for exclusion (during filtering) should also be considered. The caller is
 // responsible for filtering the collection prior to calling this method.
 func (cs *Set) HasUnknownState(evalExcluded bool) bool {
 
@@ -1065,6 +1093,9 @@ func (cs *Set) HasUnknownState(evalExcluded bool) bool {
 	for i := range cs.Components {
 
 		switch {
+		case cs.Components[i].Group:
+			continue
+
 		case cs.Components[i].Exclude && !evalExcluded:
 			continue
 
@@ -1080,10 +1111,13 @@ func (cs *Set) HasUnknownState(evalExcluded bool) bool {
 }
 
 // NumUnknownState indicates how many components in the collection have a
-// specific non-operational status which maps to an UNKNOWN state. A boolean
-// value is accepted which indicates whether all component values are
-// evaluated or only those not marked for exclusion. The caller is responsible
-// for filtering the collection prior to calling this method.
+// specific non-operational status which maps to an UNKNOWN state.  component
+// Groups are not included in the count since groups mirror the status of
+// subcomponents.
+//
+// A boolean value is accepted which indicates whether all component values
+// are evaluated or only those not marked for exclusion. The caller is
+// responsible for filtering the collection prior to calling this method.
 func (cs *Set) NumUnknownState(evalExcluded bool) int {
 
 	funcTimeStart := time.Now()
@@ -1107,6 +1141,9 @@ func (cs *Set) NumUnknownState(evalExcluded bool) int {
 	for i := range cs.Components {
 
 		switch {
+		case cs.Components[i].Group:
+			continue
+
 		case cs.Components[i].Exclude && !evalExcluded:
 			continue
 
@@ -1123,12 +1160,16 @@ func (cs *Set) NumUnknownState(evalExcluded bool) int {
 }
 
 // IsOKState indicates whether all components in the collection have an
-// operational status which maps to an OK state. A boolean
-// value is accepted which indicates whether component values marked for
-// exclusion (during filtering) should also be considered. The caller is
+// operational status which maps to an OK state. component Groups are not
+// included since groups mirror the status of subcomponents.
+//
+// A boolean value is accepted which indicates whether component values marked
+// for exclusion (during filtering) should also be considered. The caller is
 // responsible for filtering the collection prior to calling this method.
 func (cs *Set) IsOKState(evalExcluded bool) bool {
 
+	// NOTE: We do not ignore component groups directly here as each of the
+	// called methods handle this explicitly.
 	switch {
 	case cs.HasCriticalState(evalExcluded):
 		return false
@@ -1143,10 +1184,12 @@ func (cs *Set) IsOKState(evalExcluded bool) bool {
 }
 
 // NumOKState indicates how many components in the collection have an
-// operational status which maps to an OK state. A boolean value is accepted
-// which indicates whether component values marked for exclusion (during
-// filtering) should also be considered. The caller is responsible for
-// filtering the collection prior to calling this method.
+// operational status which maps to an OK state.  component Groups are not
+// included in the count since groups mirror the status of subcomponents.
+//
+// A boolean value is accepted which indicates whether component values marked
+// for exclusion (during filtering) should also be considered. The caller is
+// responsible for filtering the collection prior to calling this method.
 func (cs *Set) NumOKState(evalExcluded bool) int {
 
 	funcTimeStart := time.Now()
@@ -1170,6 +1213,9 @@ func (cs *Set) NumOKState(evalExcluded bool) int {
 	for i := range cs.Components {
 
 		switch {
+		case cs.Components[i].Group:
+			continue
+
 		case cs.Components[i].Exclude && !evalExcluded:
 			continue
 
@@ -1232,10 +1278,16 @@ func (cs *Set) ServiceState(evalExcluded bool) nagios.ServiceState {
 
 // NumExcluded returns the number of components from the set that have been
 // excluded from evaluation. This includes both operational ("OK") components
-// as well as non-operational components.
+// as well as non-operational components. component Groups are not included in
+// the count (though excluded components within a component group *are*
+// counted).
 func (cs *Set) NumExcluded() int {
 	var num int
 	for i := range cs.Components {
+		if cs.Components[i].Group {
+			continue
+		}
+
 		if cs.Components[i].Exclude {
 			num++
 		}
@@ -1331,13 +1383,39 @@ func (cs *Set) Filter(filter Filter) error {
 	return nil
 }
 
-// NumComponents returns the count of all components in the set.
+// NumComponents returns the count of ALL components in the set (including
+// those marked for exclusion). component Groups are also included in the
+// count.
+//
+// Subtract component groups from the returned value in order to obtain a
+// count of standalone components and subcomponents. Subtract component groups
+// and subcomponents from the returned value in order to obtain a count of
+// standalone components.
+//
+// As an alternative to manually calculating independent values, other methods
+// are available which provide them:
+//
+//   - standalone or "top-level" components
+//   - subcomponents
+//   - component Groups
 func (cs *Set) NumComponents() int {
+	// 	var n int
+	//
+	// 	for i := range cs.Components {
+	// 		if cs.Components[i].Group {
+	// 			continue
+	// 		}
+	// 		n++
+	// 	}
+	//
+	// 	return n
+
 	return len(cs.Components)
 }
 
 // TopLevel returns the standalone, top-level components which are not members
 // or subcomponents of a component group (aka, a component "container").
+// Components marked for exclusion are included.
 func (cs *Set) TopLevel() []*Component {
 
 	var topLevel []*Component
@@ -1354,7 +1432,7 @@ func (cs *Set) TopLevel() []*Component {
 
 // NumTopLevel returns the count of the standalone, top-level components in
 // the set which are not members or subcomponents of a component Group (aka, a
-// component "container").
+// component "container"). Components marked for exclusion are included.
 func (cs *Set) NumTopLevel() int {
 
 	var n int
@@ -1402,8 +1480,8 @@ func (cs *Set) NumGroups() int {
 }
 
 // Subcomponents returns any available subcomponents in the set as a
-// collection of component values. The returned collection of component values
-// may be empty.
+// collection of component values. Components marked for exclusion are
+// included. The returned collection of component values may be empty.
 func (cs *Set) Subcomponents() []*Component {
 
 	var subcomponents []*Component
@@ -1419,6 +1497,7 @@ func (cs *Set) Subcomponents() []*Component {
 }
 
 // NumSubcomponents returns the count of available Subcomponents in the set.
+// Components marked for exclusion are included.
 func (cs *Set) NumSubcomponents() int {
 
 	var n int
@@ -1445,9 +1524,11 @@ func (cs *Set) NumProblemComponents(evalExcluded bool) int {
 	var n int
 
 	for i := range cs.Components {
+		if cs.Components[i].Group {
+			continue
+		}
 
-		if !cs.Components[i].Group &&
-			!cs.Components[i].IsOKState() &&
+		if !cs.Components[i].IsOKState() &&
 			(!cs.Components[i].Exclude || (cs.Components[i].Exclude && evalExcluded)) {
 			n++
 		}
