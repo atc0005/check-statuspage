@@ -26,6 +26,35 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.0] - 2023-03-07
+
+### Overview
+
+- Add support for generating packages
+- Generated binary changes
+  - filename patterns
+  - compression
+  - executable metadata
+- Build improvements
+- built using Go 1.19.6
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Added
+
+- (GH-198) Generate RPM/DEB packages using nFPM
+
+### Changed
+
+- (GH-197) Switch to semantic versioning (semver) compatible versioning
+  pattern
+- (GH-199) Add version metadata to Windows executables
+- (GH-200) Makefile: Compress binaries and use fixed filenames
+- (GH-201) Makefile: Refresh recipes to add "standard" set, new
+  package-related options
+- (GH-202) Build dev/stable releases using go-ci Docker image
+
 ## [v0.2.2] - 2023-03-07
 
 ### Overview
@@ -420,7 +449,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.3.0...HEAD
+[v0.3.0]: https://github.com/atc0005/check-statuspage/releases/tag/v0.3.0
 [v0.2.2]: https://github.com/atc0005/check-statuspage/releases/tag/v0.2.2
 [v0.2.1]: https://github.com/atc0005/check-statuspage/releases/tag/v0.2.1
 [v0.2.0]: https://github.com/atc0005/check-statuspage/releases/tag/v0.2.0
