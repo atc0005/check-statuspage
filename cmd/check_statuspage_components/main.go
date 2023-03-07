@@ -130,9 +130,9 @@ func main() {
 			plugin.AddError(err)
 			plugin.ServiceOutput = fmt.Sprintf(
 				"%s: Failed to process JSON feed from file",
-				nagios.StateCRITICALLabel,
+				nagios.StateUNKNOWNLabel,
 			)
-			plugin.ExitStatusCode = nagios.StateCRITICALExitCode
+			plugin.ExitStatusCode = nagios.StateUNKNOWNExitCode
 
 			var prepErr *components.PrepError
 			if errors.As(err, &prepErr) {
@@ -163,9 +163,9 @@ func main() {
 			plugin.AddError(err)
 			plugin.ServiceOutput = fmt.Sprintf(
 				"%s: Failed to process JSON feed from URL",
-				nagios.StateCRITICALLabel,
+				nagios.StateUNKNOWNLabel,
 			)
-			plugin.ExitStatusCode = nagios.StateCRITICALExitCode
+			plugin.ExitStatusCode = nagios.StateUNKNOWNExitCode
 
 			var prepErr *components.PrepError
 			if errors.As(err, &prepErr) {
@@ -185,10 +185,10 @@ func main() {
 		plugin.AddError(err)
 		plugin.ServiceOutput = fmt.Sprintf(
 			"%s: Error validating JSON feed from %q",
-			nagios.StateCRITICALLabel,
+			nagios.StateUNKNOWNLabel,
 			feedSource,
 		)
-		plugin.ExitStatusCode = nagios.StateCRITICALExitCode
+		plugin.ExitStatusCode = nagios.StateUNKNOWNExitCode
 
 		return
 
