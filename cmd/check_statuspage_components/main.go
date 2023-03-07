@@ -313,6 +313,23 @@ func main() {
 		Int("remaining_problem_components", numRemainingProblemComponents).
 		Logger()
 
+	if err := plugin.AddPerfData(false, pd...); err != nil {
+		log.Error().
+			Err(err).
+			Msg("failed to add performance data")
+
+		// Surface the error in plugin output.
+		plugin.AddError(err)
+
+		plugin.ExitStatusCode = nagios.StateUNKNOWNExitCode
+		plugin.ServiceOutput = fmt.Sprintf(
+			"%s: Failed to process performance data metrics",
+			nagios.StateUNKNOWNLabel,
+		)
+
+		return
+	}
+
 	switch {
 	case !componentsSet.IsOKState(false):
 
@@ -353,12 +370,6 @@ func main() {
 			cfg.OmitSummaryResults,
 		)
 
-		if err := plugin.AddPerfData(false, pd...); err != nil {
-			log.Error().
-				Err(err).
-				Msg("failed to add performance data")
-		}
-
 		return
 
 	default:
@@ -382,12 +393,6 @@ func main() {
 			cfg.OmitOKComponents,
 			cfg.OmitSummaryResults,
 		)
-
-		if err := plugin.AddPerfData(false, pd...); err != nil {
-			log.Error().
-				Err(err).
-				Msg("failed to add performance data")
-		}
 
 		return
 
