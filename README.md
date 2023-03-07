@@ -71,7 +71,7 @@ powered by Atlassian Statuspage.
 
 | Plugin or Tool Name           | Description                                                  |
 | ----------------------------- | ------------------------------------------------------------ |
-| `lscs`                        | a CLI app to list `components` in multiple output formats.   |
+| `lscs`                        | CLI app to list `components` in multiple output formats.     |
 | `check_statuspage_components` | Nagios plugin used to monitor one, many or all `components`. |
 
 ### Output
@@ -285,6 +285,11 @@ been tested.
 1. Review [configuration options](#configuration-options) and
    [examples](#examples) sections usage details.
 
+**NOTE**: Depending on which `Makefile` recipe you use the generated binary
+may be compressed and have an `xz` extension. If so, you should decompress the
+binary first before deploying it (e.g., `xz -d
+check_statuspage_components-linux-amd64.xz`).
+
 ### Using provided binaries
 
 #### Linux
@@ -292,8 +297,15 @@ been tested.
 1. Download plugins from the [Latest
    release](https://github.com/atc0005/check-statuspage/releases/latest) that you
    are interested in
+1. Decompress binaries
+   - e.g., `xz -d check_statuspage_components-linux-amd64.xz`
 1. Review [configuration options](#configuration-options) and
    [examples](#examples) sections usage details.
+
+**NOTE**:
+
+DEB and RPM packages are provided as an alternative to manually deploying
+binaries.
 
 #### Other operating systems
 

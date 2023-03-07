@@ -20,3 +20,6 @@ scratch/
 /check_statuspage_components
 /check_statuspage_summary
 /lscs
+
+# Ignore go generate produced Windows executable resource files
+*.syso
