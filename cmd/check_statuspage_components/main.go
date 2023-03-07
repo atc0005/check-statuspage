@@ -24,6 +24,8 @@ import (
 	"github.com/rs/zerolog"
 )
 
+//go:generate go-winres make --product-version=git-tag --file-version=git-tag
+
 func main() {
 
 	plugin := nagios.NewPlugin()
