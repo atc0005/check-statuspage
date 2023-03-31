@@ -26,6 +26,35 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.4.0] - 2023-03-31
+
+### Overview
+
+- Build improvements
+- Dependency updates
+- built using Go 1.19.7
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Added
+
+- (GH-221) Add rootless container builds via Docker/Podman
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.19.6` to `1.19.7`
+  - `atc0005/go-ci`
+    - `go-ci-oldstable-build-v0.9.0` to `go-ci-oldstable-build-v0.10.3`
+  - `github.com/mattn/go-isatty`
+    - `v0.0.17` to `v0.0.18`
+
+### Fixed
+
+- (GH-215) Update vuln analysis GHAW to use on.push hook
+
 ## [v0.3.0] - 2023-03-07
 
 ### Overview
@@ -449,7 +478,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.4.0...HEAD
+[v0.4.0]: https://github.com/atc0005/check-statuspage/releases/tag/v0.4.0
 [v0.3.0]: https://github.com/atc0005/check-statuspage/releases/tag/v0.3.0
 [v0.2.2]: https://github.com/atc0005/check-statuspage/releases/tag/v0.2.2
 [v0.2.1]: https://github.com/atc0005/check-statuspage/releases/tag/v0.2.1
