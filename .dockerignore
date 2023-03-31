@@ -1,0 +1,25 @@
+# Copyright 2023 Adam Chalkley
+#
+# https://github.com/atc0005/check-statuspage
+#
+# Licensed under the MIT License. See LICENSE file in the project root for
+# full license information.
+
+
+# Ignore Visual Studio Code workspace-level settings
+/.vscode
+
+# Ignore local "scratch" directory of temporary files
+scratch/
+
+# Ignore local builds
+/release_assets
+
+# Ignore one-off CLI app builds
+/check_components
+/check_statuspage_components
+/check_statuspage_summary
+/lscs
+
+# Ignore go generate produced Windows executable resource files
+*.syso
