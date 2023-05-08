@@ -1093,7 +1093,7 @@ func ComponentsOneLineCheckSummary(
 // commonly displayed on the detailed service check results display in the web
 // UI or in the body of many notifications.
 func ComponentsReport(
-	stateLabel string,
+	_ string,
 	filter components.Filter,
 	componentsSet *components.Set,
 	omitOKComponents bool,
