@@ -21,7 +21,6 @@ import (
 
 	"github.com/atc0005/check-statuspage/internal/config"
 	"github.com/atc0005/check-statuspage/internal/reports"
-	"github.com/atc0005/check-statuspage/internal/statuspage"
 	"github.com/atc0005/check-statuspage/internal/statuspage/components"
 
 	zlog "github.com/rs/zerolog/log"
@@ -52,15 +51,9 @@ func main() {
 		return
 	}
 
-	// Enable library-level logging if debug logging level is enabled
-	// app-wide. Otherwise, explicitly disable library logging output.
-	switch {
-	case cfg.LoggingLevel == config.LogLevelDebug:
-		statuspage.EnableLogging()
-
-	default:
-		statuspage.DisableLogging()
-	}
+	// Enable library-level logging if debug or greater logging level is
+	// enabled app-wide.
+	handleLibraryLogging()
 
 	// Set context deadline equal to user-specified timeout value for
 	// runtime/execution.
