@@ -161,11 +161,11 @@ func (ctr *componentsTable) headerRow() string {
 
 }
 
-// addHeaderSeperator generates a separator row between the header and data
+// addHeaderSeparator generates a separator row between the header and data
 // rows. Each "column" in the generated separator row template is of the same
 // length as the header row column above it. Any columns not enabled for
 // display are also omitted from the separator row.
-func (ctr *componentsTable) addHeaderSeperator() {
+func (ctr *componentsTable) addHeaderSeparator() {
 
 	var headerSepRowTmpl strings.Builder
 
@@ -187,11 +187,11 @@ func (ctr *componentsTable) addHeaderSeperator() {
 
 }
 
-// addCollectionSeperator generates a separator row between collections of
+// addCollectionSeparator generates a separator row between collections of
 // components. The number of "columns" in the generated separator row is of
 // the same length as the header row (or any other in the table). Any columns
 // not enabled for display are also omitted from the separator row.
-func (ctr *componentsTable) addCollectionSeperator() {
+func (ctr *componentsTable) addCollectionSeparator() {
 	numFields := ctr.filter.FieldsEnabled()
 
 	fmt.Fprint(
@@ -695,7 +695,7 @@ func ComponentsTable(
 		componentsTable.addHeaderRow(headerRow)
 	}
 
-	componentsTable.addHeaderSeperator()
+	componentsTable.addHeaderSeparator()
 
 	// Used to indicate whether a component has been evaluated or not excluded
 	// from eligibility of determining the overall plugin state by its componentsSet.
@@ -764,7 +764,7 @@ func ComponentsTable(
 
 		if separatorRowNeeded {
 			componentsEmitted = true
-			componentsTable.addCollectionSeperator()
+			componentsTable.addCollectionSeparator()
 		}
 
 	}
@@ -811,7 +811,7 @@ func ComponentsTable(
 				}
 
 				if separatorRowNeeded {
-					componentsTable.addCollectionSeperator()
+					componentsTable.addCollectionSeparator()
 				}
 
 			}
