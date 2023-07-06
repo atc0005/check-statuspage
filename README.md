@@ -185,7 +185,7 @@ monitoring via the `check_statuspage_components` plugin.
 - Optional, user-specified timeout value for plugin execution
 
 - Optional, user-specified read limit
-  - helps protect against excessive/unexpected input size)
+  - helps protect against excessive/unexpected input size
 
 - Optional override to allow unknown JSON fields in input source
   - future proofing
