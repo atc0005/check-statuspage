@@ -162,12 +162,12 @@ monitoring via the `check_statuspage_components` plugin.
 
 - CLI app to list `components` from an Atlassian Statuspage powered site
   - multiple output formats
-  - `overview`
-  - `table`
-  - `verbose`
-  - `debug`
-  - `list` (mostly used to assist with crafting test cases)
-  - `json`
+    - `overview`
+    - `table`
+    - `verbose`
+    - `debug`
+    - `list` (mostly used to assist with crafting test cases)
+    - `json`
 
 - User-specified input sources
   - local file
