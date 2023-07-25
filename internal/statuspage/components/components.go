@@ -94,7 +94,7 @@ type Set struct {
 	FilterApplied bool `json:"-"`
 
 	// EvalAllComponents indicates whether the user has opted to skip
-	// filtering entirely an evaluate all components.
+	// filtering entirely and evaluate all components.
 	EvalAllComponents bool `json:"-"`
 }
 
