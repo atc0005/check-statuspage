@@ -268,6 +268,10 @@ type Config struct {
 	// version string and then immediately exit the application.
 	ShowVersion bool
 
+	// ShowVerbose is a flag indicating whether the user opted to display
+	// verbose details in the final plugin output.
+	ShowVerbose bool
+
 	// ShowHelp indicates whether the user opted to display usage information
 	// and exit the application.
 	ShowHelp bool

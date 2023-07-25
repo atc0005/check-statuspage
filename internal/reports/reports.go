@@ -277,7 +277,7 @@ func printVerboseComponent(component *components.Component, num int) string {
 //
 // This report is intended to display verbose details for a feed to help
 // troubleshoot final results for a statuspage feed.
-func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool) string {
+func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool, verbose bool) string {
 
 	funcTimeStart := time.Now()
 
@@ -296,11 +296,13 @@ func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool) str
 	// column details.
 	componentsEmitted := false
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+	if verbose {
+		fmt.Fprint(&report, nagios.CheckOutputEOL)
 
-	componentsReportHeader(&report, componentsSet)
+		componentsReportHeader(&report, componentsSet)
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+		fmt.Fprint(&report, nagios.CheckOutputEOL)
+	}
 
 	if omitOKComponents {
 		fmt.Fprint(
@@ -438,7 +440,7 @@ func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool) str
 //
 // This report is intended to provide a very rough equivalent to viewing the
 // statuspage for a service.
-func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool) string {
+func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool, verbose bool) string {
 
 	funcTimeStart := time.Now()
 
@@ -461,11 +463,13 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool) st
 	// column details.
 	componentsEmitted := false
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+	if verbose {
+		fmt.Fprint(&report, nagios.CheckOutputEOL)
 
-	componentsReportHeader(&report, componentsSet)
+		componentsReportHeader(&report, componentsSet)
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+		fmt.Fprint(&report, nagios.CheckOutputEOL)
+	}
 
 	if omitOKComponents {
 		fmt.Fprint(
@@ -617,6 +621,7 @@ func ComponentsTable(
 	omitOKComponents bool,
 	omitResultsSummary bool,
 	columnsList *ComponentsTableColumnFilter,
+	verbose bool,
 ) string {
 
 	funcTimeStart := time.Now()
@@ -652,13 +657,13 @@ func ComponentsTable(
 	// report.
 	var errsEncountered []error
 
-	// Add some lead-in spacing to better separate any (potential) earlier log
-	// messages from summary output.
-	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
+	if verbose {
+		fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
-	componentsReportHeader(&componentsTable.report, componentsSet)
+		componentsReportHeader(&componentsTable.report, componentsSet)
 
-	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
+		fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
+	}
 
 	if omitOKComponents {
 		fmt.Fprint(
@@ -873,7 +878,7 @@ func ComponentsTable(
 // ComponentsIDList generates a multi-column list of component IDs. This
 // multi-column list can be used to populate component ID fields in tests and
 // other batch processing tasks.
-func ComponentsIDList(componentsSet *components.Set) string {
+func ComponentsIDList(componentsSet *components.Set, verbose bool) string {
 
 	funcTimeStart := time.Now()
 
@@ -888,11 +893,13 @@ func ComponentsIDList(componentsSet *components.Set) string {
 
 	columnsPerRow := 4
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+	if verbose {
+		fmt.Fprint(&report, nagios.CheckOutputEOL)
 
-	componentsReportHeader(&report, componentsSet)
+		componentsReportHeader(&report, componentsSet)
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+		fmt.Fprint(&report, nagios.CheckOutputEOL)
+	}
 
 	notExcludedComponents := componentsSet.NotExcludedComponents()
 	notExcluded := make([]string, 0, len(notExcludedComponents))
@@ -1098,6 +1105,7 @@ func ComponentsReport(
 	componentsSet *components.Set,
 	omitOKComponents bool,
 	omitSummaryResults bool,
+	verbose bool,
 ) string {
 	funcTimeStart := time.Now()
 
@@ -1110,20 +1118,25 @@ func ComponentsReport(
 
 	var report strings.Builder
 
+	// TODO: Move this to the bottom or put behind a verbose flag?
 	switch {
 	case !componentsSet.EvalAllComponents:
-		fmt.Fprintf(
-			&report,
-			"Specified filter: %s%s",
-			filter,
-			nagios.CheckOutputEOL,
-		)
+		if verbose {
+			fmt.Fprintf(
+				&report,
+				"Specified filter: %s%s",
+				filter,
+				nagios.CheckOutputEOL,
+			)
+		}
 	default:
-		fmt.Fprintf(
-			&report,
-			"NOTE: Evaluating all components as requested.%s",
-			nagios.CheckOutputEOL,
-		)
+		if verbose {
+			fmt.Fprintf(
+				&report,
+				"NOTE: Evaluating all components as requested.%s",
+				nagios.CheckOutputEOL,
+			)
+		}
 	}
 
 	// Skip emitting ID values in report in order to generate less "noisy"
@@ -1141,7 +1154,7 @@ func ComponentsReport(
 	switch {
 
 	case omitOKComponents:
-		fmt.Fprint(&report, ComponentsTable(componentsSet, true, omitSummaryResults, &columnFilter))
+		fmt.Fprint(&report, ComponentsTable(componentsSet, true, omitSummaryResults, &columnFilter, verbose))
 
 	case componentsSet.NumComponents() > fullTableOutputComponentsLimit:
 
@@ -1154,10 +1167,10 @@ func ComponentsReport(
 			nagios.CheckOutputEOL,
 		)
 
-		fmt.Fprint(&report, ComponentsTable(componentsSet, true, omitSummaryResults, &columnFilter))
+		fmt.Fprint(&report, ComponentsTable(componentsSet, true, omitSummaryResults, &columnFilter, verbose))
 
 	default:
-		fmt.Fprint(&report, ComponentsTable(componentsSet, false, omitSummaryResults, &columnFilter))
+		fmt.Fprint(&report, ComponentsTable(componentsSet, false, omitSummaryResults, &columnFilter, verbose))
 	}
 
 	return report.String()
