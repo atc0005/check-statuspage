@@ -123,7 +123,7 @@ func main() {
 	switch cfg.InspectorOutputFormat {
 
 	case config.InspectorOutputFormatOverview:
-		fmt.Print(reports.ComponentsOverview(componentsSet, cfg.OmitOKComponents))
+		fmt.Print(reports.ComponentsOverview(componentsSet, cfg.OmitOKComponents, true))
 
 	case config.InspectorOutputFormatTable:
 		// Enable all columns in filter
@@ -137,10 +137,10 @@ func main() {
 		}
 
 		// Generate table, providing our "use everything" filter.
-		fmt.Print(reports.ComponentsTable(componentsSet, cfg.OmitOKComponents, cfg.OmitSummaryResults, &columnFilter))
+		fmt.Print(reports.ComponentsTable(componentsSet, cfg.OmitOKComponents, cfg.OmitSummaryResults, &columnFilter, true))
 
 	case config.InspectorOutputFormatVerbose:
-		fmt.Print(reports.ComponentsVerbose(componentsSet, cfg.OmitOKComponents))
+		fmt.Print(reports.ComponentsVerbose(componentsSet, cfg.OmitOKComponents, true))
 
 	case config.InspectorOutputFormatDebug:
 		// fmt.Printf("%# v", pretty.Formatter(componentsSet))
@@ -159,7 +159,7 @@ func main() {
 		fmt.Print(string(s))
 
 	case config.InspectorOutputFormatIDsList:
-		fmt.Print(reports.ComponentsIDList(componentsSet))
+		fmt.Print(reports.ComponentsIDList(componentsSet, true))
 
 	default:
 		fmt.Printf(

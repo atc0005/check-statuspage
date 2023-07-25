@@ -17,6 +17,7 @@ const (
 	VersionFlagLong                 string = "version"
 	VersionFlagShort                string = "v"
 	BrandingFlag                    string = "branding"
+	VerboseFlag                     string = "verbose"
 	ComponentsListFlagLong          string = "component"
 	ComponentsListFlagShort         string = "c"
 	ComponentGroupFlagLong          string = "group"
@@ -68,6 +69,7 @@ const (
 	componentsListFlagHelp    string = "One or more comma-separated component (name or ID) values. Can be used by itself or with the flag to specify a component group. If used with the component group flag, all specified components are required to be subcomponents of the group."
 	componentGroupFlagHelp    string = "A single name or ID value for a component group. Can be used by itself or with the flag to specify a list of components. If used with the components flag all specified components are required to be subcomponents of the group."
 	evalAllComponentsFlagHelp string = "Whether all components should be evaluated. Incompatible with flag to specify list of components, component group or component group set."
+	verboseFlagHelp           string = "Whether to display verbose details in the final plugin output."
 )
 
 // Default flag settings if not overridden by user input
@@ -78,6 +80,7 @@ const (
 	defaultComponentGroup         string = ""
 	defaultHelp                   bool   = false
 	defaultBranding               bool   = false
+	defaultVerbose                bool   = false
 	defaultOmitOKComponents       bool   = false
 	defaultOmitSummaryResults     bool   = false
 	defaultEvalAllComponents      bool   = false

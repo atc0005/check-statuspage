@@ -32,6 +32,8 @@ func (c *Config) handleFlagsConfig(appType AppType) error {
 
 		c.flagSet.BoolVar(&c.EmitBranding, BrandingFlag, defaultBranding, brandingFlagHelp)
 
+		c.flagSet.BoolVar(&c.ShowVerbose, VerboseFlag, defaultVerbose, verboseFlagHelp)
+
 		c.flagSet.Var(&c.componentsList, ComponentsListFlagShort, componentsListFlagHelp+" (shorthand)")
 		c.flagSet.Var(&c.componentsList, ComponentsListFlagLong, componentsListFlagHelp)
 
