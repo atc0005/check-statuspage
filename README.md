@@ -347,6 +347,7 @@ for quick reference.
 | `branding`                    | No        | `false`   | No     | `branding`                                                              | Toggles emission of branding details with plugin status details. This output is disabled by default.                                                                                                                                           |
 | `h`, `help`                   | No        | `false`   | No     | `h`, `help`                                                             | Show Help text along with the list of supported flags.                                                                                                                                                                                         |
 | `v`, `version`                | No        | `false`   | No     | `v`, `version`                                                          | Whether to display application version and then immediately exit application.                                                                                                                                                                  |
+| `verbose`                     | No        | `false`   | No     | `true`, `false`                                                         | Whether to display verbose details in the final plugin output.                                                                                                                                                                                 |
 | `ll`, `log-level`             | No        | `info`    | No     | `disabled`, `panic`, `fatal`, `error`, `warn`, `info`, `debug`, `trace` | Log message priority filter. Log messages with a lower level are ignored. Log messages are sent to `stderr` by default. See [Output](#output) for more information.                                                                            |
 | `t`, `timeout`                | No        | `10`      | No     | *positive whole number of seconds*                                      | Timeout value in seconds allowed before a plugin execution attempt is abandoned and an error returned.                                                                                                                                         |
 | `f`, `filename`               | **Maybe** |           | No     | *fully-qualified path to a Statuspage components JSON file*             | The fully-qualified filename of a previously downloaded Statuspage API/JSON feed (e.g., /tmp/statuspage/github/components.json). This option is incompatible with the `--url` flag.                                                            |
@@ -403,53 +404,41 @@ Here we use a cached testdata file:
 
 ```console
 $ /usr/lib/nagios/plugins/check_statuspage_components --filename testdata/components/instructure-components.json --group 'Canvas'
-{"level":"error","version":"check-statuspage x.y.z (https://github.com/atc0005/check-statuspage)","logging_level":"info","app_type":"plugin-components","timeout":"10s","filename":"testdata/components/instructure-components.json","url":"","read_limit":1048576,"allow_unknown_fields":false,"total_problem_components":8,"excluded_components":10,"excluded_problem_components":7,"remaining_problem_components":1,"time":"2021-12-25T16:13:49-06:00","caller":"/mnt/t/github/check-statuspage/cmd/check_statuspage_components/main.go:319","message":"Non-excluded, non-operational status of statuspage components detected"}
-WARNING: 1 evaluated "Instructure" component has a non-operational status (14 evaluated, 24 total) [degraded_performance (1)]
+{"level":"error","version":"check-statuspage x.y.z (https://github.com/atc0005/check-statuspage)","logging_level":"info","app_type":"plugin-components","timeout":"10s","filename":"testdata/components/instructure-components.json","url":"","read_limit":1048576,"allow_unknown_fields":false,"total_problem_components":8,"excluded_components":7,"excluded_problem_components":7,"remaining_problem_components":1,"time":"2023-07-26T05:07:29-05:00","caller":"/mnt/t/github/check-statuspage/cmd/check_statuspage_components/main.go:336","message":"Non-excluded, non-operational status of statuspage components detected"}
+WARNING: 1 evaluated "Instructure" component has a non-operational status (17 evaluated, 24 total) [degraded_performance (1)]
 
 **ERRORS**
 
 * component with non-operational status not excluded from evaluation
 
-**THRESHOLDS**
-
-* CRITICAL: major_outage
-* WARNING: under_maintenance, partial_outage, degraded_performance
-
 **DETAILED INFO**
 
-Specified filter: {Group: "Canvas", Components: ""}
 
-Page: Instructure (https://status.instructure.com)
-Time Zone: America/Denver
-Last Updated: 2021-12-07T11:07:15-07:00
+GROUP NAME        COMPONENT NAME              STATUS
+----------        --------------              ------
+Canvas            Canvas                      DEGRADED PERFORMANCE
+Canvas            - Catalog                   OPERATIONAL
+Canvas            - Chat                      OPERATIONAL
+Canvas            - Collaboration             OPERATIONAL
+Canvas            - Commons                   OPERATIONAL
+Canvas            - Conferences               OPERATIONAL
+Canvas            - Document previewing       OPERATIONAL
+Canvas            - Imports and exports       OPERATIONAL
+Canvas            - Media tools               OPERATIONAL
+Canvas            - Notifications             OPERATIONAL
+Canvas            - Support: Phones/Chat      OPERATIONAL
+Canvas            - Support: Webform/email    OPERATIONAL
+Canvas            - ePortfolios               OPERATIONAL
+Canvas            - Gauge                     OPERATIONAL
 
+Portfolium        Website                     DEGRADED PERFORMANCE
+Portfolium        Web Application             DEGRADED PERFORMANCE
+Portfolium        EDU Platform                DEGRADED PERFORMANCE
 
-GROUP NAME        GROUP ID        COMPONENT NAME              COMPONENT ID    EVALUATED    STATUS
-----------        --------        --------------              ------------    ---------    ------
-Canvas            41wg86q5vc14    Canvas                      9dlvqx1drp3d    true         DEGRADED PERFORMANCE
-Canvas            41wg86q5vc14    — Catalog                   jw0fn0dnpcgn    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Chat                      57p1tjtk1yq0    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Collaboration             zxq967k6np07    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Commons                   z5p8qvl1hj1y    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Conferences               mtytktcmbk6p    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Document previewing       ch8dsykb6hln    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Imports and exports       qt6q9hfpbljc    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Media tools               knh34j1129ft    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Notifications             6pnn3zwfyzxz    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Support: Phones/Chat      d7cxm3fbff4h    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Support: Webform/email    zlyh32dxbwjj    true         OPERATIONAL
-Canvas            41wg86q5vc14    — ePortfolios               tlhdyd68vb55    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Gauge                     3q12z77wvfjp    true         OPERATIONAL
-
-Portfolium        9c01dg04bfg5    Website                     j7jp6sq831c2    false        DEGRADED PERFORMANCE
-Portfolium        9c01dg04bfg5    Web Application             100xy482gkyf    false        DEGRADED PERFORMANCE
-Portfolium        9c01dg04bfg5    EDU Platform                c8zkn4rlhvw6    false        DEGRADED PERFORMANCE
-
-MasteryConnect    qw5j90r2w7k1    Assessments                 v6m5nhwgtshj    false        DEGRADED PERFORMANCE
-MasteryConnect    qw5j90r2w7k1    Benchmarks                  jt1kl5fj472f    false        DEGRADED PERFORMANCE
-MasteryConnect    qw5j90r2w7k1    Portal                      142661pcf7h1    false        DEGRADED PERFORMANCE
-MasteryConnect    qw5j90r2w7k1    Reporting                   xwqppk51m3mm    false        DEGRADED PERFORMANCE
-
+MasteryConnect    Assessments                 DEGRADED PERFORMANCE
+MasteryConnect    Benchmarks                  DEGRADED PERFORMANCE
+MasteryConnect    Portal                      DEGRADED PERFORMANCE
+MasteryConnect    Reporting                   DEGRADED PERFORMANCE
 
 
 
@@ -466,19 +455,75 @@ Summary:
 * Number of remaining problem components: 1
 
 
- | 'all_components'=24;;;; 'all_component_groups'=3;;;; 'all_problem_components'=8;;;; 'excluded_problem_components'=7;;;; 'remaining_problem_components'=1;;;; 'all_components_critical'=0;;;; 'all_components_warning'=11;;;; 'all_components_unknown'=0;;;; 'all_components_ok'=13;;;; 'remaining_components_critical'=0;;;; 'remaining_components_warning'=1;;;; 'remaining_components_unknown'=0;;;; 'remaining_components_ok'=13;;;; 'time'=4ms;;;;
+ | 'all_component_groups'=3;;;; 'all_components'=24;;;; 'all_components_critical'=0;;;; 'all_components_ok'=13;;;; 'all_components_unknown'=0;;;; 'all_components_warning'=8;;;; 'all_problem_components'=8;;;; 'excluded_problem_components'=7;;;; 'remaining_components_critical'=0;;;; 'remaining_components_ok'=13;;;; 'remaining_components_unknown'=0;;;; 'remaining_components_warning'=1;;;; 'remaining_problem_components'=1;;;; 'time'=5ms;;;;
 ```
 
 and here we use live data:
 
 ```console
 $ /usr/lib/nagios/plugins/check_statuspage_components --url https://status.instructure.com/api/v2/components.json --group 'Canvas'
-OK: 0 evaluated "Instructure" components have a non-operational status (14 evaluated, 24 total)
+OK: 0 evaluated "Instructure" components have a non-operational status (13 evaluated, 32 total)
 
-**ERRORS**
 
-* None
+GROUP NAME       COMPONENT NAME                 STATUS
+----------       --------------                 ------
+                 Instructure                    OPERATIONAL
+                 Impact                         OPERATIONAL
 
+Canvas           Canvas LMS                     OPERATIONAL
+Canvas           Canvas Catalog                 OPERATIONAL
+Canvas           Canvas Commons                 OPERATIONAL
+Canvas           Student ePortfolios            OPERATIONAL
+Canvas           Canvas Studio                  OPERATIONAL
+Canvas           Canvas Credentials             OPERATIONAL
+Canvas           Canvas Mobile                  OPERATIONAL
+Canvas           Student Pathways               OPERATIONAL
+
+Mastery          Mastery Connect                OPERATIONAL
+Mastery          Item Bank                      OPERATIONAL
+Mastery          Online Testing                 OPERATIONAL
+
+Elevate          Elevate K-12 Analytics         OPERATIONAL
+Elevate          Elevate Data Quality           OPERATIONAL
+Elevate          Elevate Data Sync              OPERATIONAL
+Elevate          Elevate Standards Alignment    OPERATIONAL
+Elevate          Elevate Data Hub               OPERATIONAL
+
+Support Tools    Support: Phones/Chat           OPERATIONAL
+Support Tools    Support: Webform/email         OPERATIONAL
+
+AWS Region       ca-central-1                   OPERATIONAL
+AWS Region       eu-central-1                   OPERATIONAL
+AWS Region       eu-west-1                      OPERATIONAL
+AWS Region       us-east-1                      OPERATIONAL
+AWS Region       us-west-2                      OPERATIONAL
+AWS Region       ap-southeast-1                 OPERATIONAL
+AWS Region       ap-southeast-2                 OPERATIONAL
+
+
+
+Summary:
+
+* Filtering applied to components set: true
+* Evaluating all components in the set: false
+* Omitting OK/operational components (if requested): false
+* Number of total top-level components: 2
+* Number of total component groups: 5
+* Number of total subcomponents: 25
+* Number of total problem components: 0
+* Number of ignored problem components: 0
+* Number of remaining problem components: 0
+
+
+ | 'all_component_groups'=5;;;; 'all_components'=32;;;; 'all_components_critical'=0;;;; 'all_components_ok'=27;;;; 'all_components_unknown'=0;;;; 'all_components_warning'=0;;;; 'all_problem_components'=0;;;; 'excluded_problem_components'=0;;;; 'remaining_components_critical'=0;;;; 'remaining_components_ok'=8;;;; 'remaining_components_unknown'=0;;;; 'remaining_components_warning'=0;;;; 'remaining_problem_components'=0;;;; 'time'=449ms;;;;
+```
+
+and here we opt to use the `--verbose` flag to restore output emitted by
+default in earlier versions of the plugin:
+
+```console
+$ /usr/lib/nagios/plugins/check_statuspage_components --url https://status.instructure.com/api/v2/components.json --group 'Canvas' --verbose
+OK: 0 evaluated "Instructure" components have a non-operational status (13 evaluated, 32 total)
 **THRESHOLDS**
 
 * CRITICAL: major_outage
@@ -490,35 +535,44 @@ Specified filter: {Group: "Canvas", Components: ""}
 
 Page: Instructure (https://status.instructure.com)
 Time Zone: America/Denver
-Last Updated: 2021-12-22T07:25:53-07:00
+Last Updated: 2023-07-21T12:16:04-06:00
 
 
-GROUP NAME        GROUP ID        COMPONENT NAME              COMPONENT ID    EVALUATED    STATUS
-----------        --------        --------------              ------------    ---------    ------
-Canvas            41wg86q5vc14    Canvas                      9dlvqx1drp3d    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Catalog                   jw0fn0dnpcgn    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Chat                      57p1tjtk1yq0    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Collaboration             zxq967k6np07    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Commons                   z5p8qvl1hj1y    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Conferences               mtytktcmbk6p    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Document previewing       ch8dsykb6hln    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Imports and exports       qt6q9hfpbljc    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Media tools               knh34j1129ft    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Notifications             6pnn3zwfyzxz    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Support: Phones/Chat      d7cxm3fbff4h    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Support: Webform/email    zlyh32dxbwjj    true         OPERATIONAL
-Canvas            41wg86q5vc14    — ePortfolios               tlhdyd68vb55    true         OPERATIONAL
-Canvas            41wg86q5vc14    — Gauge                     3q12z77wvfjp    true         OPERATIONAL
 
-Portfolium        9c01dg04bfg5    Website                     j7jp6sq831c2    false        OPERATIONAL
-Portfolium        9c01dg04bfg5    Web Application             100xy482gkyf    false        OPERATIONAL
-Portfolium        9c01dg04bfg5    EDU Platform                c8zkn4rlhvw6    false        OPERATIONAL
+GROUP NAME       COMPONENT NAME                 STATUS
+----------       --------------                 ------
+                 Instructure                    OPERATIONAL
+                 Impact                         OPERATIONAL
 
-MasteryConnect    qw5j90r2w7k1    Assessments                 v6m5nhwgtshj    false        OPERATIONAL
-MasteryConnect    qw5j90r2w7k1    Benchmarks                  jt1kl5fj472f    false        OPERATIONAL
-MasteryConnect    qw5j90r2w7k1    Portal                      142661pcf7h1    false        OPERATIONAL
-MasteryConnect    qw5j90r2w7k1    Reporting                   xwqppk51m3mm    false        OPERATIONAL
+Canvas           Canvas LMS                     OPERATIONAL
+Canvas           Canvas Catalog                 OPERATIONAL
+Canvas           Canvas Commons                 OPERATIONAL
+Canvas           Student ePortfolios            OPERATIONAL
+Canvas           Canvas Studio                  OPERATIONAL
+Canvas           Canvas Credentials             OPERATIONAL
+Canvas           Canvas Mobile                  OPERATIONAL
+Canvas           Student Pathways               OPERATIONAL
 
+Mastery          Mastery Connect                OPERATIONAL
+Mastery          Item Bank                      OPERATIONAL
+Mastery          Online Testing                 OPERATIONAL
+
+Elevate          Elevate K-12 Analytics         OPERATIONAL
+Elevate          Elevate Data Quality           OPERATIONAL
+Elevate          Elevate Data Sync              OPERATIONAL
+Elevate          Elevate Standards Alignment    OPERATIONAL
+Elevate          Elevate Data Hub               OPERATIONAL
+
+Support Tools    Support: Phones/Chat           OPERATIONAL
+Support Tools    Support: Webform/email         OPERATIONAL
+
+AWS Region       ca-central-1                   OPERATIONAL
+AWS Region       eu-central-1                   OPERATIONAL
+AWS Region       eu-west-1                      OPERATIONAL
+AWS Region       us-east-1                      OPERATIONAL
+AWS Region       us-west-2                      OPERATIONAL
+AWS Region       ap-southeast-1                 OPERATIONAL
+AWS Region       ap-southeast-2                 OPERATIONAL
 
 
 
@@ -527,15 +581,15 @@ Summary:
 * Filtering applied to components set: true
 * Evaluating all components in the set: false
 * Omitting OK/operational components (if requested): false
-* Number of total top-level components: 0
-* Number of total component groups: 3
-* Number of total subcomponents: 21
+* Number of total top-level components: 2
+* Number of total component groups: 5
+* Number of total subcomponents: 25
 * Number of total problem components: 0
 * Number of ignored problem components: 0
 * Number of remaining problem components: 0
 
 
- | 'all_components'=24;;;; 'all_component_groups'=3;;;; 'all_problem_components'=0;;;; 'excluded_problem_components'=0;;;; 'remaining_problem_components'=0;;;; 'all_components_critical'=0;;;; 'all_components_warning'=0;;;; 'all_components_unknown'=0;;;; 'all_components_ok'=24;;;; 'remaining_components_critical'=0;;;; 'remaining_components_warning'=0;;;; 'remaining_components_unknown'=0;;;; 'remaining_components_ok'=14;;;; 'time'=553ms;;;;
+ | 'all_component_groups'=5;;;; 'all_components'=32;;;; 'all_components_critical'=0;;;; 'all_components_ok'=27;;;; 'all_components_unknown'=0;;;; 'all_components_warning'=0;;;; 'all_problem_components'=0;;;; 'excluded_problem_components'=0;;;; 'remaining_components_critical'=0;;;; 'remaining_components_ok'=8;;;; 'remaining_components_unknown'=0;;;; 'remaining_components_warning'=0;;;; 'remaining_problem_components'=0;;;; 'time'=414ms;;;;
 ```
 
 See the [configuration options](#configuration-options) section for all
@@ -551,98 +605,22 @@ Here we use a cached testdata file when Linode was experiencing an outage of
 some services, but not the specific service we opted to evaluate:
 
 ```console
-$ `/usr/lib/nagios/plugins/check_statuspage_components --filename testdata/components/linode-components-problems.json --component mmgkdgcjgnbl
-OK: 0 evaluated "Linode" components have a non-operational status (1 evaluated, 68 total)
+$ /usr/lib/nagios/plugins/check_statuspage_components --filename testdata/components/linode-components-problems.json --component mmgkdgcjgnbl
+OK: 0 evaluated "Linode" components have a non-operational status (7 evaluated, 68 total)
 
-**ERRORS**
-
-* None
-
-**THRESHOLDS**
-
-* CRITICAL: major_outage
-* WARNING: under_maintenance, partial_outage, degraded_performance
-
-**DETAILED INFO**
-
-Specified filter: {Group: "", Components: "mmgkdgcjgnbl"}
-
-Page: Linode (https://status.linode.com)
-Time Zone: Etc/UTC
-Last Updated: 2021-12-17T22:23:41Z
+NOTE: Component count (68) is higher than display limit (50); overriding default display of OK components.
+NOTE: Omitting OK/operational components as requested.
 
 
-GROUP NAME                  GROUP ID        COMPONENT NAME                                       COMPONENT ID    EVALUATED    STATUS
-----------                  --------        --------------                                       ------------    ---------    ------
-                                            Linode.com                                           qx710vq78w73    false        OPERATIONAL
-                                            Linode Manager and API                               61mfhwczrxzt    false        OPERATIONAL
-                                            Hosted DNS Service                                   mmgkdgcjgnbl    true         OPERATIONAL
-                                            Longview                                             v3rbxq0mztjx    false        OPERATIONAL
-
-Regions                     kb0cf2d0rryb    US-East (Newark)                                     v8zpnn61fcdm    false        PARTIAL OUTAGE
-Regions                     kb0cf2d0rryb    US-Central (Dallas)                                  s8355f9s5hpx    false        PARTIAL OUTAGE
-Regions                     kb0cf2d0rryb    US-West (Fremont)                                    v5mcdxdt9dtv    false        PARTIAL OUTAGE
-Regions                     kb0cf2d0rryb    US-Southeast (Atlanta)                               ss2n92gy5xkk    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    CA-Central (Toronto)                                 ptln4fx0jhrt    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    EU-West (London)                                     jzjmxld11n92    false        PARTIAL OUTAGE
-Regions                     kb0cf2d0rryb    EU-Central (Frankfurt)                               bxcfhjdf5c4k    false        PARTIAL OUTAGE
-Regions                     kb0cf2d0rryb    AP-South (Singapore)                                 ymhgjx06c93n    false        PARTIAL OUTAGE
-Regions                     kb0cf2d0rryb    AP-Northeast-2 (Tokyo 2)                             94q3fkblbvs3    false        PARTIAL OUTAGE
-Regions                     kb0cf2d0rryb    AP-West (Mumbai)                                     cc7n9z4yz3gw    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    AP-Southeast (Sydney)                                lq833jghn099    false        OPERATIONAL
-
-Backups                     drpn3k8bk56t    US-East (Newark) Backups                             tyb1r72rvfrx    false        OPERATIONAL
-Backups                     drpn3k8bk56t    US-Central (Dallas) Backups                          kprtdgjdqfx5    false        OPERATIONAL
-Backups                     drpn3k8bk56t    US-West (Fremont) Backups                            4ny59fgq6cln    false        OPERATIONAL
-Backups                     drpn3k8bk56t    US-Southeast (Atlanta) Backups                       qczfz4brkf1b    false        OPERATIONAL
-Backups                     drpn3k8bk56t    CA-Central (Toronto) Backups                         l9plxr7kgdtp    false        OPERATIONAL
-Backups                     drpn3k8bk56t    EU-West (London) Backups                             1bdfwxqf66rj    false        OPERATIONAL
-Backups                     drpn3k8bk56t    EU-Central (Frankfurt) Backups                       24vh5f8lfkld    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-South (Singapore) Backups                         1x47wvj7sk31    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-Northeast-2 (Tokyo 2) Backups                     99qq411dqngl    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-West (Mumbai) Backups                             gpfk34v7m7bx    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-Southeast (Sydney) Backups                        dfdf5d1hcrkt    false        OPERATIONAL
-
-Block Storage               m5wrr6m00mvh    US-East (Newark) Block Storage                       zq4h2zstlwhz    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    US-Central (Dallas) Block Storage                    j256v14cqldk    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    US-West (Fremont) Block Storage                      fvq65tvc6vk2    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    CA-Central (Toronto) Block Storage                   wh3l2nzfvrj6    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    EU-West (London) Block Storage                       fmy3yfmxmcx6    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    EU-Central (Frankfurt) Block Storage                 h3p36ttc972l    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-South (Singapore) Block Storage                   6y55232d871t    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-Northeast-2 (Tokyo 2) Block Storage               kdrjlntx44yj    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-West (Mumbai) Block Storage                       q9b5j34kd21x    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-Southeast (Sydney) Block Storage                  vz46kd91my1k    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    US-Southeast (Atlanta) Block Storage                 9clykhgs02xl    false        OPERATIONAL
-
-NodeBalancers               7q62h0wl818b    US-East (Newark) NodeBalancers                       3382rw9rdyby    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    US-Central (Dallas) NodeBalancers                    jyl125r91hhl    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    US-West (Fremont) NodeBalancers                      gqlf5lr6g4xj    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    US-Southeast (Atlanta) NodeBalancers                 362rg0lr43dz    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    CA-Central (Toronto) NodeBalancers                   l3w6b1ck9f5h    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    EU-West (London) NodeBalancers                       c45ljxpwx5m4    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    EU-Central (Frankfurt)  NodeBalancers                y2slqzr87kdz    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-South (Singapore) NodeBalancers                   pyg6cyddyh92    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-Northeast-2 (Tokyo 2) NodeBalancers               c3m26py2z00j    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-West (Mumbai) NodeBalancers                       fb81v7x1rjd1    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-Southeast (Sydney) NodeBalancers                  n2sbx9jll8cz    false        OPERATIONAL
-
-Object Storage              4bvp5l14grs6    US-East (Newark) Object Storage                      q55c1gfpf7m4    false        OPERATIONAL
-Object Storage              4bvp5l14grs6    EU-Central (Frankfurt) Object Storage                zm7300chzddp    false        OPERATIONAL
-Object Storage              4bvp5l14grs6    AP-South (Singapore) Object Storage                  l8y4k4tz708b    false        OPERATIONAL
-Object Storage              4bvp5l14grs6    US-Southeast (Atlanta) Object Storage                y5gcmn9bstbg    false        OPERATIONAL
-
-Linode Kubernetes Engine    lplvcng25jv0    US-East (Newark) Linode Kubernetes Engine            bv6jc1sr32l5    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    US-Central (Dallas) Linode Kubernetes Engine         gwsl8rcc9jmh    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    US-West (Fremont) Linode Kubernetes Engine           xd4qzq00pq6b    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    CA-Central (Toronto) Linode Kubernetes Engine        sc9zctkdfwsp    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    EU-West (London) Linode Kubernetes Engine            p2jqcf059vgf    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    EU-Central (Frankfurt) Linode Kubernetes Engine      f5g6kbf5tnf2    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-South (Singapore) Linode Kubernetes Engine        wzr2h8y6b14r    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-Northeast-2 (Tokyo 2) Linode Kubernetes Engine    gdvwymjjd06s    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-West (Mumbai) Linode Kubernetes Engine            0r45ydtwlrz3    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-Southeast (Sydney) Linode Kubernetes Engine       mzvhlfd50msv    false        OPERATIONAL
-
+GROUP NAME    COMPONENT NAME              STATUS
+----------    --------------              ------
+Regions       US-East (Newark)            PARTIAL OUTAGE
+Regions       US-Central (Dallas)         PARTIAL OUTAGE
+Regions       US-West (Fremont)           PARTIAL OUTAGE
+Regions       EU-West (London)            PARTIAL OUTAGE
+Regions       EU-Central (Frankfurt)      PARTIAL OUTAGE
+Regions       AP-South (Singapore)        PARTIAL OUTAGE
+Regions       AP-Northeast-2 (Tokyo 2)    PARTIAL OUTAGE
 
 
 
@@ -650,7 +628,7 @@ Summary:
 
 * Filtering applied to components set: true
 * Evaluating all components in the set: false
-* Omitting OK/operational components (if requested): false
+* Omitting OK/operational components (if requested): true
 * Number of total top-level components: 4
 * Number of total component groups: 6
 * Number of total subcomponents: 58
@@ -659,113 +637,30 @@ Summary:
 * Number of remaining problem components: 0
 
 
- | 'all_components'=68;;;; 'all_component_groups'=6;;;; 'all_problem_components'=7;;;; 'excluded_problem_components'=7;;;; 'remaining_problem_components'=0;;;; 'all_components_critical'=0;;;; 'all_components_warning'=8;;;; 'all_components_unknown'=0;;;; 'all_components_ok'=60;;;; 'remaining_components_critical'=0;;;; 'remaining_components_warning'=0;;;; 'remaining_components_unknown'=0;;;; 'remaining_components_ok'=1;;;; 'time'=3ms;;;;
+ | 'all_component_groups'=6;;;; 'all_components'=68;;;; 'all_components_critical'=0;;;; 'all_components_ok'=55;;;; 'all_components_unknown'=0;;;; 'all_components_warning'=7;;;; 'all_problem_components'=7;;;; 'excluded_problem_components'=7;;;; 'remaining_components_critical'=0;;;; 'remaining_components_ok'=1;;;; 'remaining_components_unknown'=0;;;; 'remaining_components_warning'=0;;;; 'remaining_problem_components'=0;;;; 'time'=5ms;;;;
 ```
 
-and for constrast, here we use another cached testdata file when Linode was
+and for contrast, here we use another cached testdata file when Linode was
 not experiencing any outages:
 
 ```console
 $ /usr/lib/nagios/plugins/check_statuspage_components --filename testdata/components/linode-components.json --component mmgkdgcjgnbl
-OK: 0 evaluated "Linode" components have a non-operational status (1 evaluated, 68 total)
+OK: 0 evaluated "Linode" components have a non-operational status (7 evaluated, 68 total)
 
-**ERRORS**
-
-* None
-
-**THRESHOLDS**
-
-* CRITICAL: major_outage
-* WARNING: under_maintenance, partial_outage, degraded_performance
-
-**DETAILED INFO**
-
-Specified filter: {Group: "", Components: "mmgkdgcjgnbl"}
-
-Page: Linode (https://status.linode.com)
-Time Zone: Etc/UTC
-Last Updated: 2021-12-01T10:57:29Z
+NOTE: Component count (68) is higher than display limit (50); overriding default display of OK components.
+NOTE: Omitting OK/operational components as requested.
 
 
-GROUP NAME                  GROUP ID        COMPONENT NAME                                       COMPONENT ID    EVALUATED    STATUS
-----------                  --------        --------------                                       ------------    ---------    ------
-                                            Linode.com                                           qx710vq78w73    false        OPERATIONAL
-                                            Linode Manager and API                               61mfhwczrxzt    false        OPERATIONAL
-                                            Hosted DNS Service                                   mmgkdgcjgnbl    true         OPERATIONAL
-                                            Longview                                             v3rbxq0mztjx    false        OPERATIONAL
-
-Regions                     kb0cf2d0rryb    US-East (Newark)                                     v8zpnn61fcdm    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    US-Central (Dallas)                                  s8355f9s5hpx    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    US-West (Fremont)                                    v5mcdxdt9dtv    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    US-Southeast (Atlanta)                               ss2n92gy5xkk    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    CA-Central (Toronto)                                 ptln4fx0jhrt    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    EU-West (London)                                     jzjmxld11n92    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    EU-Central (Frankfurt)                               bxcfhjdf5c4k    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    AP-South (Singapore)                                 ymhgjx06c93n    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    AP-Northeast-2 (Tokyo 2)                             94q3fkblbvs3    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    AP-West (Mumbai)                                     cc7n9z4yz3gw    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    AP-Southeast (Sydney)                                lq833jghn099    false        OPERATIONAL
-
-Backups                     drpn3k8bk56t    US-East (Newark) Backups                             tyb1r72rvfrx    false        OPERATIONAL
-Backups                     drpn3k8bk56t    US-Central (Dallas) Backups                          kprtdgjdqfx5    false        OPERATIONAL
-Backups                     drpn3k8bk56t    US-West (Fremont) Backups                            4ny59fgq6cln    false        OPERATIONAL
-Backups                     drpn3k8bk56t    US-Southeast (Atlanta) Backups                       qczfz4brkf1b    false        OPERATIONAL
-Backups                     drpn3k8bk56t    CA-Central (Toronto) Backups                         l9plxr7kgdtp    false        OPERATIONAL
-Backups                     drpn3k8bk56t    EU-West (London) Backups                             1bdfwxqf66rj    false        OPERATIONAL
-Backups                     drpn3k8bk56t    EU-Central (Frankfurt) Backups                       24vh5f8lfkld    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-South (Singapore) Backups                         1x47wvj7sk31    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-Northeast-2 (Tokyo 2) Backups                     99qq411dqngl    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-West (Mumbai) Backups                             gpfk34v7m7bx    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-Southeast (Sydney) Backups                        dfdf5d1hcrkt    false        OPERATIONAL
-
-Block Storage               m5wrr6m00mvh    US-East (Newark) Block Storage                       zq4h2zstlwhz    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    US-Central (Dallas) Block Storage                    j256v14cqldk    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    US-West (Fremont) Block Storage                      fvq65tvc6vk2    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    CA-Central (Toronto) Block Storage                   wh3l2nzfvrj6    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    EU-West (London) Block Storage                       fmy3yfmxmcx6    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    EU-Central (Frankfurt) Block Storage                 h3p36ttc972l    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-South (Singapore) Block Storage                   6y55232d871t    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-Northeast-2 (Tokyo 2) Block Storage               kdrjlntx44yj    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-West (Mumbai) Block Storage                       q9b5j34kd21x    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-Southeast (Sydney) Block Storage                  vz46kd91my1k    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    US-Southeast (Atlanta) Block Storage                 9clykhgs02xl    false        OPERATIONAL
-
-NodeBalancers               7q62h0wl818b    US-East (Newark) NodeBalancers                       3382rw9rdyby    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    US-Central (Dallas) NodeBalancers                    jyl125r91hhl    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    US-West (Fremont) NodeBalancers                      gqlf5lr6g4xj    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    US-Southeast (Atlanta) NodeBalancers                 362rg0lr43dz    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    CA-Central (Toronto) NodeBalancers                   l3w6b1ck9f5h    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    EU-West (London) NodeBalancers                       c45ljxpwx5m4    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    EU-Central (Frankfurt)  NodeBalancers                y2slqzr87kdz    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-South (Singapore) NodeBalancers                   pyg6cyddyh92    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-Northeast-2 (Tokyo 2) NodeBalancers               c3m26py2z00j    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-West (Mumbai) NodeBalancers                       fb81v7x1rjd1    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-Southeast (Sydney) NodeBalancers                  n2sbx9jll8cz    false        OPERATIONAL
-
-Object Storage              4bvp5l14grs6    US-East (Newark) Object Storage                      q55c1gfpf7m4    false        OPERATIONAL
-Object Storage              4bvp5l14grs6    EU-Central (Frankfurt) Object Storage                zm7300chzddp    false        OPERATIONAL
-Object Storage              4bvp5l14grs6    AP-South (Singapore) Object Storage                  l8y4k4tz708b    false        OPERATIONAL
-Object Storage              4bvp5l14grs6    US-Southeast (Atlanta) Object Storage                y5gcmn9bstbg    false        OPERATIONAL
-
-Linode Kubernetes Engine    lplvcng25jv0    US-East (Newark) Linode Kubernetes Engine            bv6jc1sr32l5    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    US-Central (Dallas) Linode Kubernetes Engine         gwsl8rcc9jmh    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    US-West (Fremont) Linode Kubernetes Engine           xd4qzq00pq6b    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    CA-Central (Toronto) Linode Kubernetes Engine        sc9zctkdfwsp    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    EU-West (London) Linode Kubernetes Engine            p2jqcf059vgf    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    EU-Central (Frankfurt) Linode Kubernetes Engine      f5g6kbf5tnf2    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-South (Singapore) Linode Kubernetes Engine        wzr2h8y6b14r    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-Northeast-2 (Tokyo 2) Linode Kubernetes Engine    gdvwymjjd06s    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-West (Mumbai) Linode Kubernetes Engine            0r45ydtwlrz3    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-Southeast (Sydney) Linode Kubernetes Engine       mzvhlfd50msv    false        OPERATIONAL
-
-
+GROUP NAME    COMPONENT NAME    STATUS
+----------    --------------    ------
+N/A           N/A               N/A
 
 
 Summary:
 
 * Filtering applied to components set: true
 * Evaluating all components in the set: false
-* Omitting OK/operational components (if requested): false
+* Omitting OK/operational components (if requested): true
 * Number of total top-level components: 4
 * Number of total component groups: 6
 * Number of total subcomponents: 58
@@ -774,121 +669,38 @@ Summary:
 * Number of remaining problem components: 0
 
 
- | 'all_components'=68;;;; 'all_component_groups'=6;;;; 'all_problem_components'=0;;;; 'excluded_problem_components'=0;;;; 'remaining_problem_components'=0;;;; 'all_components_critical'=0;;;; 'all_components_warning'=0;;;; 'all_components_unknown'=0;;;; 'all_components_ok'=68;;;; 'remaining_components_critical'=0;;;; 'remaining_components_warning'=0;;;; 'remaining_components_unknown'=0;;;; 'remaining_components_ok'=1;;;; 'time'=4ms;;;;
+ | 'all_component_groups'=6;;;; 'all_components'=68;;;; 'all_components_critical'=0;;;; 'all_components_ok'=62;;;; 'all_components_unknown'=0;;;; 'all_components_warning'=0;;;; 'all_problem_components'=0;;;; 'excluded_problem_components'=0;;;; 'remaining_components_critical'=0;;;; 'remaining_components_ok'=1;;;; 'remaining_components_unknown'=0;;;; 'remaining_components_warning'=0;;;; 'remaining_problem_components'=0;;;; 'time'=5ms;;;;
 ```
 
 and here we use live data where Linode was not experiencing any outages:
 
 ```console
-$ `/usr/lib/nagios/plugins/check_statuspage_components --url https://status.linode.com/api/v2/components.json --component mmgkdgcjgnbl
-OK: 0 evaluated "Linode" components have a non-operational status (1 evaluated, 68 total)
+$ /usr/lib/nagios/plugins/check_statuspage_components --url https://status.linode.com/api/v2/components.json --component mmgkdgcjgnbl
+OK: 0 evaluated "Linode" components have a non-operational status (7 evaluated, 88 total)
 
-**ERRORS**
-
-* None
-
-**THRESHOLDS**
-
-* CRITICAL: major_outage
-* WARNING: under_maintenance, partial_outage, degraded_performance
-
-**DETAILED INFO**
-
-Specified filter: {Group: "", Components: "mmgkdgcjgnbl"}
-
-Page: Linode (https://status.linode.com)
-Time Zone: Etc/UTC
-Last Updated: 2021-12-26T12:40:58Z
+NOTE: Component count (88) is higher than display limit (50); overriding default display of OK components.
+NOTE: Omitting OK/operational components as requested.
 
 
-GROUP NAME                  GROUP ID        COMPONENT NAME                                       COMPONENT ID    EVALUATED    STATUS
-----------                  --------        --------------                                       ------------    ---------    ------
-                                            Linode.com                                           qx710vq78w73    false        OPERATIONAL
-                                            Linode Manager and API                               61mfhwczrxzt    false        OPERATIONAL
-                                            Hosted DNS Service                                   mmgkdgcjgnbl    true         OPERATIONAL
-                                            Longview                                             v3rbxq0mztjx    false        OPERATIONAL
-
-Regions                     kb0cf2d0rryb    US-East (Newark)                                     v8zpnn61fcdm    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    US-Central (Dallas)                                  s8355f9s5hpx    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    US-West (Fremont)                                    v5mcdxdt9dtv    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    US-Southeast (Atlanta)                               ss2n92gy5xkk    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    CA-Central (Toronto)                                 ptln4fx0jhrt    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    EU-West (London)                                     jzjmxld11n92    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    EU-Central (Frankfurt)                               bxcfhjdf5c4k    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    AP-South (Singapore)                                 ymhgjx06c93n    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    AP-Northeast-2 (Tokyo 2)                             94q3fkblbvs3    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    AP-West (Mumbai)                                     cc7n9z4yz3gw    false        OPERATIONAL
-Regions                     kb0cf2d0rryb    AP-Southeast (Sydney)                                lq833jghn099    false        OPERATIONAL
-
-Backups                     drpn3k8bk56t    US-East (Newark) Backups                             tyb1r72rvfrx    false        OPERATIONAL
-Backups                     drpn3k8bk56t    US-Central (Dallas) Backups                          kprtdgjdqfx5    false        OPERATIONAL
-Backups                     drpn3k8bk56t    US-West (Fremont) Backups                            4ny59fgq6cln    false        OPERATIONAL
-Backups                     drpn3k8bk56t    US-Southeast (Atlanta) Backups                       qczfz4brkf1b    false        OPERATIONAL
-Backups                     drpn3k8bk56t    CA-Central (Toronto) Backups                         l9plxr7kgdtp    false        OPERATIONAL
-Backups                     drpn3k8bk56t    EU-West (London) Backups                             1bdfwxqf66rj    false        OPERATIONAL
-Backups                     drpn3k8bk56t    EU-Central (Frankfurt) Backups                       24vh5f8lfkld    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-South (Singapore) Backups                         1x47wvj7sk31    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-Northeast-2 (Tokyo 2) Backups                     99qq411dqngl    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-West (Mumbai) Backups                             gpfk34v7m7bx    false        OPERATIONAL
-Backups                     drpn3k8bk56t    AP-Southeast (Sydney) Backups                        dfdf5d1hcrkt    false        OPERATIONAL
-
-Block Storage               m5wrr6m00mvh    US-East (Newark) Block Storage                       zq4h2zstlwhz    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    US-Central (Dallas) Block Storage                    j256v14cqldk    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    US-West (Fremont) Block Storage                      fvq65tvc6vk2    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    CA-Central (Toronto) Block Storage                   wh3l2nzfvrj6    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    EU-West (London) Block Storage                       fmy3yfmxmcx6    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    EU-Central (Frankfurt) Block Storage                 h3p36ttc972l    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-South (Singapore) Block Storage                   6y55232d871t    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-Northeast-2 (Tokyo 2) Block Storage               kdrjlntx44yj    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-West (Mumbai) Block Storage                       q9b5j34kd21x    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    AP-Southeast (Sydney) Block Storage                  vz46kd91my1k    false        OPERATIONAL
-Block Storage               m5wrr6m00mvh    US-Southeast (Atlanta) Block Storage                 9clykhgs02xl    false        OPERATIONAL
-
-NodeBalancers               7q62h0wl818b    US-East (Newark) NodeBalancers                       3382rw9rdyby    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    US-Central (Dallas) NodeBalancers                    jyl125r91hhl    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    US-West (Fremont) NodeBalancers                      gqlf5lr6g4xj    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    US-Southeast (Atlanta) NodeBalancers                 362rg0lr43dz    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    CA-Central (Toronto) NodeBalancers                   l3w6b1ck9f5h    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    EU-West (London) NodeBalancers                       c45ljxpwx5m4    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    EU-Central (Frankfurt)  NodeBalancers                y2slqzr87kdz    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-South (Singapore) NodeBalancers                   pyg6cyddyh92    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-Northeast-2 (Tokyo 2) NodeBalancers               c3m26py2z00j    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-West (Mumbai) NodeBalancers                       fb81v7x1rjd1    false        OPERATIONAL
-NodeBalancers               7q62h0wl818b    AP-Southeast (Sydney) NodeBalancers                  n2sbx9jll8cz    false        OPERATIONAL
-
-Object Storage              4bvp5l14grs6    US-East (Newark) Object Storage                      q55c1gfpf7m4    false        OPERATIONAL
-Object Storage              4bvp5l14grs6    EU-Central (Frankfurt) Object Storage                zm7300chzddp    false        OPERATIONAL
-Object Storage              4bvp5l14grs6    AP-South (Singapore) Object Storage                  l8y4k4tz708b    false        OPERATIONAL
-Object Storage              4bvp5l14grs6    US-Southeast (Atlanta) Object Storage                y5gcmn9bstbg    false        OPERATIONAL
-
-Linode Kubernetes Engine    lplvcng25jv0    US-East (Newark) Linode Kubernetes Engine            bv6jc1sr32l5    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    US-Central (Dallas) Linode Kubernetes Engine         gwsl8rcc9jmh    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    US-West (Fremont) Linode Kubernetes Engine           xd4qzq00pq6b    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    CA-Central (Toronto) Linode Kubernetes Engine        sc9zctkdfwsp    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    EU-West (London) Linode Kubernetes Engine            p2jqcf059vgf    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    EU-Central (Frankfurt) Linode Kubernetes Engine      f5g6kbf5tnf2    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-South (Singapore) Linode Kubernetes Engine        wzr2h8y6b14r    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-Northeast-2 (Tokyo 2) Linode Kubernetes Engine    gdvwymjjd06s    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-West (Mumbai) Linode Kubernetes Engine            0r45ydtwlrz3    false        OPERATIONAL
-Linode Kubernetes Engine    lplvcng25jv0    AP-Southeast (Sydney) Linode Kubernetes Engine       mzvhlfd50msv    false        OPERATIONAL
-
-
+GROUP NAME    COMPONENT NAME    STATUS
+----------    --------------    ------
+N/A           N/A               N/A
 
 
 Summary:
 
 * Filtering applied to components set: true
 * Evaluating all components in the set: false
-* Omitting OK/operational components (if requested): false
-* Number of total top-level components: 4
+* Omitting OK/operational components (if requested): true
+* Number of total top-level components: 5
 * Number of total component groups: 6
-* Number of total subcomponents: 58
+* Number of total subcomponents: 77
 * Number of total problem components: 0
 * Number of ignored problem components: 0
 * Number of remaining problem components: 0
 
 
- | 'all_components'=68;;;; 'all_component_groups'=6;;;; 'all_problem_components'=0;;;; 'excluded_problem_components'=0;;;; 'remaining_problem_components'=0;;;; 'all_components_critical'=0;;;; 'all_components_warning'=0;;;; 'all_components_unknown'=0;;;; 'all_components_ok'=68;;;; 'remaining_components_critical'=0;;;; 'remaining_components_warning'=0;;;; 'remaining_components_unknown'=0;;;; 'remaining_components_ok'=1;;;; 'time'=552ms;;;;
+ | 'all_component_groups'=6;;;; 'all_components'=88;;;; 'all_components_critical'=0;;;; 'all_components_ok'=82;;;; 'all_components_unknown'=0;;;; 'all_components_warning'=0;;;; 'all_problem_components'=0;;;; 'excluded_problem_components'=0;;;; 'remaining_components_critical'=0;;;; 'remaining_components_ok'=1;;;; 'remaining_components_unknown'=0;;;; 'remaining_components_warning'=0;;;; 'remaining_problem_components'=0;;;; 'time'=500ms;;;;
 ```
 
 #### Command definition
@@ -897,6 +709,11 @@ The command definition file below defines three commands. Each command
 explicitly excludes "OK" components in order to keep the output manageable.
 Remove the `omit-ok` flag if you wish to use the built-in components output
 limit to control the number of components emitted.
+
+See also:
+
+- `--verbose` flag
+- `--omit-summary` flag
 
 ```shell
 # /etc/nagios-plugins/config/statuspage-components.cfg
@@ -947,6 +764,7 @@ Time Zone: America/Denver
 Last Updated: 2021-12-07T11:07:15-07:00
 
 
+
 GROUP NAME        GROUP ID        COMPONENT NAME              COMPONENT ID    EVALUATED    STATUS
 ----------        --------        --------------              ------------    ---------    ------
 Canvas            41wg86q5vc14    Canvas                      9dlvqx1drp3d    N/A          DEGRADED PERFORMANCE
@@ -972,7 +790,6 @@ MasteryConnect    qw5j90r2w7k1    Assessments                 v6m5nhwgtshj    N/
 MasteryConnect    qw5j90r2w7k1    Benchmarks                  jt1kl5fj472f    N/A          DEGRADED PERFORMANCE
 MasteryConnect    qw5j90r2w7k1    Portal                      142661pcf7h1    N/A          DEGRADED PERFORMANCE
 MasteryConnect    qw5j90r2w7k1    Reporting                   xwqppk51m3mm    N/A          DEGRADED PERFORMANCE
-
 
 
 
