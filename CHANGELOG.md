@@ -26,6 +26,25 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.5.0] - 2023-07-26
+
+### Added
+
+- (GH-258) Add initial automated release notes config
+- (GH-260) Add initial automated release build workflow
+- (GH-272) Simplify default plugin output
+
+### Changed
+
+- Dependencies
+  - `atc0005/go-ci`
+    - `go-ci-oldstable-build-v0.11.3` to `go-ci-oldstable-build-v0.13.1`
+- (GH-262) Update Dependabot config to monitor both branches
+
+### Fixed
+
+- (GH-268) Fix doc comment typo
+
 ## [v0.4.3] - 2023-07-13
 
 ### Overview
@@ -569,7 +588,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.4.3...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.0...HEAD
+[v0.5.0]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.0
 [v0.4.3]: https://github.com/atc0005/check-statuspage/releases/tag/v0.4.3
 [v0.4.2]: https://github.com/atc0005/check-statuspage/releases/tag/v0.4.2
 [v0.4.1]: https://github.com/atc0005/check-statuspage/releases/tag/v0.4.1
