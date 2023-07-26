@@ -78,16 +78,18 @@ func main() {
 	// Record thresholds for use as Nagios "Long Service Output" content. This
 	// content is shown in the detailed web UI and in notifications generated
 	// by Nagios.
-	criticalComponentStatuses := components.ServiceStateToComponentStatuses(
-		nagios.ServiceState{ExitCode: nagios.StateCRITICALExitCode},
-	)
-	plugin.CriticalThreshold = strings.Join(criticalComponentStatuses, ", ")
+	if cfg.ShowVerbose {
+		criticalComponentStatuses := components.ServiceStateToComponentStatuses(
+			nagios.ServiceState{ExitCode: nagios.StateCRITICALExitCode},
+		)
+		plugin.CriticalThreshold = strings.Join(criticalComponentStatuses, ", ")
 
-	warningComponentStatuses := components.ServiceStateToComponentStatuses(
-		nagios.ServiceState{ExitCode: nagios.StateWARNINGExitCode},
-	)
+		warningComponentStatuses := components.ServiceStateToComponentStatuses(
+			nagios.ServiceState{ExitCode: nagios.StateWARNINGExitCode},
+		)
 
-	plugin.WarningThreshold = strings.Join(warningComponentStatuses, ", ")
+		plugin.WarningThreshold = strings.Join(warningComponentStatuses, ", ")
+	}
 
 	if cfg.EmitBranding {
 		// If enabled, show application details at end of notification
@@ -365,6 +367,7 @@ func main() {
 			componentsSet,
 			cfg.OmitOKComponents,
 			cfg.OmitSummaryResults,
+			cfg.ShowVerbose,
 		)
 
 		return
@@ -389,6 +392,7 @@ func main() {
 			componentsSet,
 			cfg.OmitOKComponents,
 			cfg.OmitSummaryResults,
+			cfg.ShowVerbose,
 		)
 
 		return

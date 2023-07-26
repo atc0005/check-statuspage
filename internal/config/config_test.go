@@ -21,6 +21,7 @@ import (
 
 var expectedPluginComponentsFlags = []string{
 	BrandingFlag,
+	VerboseFlag,
 	ComponentsListFlagShort,
 	ComponentsListFlagLong,
 	ComponentGroupFlagShort,
