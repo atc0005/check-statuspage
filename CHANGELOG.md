@@ -26,6 +26,21 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.5.1] - 2023-08-21
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.19.11` to `1.20.7`
+  - `atc0005/go-ci`
+    - `go-ci-oldstable-build-v0.11.3` to `go-ci-oldstable-build-v0.13.5`
+  - `rs/zerolog`
+    - `v1.29.1` to `v1.30.0`
+  - `golang.org/x/sys`
+    - `v0.10.0` to `v0.11.0`
+- (GH-288) Update project to Go 1.20 series
+
 ## [v0.5.0] - 2023-07-26
 
 ### Added
@@ -588,7 +603,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.1...HEAD
+[v0.5.1]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.1
 [v0.5.0]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.0
 [v0.4.3]: https://github.com/atc0005/check-statuspage/releases/tag/v0.4.3
 [v0.4.2]: https://github.com/atc0005/check-statuspage/releases/tag/v0.4.2
