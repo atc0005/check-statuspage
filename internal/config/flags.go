@@ -34,52 +34,52 @@ func (c *Config) handleFlagsConfig(appType AppType) error {
 
 		c.flagSet.BoolVar(&c.ShowVerbose, VerboseFlag, defaultVerbose, verboseFlagHelp)
 
-		c.flagSet.Var(&c.componentsList, ComponentsListFlagShort, componentsListFlagHelp+" (shorthand)")
+		c.flagSet.Var(&c.componentsList, ComponentsListFlagShort, componentsListFlagHelp+shorthandFlagSuffix)
 		c.flagSet.Var(&c.componentsList, ComponentsListFlagLong, componentsListFlagHelp)
 
-		c.flagSet.StringVar(&c.componentGroup, ComponentGroupFlagShort, defaultComponentGroup, componentGroupFlagHelp+" (shorthand)")
+		c.flagSet.StringVar(&c.componentGroup, ComponentGroupFlagShort, defaultComponentGroup, componentGroupFlagHelp+shorthandFlagSuffix)
 		c.flagSet.StringVar(&c.componentGroup, ComponentGroupFlagLong, defaultComponentGroup, componentGroupFlagHelp)
 
-		c.flagSet.BoolVar(&c.EvalAllComponents, EvalAllComponentsFlagShort, defaultEvalAllComponents, evalAllComponentsFlagHelp+" (shorthand)")
+		c.flagSet.BoolVar(&c.EvalAllComponents, EvalAllComponentsFlagShort, defaultEvalAllComponents, evalAllComponentsFlagHelp+shorthandFlagSuffix)
 		c.flagSet.BoolVar(&c.EvalAllComponents, EvalAllComponentsFlagLong, defaultEvalAllComponents, evalAllComponentsFlagHelp)
 
 	case appType.InspectorComponents:
 
-		c.flagSet.StringVar(&c.InspectorOutputFormat, InspectorOutputFormatFlagShort, defaultInspectorOutputFormat, inspectorOutputFormatFlagHelp+" (shorthand)")
+		c.flagSet.StringVar(&c.InspectorOutputFormat, InspectorOutputFormatFlagShort, defaultInspectorOutputFormat, inspectorOutputFormatFlagHelp+shorthandFlagSuffix)
 		c.flagSet.StringVar(&c.InspectorOutputFormat, InspectorOutputFormatFlagLong, defaultInspectorOutputFormat, inspectorOutputFormatFlagHelp)
 
 	}
 
 	// Shared flags for all application types
 
-	c.flagSet.BoolVar(&c.ShowHelp, HelpFlagShort, defaultHelp, helpFlagHelp+" (shorthand)")
+	c.flagSet.BoolVar(&c.ShowHelp, HelpFlagShort, defaultHelp, helpFlagHelp+shorthandFlagSuffix)
 	c.flagSet.BoolVar(&c.ShowHelp, HelpFlagLong, defaultHelp, helpFlagHelp)
 
-	c.flagSet.BoolVar(&c.OmitOKComponents, OmitOKComponentsFlagShort, defaultOmitOKComponents, omitOKComponentsFlagHelp+" (shorthand)")
+	c.flagSet.BoolVar(&c.OmitOKComponents, OmitOKComponentsFlagShort, defaultOmitOKComponents, omitOKComponentsFlagHelp+shorthandFlagSuffix)
 	c.flagSet.BoolVar(&c.OmitOKComponents, OmitOKComponentsFlagLong, defaultOmitOKComponents, omitOKComponentsFlagHelp)
 
-	c.flagSet.StringVar(&c.URL, URLFlagShort, defaultURL, urlFlagHelp+" (shorthand)")
+	c.flagSet.StringVar(&c.URL, URLFlagShort, defaultURL, urlFlagHelp+shorthandFlagSuffix)
 	c.flagSet.StringVar(&c.URL, URLFlagLong, defaultURL, urlFlagHelp)
 
-	c.flagSet.StringVar(&c.Filename, FilenameFlagShort, defaultFilename, filenameFlagHelp+" (shorthand)")
+	c.flagSet.StringVar(&c.Filename, FilenameFlagShort, defaultFilename, filenameFlagHelp+shorthandFlagSuffix)
 	c.flagSet.StringVar(&c.Filename, FilenameFlagLong, defaultFilename, filenameFlagHelp)
 
-	c.flagSet.BoolVar(&c.AllowUnknownJSONFields, AllowUnknownJSONFieldsFlagShort, defaultAllowUnknownJSONFields, allowUnknownJSONFieldsFlagHelp+" (shorthand)")
+	c.flagSet.BoolVar(&c.AllowUnknownJSONFields, AllowUnknownJSONFieldsFlagShort, defaultAllowUnknownJSONFields, allowUnknownJSONFieldsFlagHelp+shorthandFlagSuffix)
 	c.flagSet.BoolVar(&c.AllowUnknownJSONFields, AllowUnknownJSONFieldsFlagLong, defaultAllowUnknownJSONFields, allowUnknownJSONFieldsFlagHelp)
 
-	c.flagSet.Int64Var(&c.ReadLimit, ReadLimitFlagShort, defaultReadLimit, readLimitFlagHelp+" (shorthand)")
+	c.flagSet.Int64Var(&c.ReadLimit, ReadLimitFlagShort, defaultReadLimit, readLimitFlagHelp+shorthandFlagSuffix)
 	c.flagSet.Int64Var(&c.ReadLimit, ReadLimitFlagLong, defaultReadLimit, readLimitFlagHelp)
 
-	c.flagSet.IntVar(&c.timeout, TimeoutFlagShort, defaultRuntimeTimeout, timeoutRuntimeFlagHelp+" (shorthand)")
+	c.flagSet.IntVar(&c.timeout, TimeoutFlagShort, defaultRuntimeTimeout, timeoutRuntimeFlagHelp+shorthandFlagSuffix)
 	c.flagSet.IntVar(&c.timeout, TimeoutFlagLong, defaultRuntimeTimeout, timeoutRuntimeFlagHelp)
 
-	c.flagSet.StringVar(&c.LoggingLevel, LogLevelFlagShort, defaultLogLevel, logLevelFlagHelp+" (shorthand)")
+	c.flagSet.StringVar(&c.LoggingLevel, LogLevelFlagShort, defaultLogLevel, logLevelFlagHelp+shorthandFlagSuffix)
 	c.flagSet.StringVar(&c.LoggingLevel, LogLevelFlagLong, defaultLogLevel, logLevelFlagHelp)
 
-	c.flagSet.BoolVar(&c.ShowVersion, VersionFlagShort, defaultDisplayVersionAndExit, versionFlagHelp+" (shorthand)")
+	c.flagSet.BoolVar(&c.ShowVersion, VersionFlagShort, defaultDisplayVersionAndExit, versionFlagHelp+shorthandFlagSuffix)
 	c.flagSet.BoolVar(&c.ShowVersion, VersionFlagLong, defaultDisplayVersionAndExit, versionFlagHelp)
 
-	c.flagSet.BoolVar(&c.OmitSummaryResults, OmitSummaryResultsFlagShort, defaultOmitSummaryResults, omitSummaryResultsFlagHelp+" (shorthand)")
+	c.flagSet.BoolVar(&c.OmitSummaryResults, OmitSummaryResultsFlagShort, defaultOmitSummaryResults, omitSummaryResultsFlagHelp+shorthandFlagSuffix)
 	c.flagSet.BoolVar(&c.OmitSummaryResults, OmitSummaryResultsFlagLong, defaultOmitSummaryResults, omitSummaryResultsFlagHelp)
 
 	// Allow our function to override the default Help output.
