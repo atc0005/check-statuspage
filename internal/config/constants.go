@@ -44,6 +44,10 @@ const (
 	LogLevelFlagShort               string = "ll"
 )
 
+// shorthandFlagSuffix is appended to short flag help text to emphasize that
+// the flag is a shorthand version of a longer flag.
+const shorthandFlagSuffix = " (shorthand)"
+
 // Common or shared flag help text
 const (
 	helpFlagHelp                   string = "Emit this help text"
