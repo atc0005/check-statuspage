@@ -26,6 +26,34 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.5.2] - 2023-11-30
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-341) canary: bump golang from 1.20.10 to 1.20.11 in /dependabot/docker/go
+- (GH-304) canary: bump golang from 1.20.7 to 1.20.8 in /dependabot/docker/go
+- (GH-326) canary: bump golang from 1.20.8 to 1.20.10 in /dependabot/docker/go
+- (GH-333) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.13.10 to go-ci-oldstable-build-v0.13.12 in /dependabot/docker/builds
+- (GH-344) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.13.12 to go-ci-oldstable-build-v0.14.1 in /dependabot/docker/builds
+- (GH-297) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.13.5 to go-ci-oldstable-build-v0.13.6 in /dependabot/docker/builds
+- (GH-299) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.13.6 to go-ci-oldstable-build-v0.13.7 in /dependabot/docker/builds
+- (GH-306) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.13.7 to go-ci-oldstable-build-v0.13.8 in /dependabot/docker/builds
+- (GH-313) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.13.8 to go-ci-oldstable-build-v0.13.9 in /dependabot/docker/builds
+- (GH-317) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.13.9 to go-ci-oldstable-build-v0.13.10 in /dependabot/docker/builds
+- (GH-302) ghaw: bump actions/checkout from 3 to 4
+- (GH-327) go.mod: bump github.com/google/go-cmp from 0.5.9 to 0.6.0
+- (GH-336) go.mod: bump github.com/mattn/go-isatty from 0.0.19 to 0.0.20
+- (GH-320) go.mod: bump github.com/rs/zerolog from 1.30.0 to 1.31.0
+- (GH-301) go.mod: bump golang.org/x/sys from 0.11.0 to 0.12.0
+- (GH-323) go.mod: bump golang.org/x/sys from 0.12.0 to 0.13.0
+- (GH-339) go.mod: bump golang.org/x/sys from 0.13.0 to 0.14.0
+
+### Fixed
+
+- (GH-346) Fix goconst linting errors
+
 ## [v0.5.1] - 2023-08-21
 
 ### Changed
@@ -603,7 +631,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.1...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.2...HEAD
+[v0.5.2]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.2
 [v0.5.1]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.1
 [v0.5.0]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.0
 [v0.4.3]: https://github.com/atc0005/check-statuspage/releases/tag/v0.4.3
