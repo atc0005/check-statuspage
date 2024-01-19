@@ -26,6 +26,17 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.5.4] - 2024-01-19
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-365) canary: bump golang from 1.20.12 to 1.20.13 in /dependabot/docker/go
+- (GH-366) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.14.2 to go-ci-oldstable-build-v0.14.3 in /dependabot/docker/builds
+- (GH-360) ghaw: bump github/codeql-action from 2 to 3
+- (GH-362) go.mod: bump golang.org/x/sys from 0.15.0 to 0.16.0
+
 ## [v0.5.3] - 2023-12-09
 
 ### Changed
@@ -641,7 +652,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.3...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.4...HEAD
+[v0.5.4]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.4
 [v0.5.3]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.3
 [v0.5.2]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.2
 [v0.5.1]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.1
