@@ -26,6 +26,24 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.5.5] - 2024-02-21
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-398) canary: bump golang from 1.21.6 to 1.21.7 in /dependabot/docker/go
+- (GH-371) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.14.3 to go-ci-oldstable-build-v0.14.4 in /dependabot/docker/builds
+- (GH-374) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.14.4 to go-ci-oldstable-build-v0.14.5 in /dependabot/docker/builds
+- (GH-379) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.14.5 to go-ci-oldstable-build-v0.14.6 in /dependabot/docker/builds
+- (GH-390) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.14.6 to go-ci-oldstable-build-v0.14.9 in /dependabot/docker/builds
+- (GH-393) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.14.9 to go-ci-oldstable-build-v0.15.0 in /dependabot/docker/builds
+- (GH-396) docker: bump atc0005/go-ci from go-ci-oldstable-build-v0.15.0 to go-ci-oldstable-build-v0.15.2 in /dependabot/docker/builds
+- (GH-376) go.mod: bump github.com/atc0005/go-nagios from 0.16.0 to 0.16.1
+- (GH-381) go.mod: bump github.com/rs/zerolog from 1.31.0 to 1.32.0
+- (GH-387) go.mod: bump golang.org/x/sys from 0.16.0 to 0.17.0
+- (GH-397) Update project to Go 1.21 series
+
 ## [v0.5.4] - 2024-01-19
 
 ### Changed
@@ -652,7 +670,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.4...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.5...HEAD
+[v0.5.5]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.5
 [v0.5.4]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.4
 [v0.5.3]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.3
 [v0.5.2]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.2
