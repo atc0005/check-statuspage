@@ -104,7 +104,7 @@ func newComponentsTable(columnsList ComponentsTableColumnFilter) *componentsTabl
 
 	table.filter = columnsList
 
-	w := tabwriter.NewWriter(&table.report, 4, 4, 4, ' ', 0)
+	w := tabwriter.NewWriter(&table.report, 0, 0, 1, ' ', 0)
 	// w := tabwriter.NewWriter(&table.report, 4, 4, 4, ' ', tabwriter.Debug|tabwriter.DiscardEmptyColumns)
 
 	// See GH-44 regarding issues with lack of spacing between columns in
