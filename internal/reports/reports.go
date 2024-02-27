@@ -301,7 +301,7 @@ func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool, ver
 
 		componentsReportHeader(&report, componentsSet)
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		fmt.Fprint(&report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
 	}
 
 	if omitOKComponents {
@@ -468,7 +468,7 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool, ve
 
 		componentsReportHeader(&report, componentsSet)
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		fmt.Fprint(&report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
 	}
 
 	if omitOKComponents {
@@ -898,7 +898,7 @@ func ComponentsIDList(componentsSet *components.Set, verbose bool) string {
 
 		componentsReportHeader(&report, componentsSet)
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		fmt.Fprint(&report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
 	}
 
 	notExcludedComponents := componentsSet.NotExcludedComponents()
