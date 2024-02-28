@@ -943,6 +943,30 @@ func componentsStatusSummary(
 
 	fmt.Fprintf(
 		w,
+		"* Page: %s (%s)%s",
+		componentsSet.Page.Name,
+		componentsSet.Page.URL,
+		nagios.CheckOutputEOL,
+	)
+
+	fmt.Fprintf(
+		w,
+		"* Last Updated (%s): %s%s",
+		componentsSet.Page.TimeZone,
+		componentsSet.Page.UpdatedAt.Format(time.RFC3339),
+		nagios.CheckOutputEOL,
+	)
+
+	fmt.Fprintf(
+		w,
+		"* Last Updated (%s): %s%s",
+		"Local",
+		componentsSet.Page.UpdatedAt.Format(time.DateTime+" PM"),
+		nagios.CheckOutputEOL,
+	)
+
+	fmt.Fprintf(
+		w,
 		"* Filtering applied to components set: %t%s",
 		componentsSet.FilterApplied,
 		nagios.CheckOutputEOL,
@@ -1007,26 +1031,11 @@ func componentsStatusSummary(
 }
 
 func componentsReportHeader(w io.Writer, componentsSet *components.Set) {
-
 	fmt.Fprintf(
 		w,
-		"Page: %s (%s)%s",
+		"%s (%s)%s",
 		componentsSet.Page.Name,
 		componentsSet.Page.URL,
-		nagios.CheckOutputEOL,
-	)
-
-	fmt.Fprintf(
-		w,
-		"Time Zone: %s%s",
-		componentsSet.Page.TimeZone,
-		nagios.CheckOutputEOL,
-	)
-
-	fmt.Fprintf(
-		w,
-		"Last Updated: %s%s",
-		componentsSet.Page.UpdatedAt.Format(time.RFC3339),
 		nagios.CheckOutputEOL,
 	)
 }
