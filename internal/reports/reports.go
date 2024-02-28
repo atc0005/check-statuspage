@@ -961,7 +961,7 @@ func componentsStatusSummary(
 		w,
 		"* Last Updated (%s): %s%s",
 		"Local",
-		componentsSet.Page.UpdatedAt.Format(time.DateTime+" PM"),
+		componentsSet.Page.UpdatedAt.Local().Format(time.DateTime+" PM"),
 		nagios.CheckOutputEOL,
 	)
 
