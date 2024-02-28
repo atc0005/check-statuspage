@@ -126,7 +126,7 @@ func main() {
 		fmt.Print(reports.ComponentsOverview(componentsSet, cfg.OmitOKComponents, true))
 
 	case config.InspectorOutputFormatTable:
-		// Enable all columns in filter
+		// Enable all columns in filter by default
 		columnFilter := reports.ComponentsTableColumnFilter{
 			GroupName:     true,
 			GroupID:       true,
@@ -134,6 +134,12 @@ func main() {
 			ComponentID:   true,
 			Evaluated:     true,
 			Status:        true,
+		}
+
+		// Disable Group fields if there are no component groups to display.
+		if componentsSet.NumGroups() == 0 {
+			columnFilter.GroupID = false
+			columnFilter.GroupName = false
 		}
 
 		// Generate table, providing our "use everything" filter.
