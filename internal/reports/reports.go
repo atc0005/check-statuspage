@@ -1150,6 +1150,12 @@ func ComponentsReport(
 		Status:        true,
 	}
 
+	// Disable Group fields if there are no component groups to display.
+	if componentsSet.NumGroups() == 0 {
+		columnFilter.GroupID = false
+		columnFilter.GroupName = false
+	}
+
 	fullTableOutputComponentsLimit := 50
 	switch {
 
