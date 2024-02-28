@@ -104,7 +104,7 @@ func newComponentsTable(columnsList ComponentsTableColumnFilter) *componentsTabl
 
 	table.filter = columnsList
 
-	w := tabwriter.NewWriter(&table.report, 4, 4, 4, ' ', 0)
+	w := tabwriter.NewWriter(&table.report, 4, 4, 3, ' ', 0)
 	// w := tabwriter.NewWriter(&table.report, 4, 4, 4, ' ', tabwriter.Debug|tabwriter.DiscardEmptyColumns)
 
 	// See GH-44 regarding issues with lack of spacing between columns in
@@ -468,7 +468,7 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool, ve
 
 		componentsReportHeader(&report, componentsSet)
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		fmt.Fprint(&report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
 	}
 
 	if omitOKComponents {
@@ -662,7 +662,7 @@ func ComponentsTable(
 
 		componentsReportHeader(&componentsTable.report, componentsSet)
 
-		fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
+		fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 	}
 
 	if omitOKComponents {
@@ -898,7 +898,7 @@ func ComponentsIDList(componentsSet *components.Set, verbose bool) string {
 
 		componentsReportHeader(&report, componentsSet)
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		fmt.Fprint(&report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
 	}
 
 	notExcludedComponents := componentsSet.NotExcludedComponents()
