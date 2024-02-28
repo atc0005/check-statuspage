@@ -301,7 +301,7 @@ func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool, ver
 
 		componentsReportHeader(&report, componentsSet)
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
+		fmt.Fprint(&report, nagios.CheckOutputEOL)
 	}
 
 	if omitOKComponents {
@@ -662,7 +662,7 @@ func ComponentsTable(
 
 		componentsReportHeader(&componentsTable.report, componentsSet)
 
-		fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
+		fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 	}
 
 	if omitOKComponents {
