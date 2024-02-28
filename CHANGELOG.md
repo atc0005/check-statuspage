@@ -26,6 +26,26 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.5.6] - 2024-02-28
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-401) Update Dependabot PR prefixes
+- (GH-402) Update Dependabot PR prefixes (redux)
+- (GH-404) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.15.2 to go-ci-oldstable-build-v0.15.3 in /dependabot/docker/builds
+
+#### Other
+
+- (GH-417) Reduce report header, expand summary details
+- (GH-418) Adjust header and components table spacing
+
+### Fixed
+
+- (GH-416) Remove leading indentation from components table
+- (GH-420) Fix localtime listing in report summary
+
 ## [v0.5.5] - 2024-02-21
 
 ### Changed
@@ -670,7 +690,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.5...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.6...HEAD
+[v0.5.6]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.6
 [v0.5.5]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.5
 [v0.5.4]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.4
 [v0.5.3]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.3
