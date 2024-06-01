@@ -24,7 +24,7 @@ func filterErrAdvice(err error, cs *components.Set, filter components.Filter, fe
 
 	var tryAgainMsg strings.Builder
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		&tryAgainMsg,
 		"Specified filter: %s%s",
 		filter,
@@ -33,28 +33,28 @@ func filterErrAdvice(err error, cs *components.Set, filter components.Filter, fe
 
 	switch {
 	case errors.Is(err, components.ErrComponentSetFilterWhitespaceGroupField):
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&tryAgainMsg,
 			"Double-check provided component group name or ID value (whitespace only value received).%s",
 			nagios.CheckOutputEOL,
 		)
 
 	case errors.Is(err, components.ErrComponentSetFilterWhitespaceComponentsField):
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&tryAgainMsg,
 			"Double-check provided component name or ID values (whitespace only value received).%s",
 			nagios.CheckOutputEOL,
 		)
 
 	case errors.Is(err, components.ErrComponentGroupNotFound):
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&tryAgainMsg,
 			"Double-check provided component group name or ID values (provided value not found).%s",
 			nagios.CheckOutputEOL,
 		)
 
 	case errors.Is(err, components.ErrComponentIsNotValidSubcomponent):
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&tryAgainMsg,
 			"Double-check provided component group and subcomponent name or ID values "+
 				"(mismatch between group/subcomponent values).%s",
@@ -62,7 +62,7 @@ func filterErrAdvice(err error, cs *components.Set, filter components.Filter, fe
 		)
 
 	case errors.Is(err, components.ErrComponentNotFound):
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&tryAgainMsg,
 			"Double-check provided component name or ID values (provided value not found).%s",
 			nagios.CheckOutputEOL,
@@ -74,14 +74,14 @@ func filterErrAdvice(err error, cs *components.Set, filter components.Filter, fe
 	// for the filtering stage. While unlikely to occur, we can offer
 	// some useful feedback to the user to assist with that scenario.
 	case errors.Is(err, components.ErrComponentSetFilterEmpty):
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&tryAgainMsg,
 			"While both component group and components list are optional, "+
 				"one is required unless evaluating all components.%s",
 			nagios.CheckOutputEOL,
 		)
 
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&tryAgainMsg,
 			"If you wish to evaluate all components, use the %s flag and omit filtering options.%s",
 			config.EvalAllComponentsFlagLong,
@@ -89,7 +89,7 @@ func filterErrAdvice(err error, cs *components.Set, filter components.Filter, fe
 		)
 
 	default:
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&tryAgainMsg,
 			"%sPlease recheck provided filter values.%s",
 			nagios.CheckOutputEOL,
@@ -98,7 +98,7 @@ func filterErrAdvice(err error, cs *components.Set, filter components.Filter, fe
 
 	}
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		&tryAgainMsg,
 		"%sIf in doubt, please use the %s tool to view all provided components of the %q feed (%s).%s",
 		nagios.CheckOutputEOL,
