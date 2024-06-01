@@ -1008,10 +1008,10 @@ func TestEvalComponentsFromTestdataFiles(t *testing.T) {
 
 				for i := 0; i < len(list); {
 					for j := 0; j < columnsPerRow && i < len(list); j++ {
-						fmt.Fprintf(&report, `"%s", `, list[i])
+						_, _ = fmt.Fprintf(&report, `"%s", `, list[i])
 						i++
 					}
-					fmt.Fprintln(&report)
+					_, _ = fmt.Fprintln(&report)
 				}
 
 				return report.String()
