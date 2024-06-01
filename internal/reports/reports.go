@@ -132,30 +132,30 @@ func (ctr *componentsTable) headerRow() string {
 	var output strings.Builder
 
 	if ctr.filter.GroupName {
-		fmt.Fprint(&output, ctr.header.GroupName, "\t")
+		_, _ = fmt.Fprint(&output, ctr.header.GroupName, "\t")
 	}
 
 	if ctr.filter.GroupID {
-		fmt.Fprint(&output, ctr.header.GroupID, "\t")
+		_, _ = fmt.Fprint(&output, ctr.header.GroupID, "\t")
 	}
 
 	if ctr.filter.ComponentName {
-		fmt.Fprint(&output, ctr.header.ComponentName, "\t")
+		_, _ = fmt.Fprint(&output, ctr.header.ComponentName, "\t")
 	}
 
 	if ctr.filter.ComponentID {
-		fmt.Fprint(&output, ctr.header.ComponentID, "\t")
+		_, _ = fmt.Fprint(&output, ctr.header.ComponentID, "\t")
 	}
 
 	if ctr.filter.Evaluated {
-		fmt.Fprint(&output, ctr.header.Evaluated, "\t")
+		_, _ = fmt.Fprint(&output, ctr.header.Evaluated, "\t")
 	}
 
 	if ctr.filter.Status {
-		fmt.Fprint(&output, ctr.header.Status, "\t")
+		_, _ = fmt.Fprint(&output, ctr.header.Status, "\t")
 	}
 
-	fmt.Fprint(&output, nagios.CheckOutputEOL)
+	_, _ = fmt.Fprint(&output, nagios.CheckOutputEOL)
 
 	return output.String()
 
@@ -183,7 +183,7 @@ func (ctr *componentsTable) addHeaderSeparator() {
 
 	headerSepRowTmpl.WriteString(nagios.CheckOutputEOL)
 
-	fmt.Fprint(ctr.tabWriter, headerSepRowTmpl.String())
+	_, _ = fmt.Fprint(ctr.tabWriter, headerSepRowTmpl.String())
 
 }
 
@@ -194,7 +194,7 @@ func (ctr *componentsTable) addHeaderSeparator() {
 func (ctr *componentsTable) addCollectionSeparator() {
 	numFields := ctr.filter.FieldsEnabled()
 
-	fmt.Fprint(
+	_, _ = fmt.Fprint(
 		ctr.tabWriter,
 		strings.Repeat("\t", numFields),
 		nagios.CheckOutputEOL,
@@ -206,30 +206,30 @@ func (ctr *componentsTable) addCollectionSeparator() {
 func (ctr *componentsTable) addRow(row componentsTableRow) {
 
 	if ctr.filter.GroupName {
-		fmt.Fprint(ctr.tabWriter, row.GroupName, "\t")
+		_, _ = fmt.Fprint(ctr.tabWriter, row.GroupName, "\t")
 	}
 
 	if ctr.filter.GroupID {
-		fmt.Fprint(ctr.tabWriter, row.GroupID, "\t")
+		_, _ = fmt.Fprint(ctr.tabWriter, row.GroupID, "\t")
 	}
 
 	if ctr.filter.ComponentName {
-		fmt.Fprint(ctr.tabWriter, row.ComponentName, "\t")
+		_, _ = fmt.Fprint(ctr.tabWriter, row.ComponentName, "\t")
 	}
 
 	if ctr.filter.ComponentID {
-		fmt.Fprint(ctr.tabWriter, row.ComponentID, "\t")
+		_, _ = fmt.Fprint(ctr.tabWriter, row.ComponentID, "\t")
 	}
 
 	if ctr.filter.Evaluated {
-		fmt.Fprint(ctr.tabWriter, row.Evaluated, "\t")
+		_, _ = fmt.Fprint(ctr.tabWriter, row.Evaluated, "\t")
 	}
 
 	if ctr.filter.Status {
-		fmt.Fprint(ctr.tabWriter, row.Status, "\t")
+		_, _ = fmt.Fprint(ctr.tabWriter, row.Status, "\t")
 	}
 
-	fmt.Fprint(ctr.tabWriter, nagios.CheckOutputEOL)
+	_, _ = fmt.Fprint(ctr.tabWriter, nagios.CheckOutputEOL)
 
 }
 
@@ -297,15 +297,15 @@ func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool, ver
 	componentsEmitted := false
 
 	if verbose {
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 
 		componentsReportHeader(&report, componentsSet)
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 	}
 
 	if omitOKComponents {
-		fmt.Fprint(
+		_, _ = fmt.Fprint(
 			&report,
 			"NOTE: Omitting OK/operational components as requested.",
 			nagios.CheckOutputEOL,
@@ -315,7 +315,7 @@ func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool, ver
 
 	if componentsSet.NumGroups() > 0 {
 
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&report,
 			"%sComponent Groups (%d):%s%s",
 			nagios.CheckOutputEOL,
@@ -328,16 +328,16 @@ func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool, ver
 			if component.IsOKState() && omitOKComponents {
 				continue
 			}
-			fmt.Fprint(&report, printVerboseComponent(component, i+1))
+			_, _ = fmt.Fprint(&report, printVerboseComponent(component, i+1))
 			componentsEmitted = true
 		}
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 	}
 
 	if componentsSet.NumTopLevel() > 0 {
 
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&report,
 			"%sTop-level components (%d):%s%s",
 			nagios.CheckOutputEOL,
@@ -350,16 +350,16 @@ func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool, ver
 			if component.IsOKState() && omitOKComponents {
 				continue
 			}
-			fmt.Fprint(&report, printVerboseComponent(component, i+1))
+			_, _ = fmt.Fprint(&report, printVerboseComponent(component, i+1))
 			componentsEmitted = true
 		}
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 	}
 
 	if componentsSet.NumSubcomponents() > 0 {
 
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&report,
 			"%sSubcomponents (%d):%s%s",
 			nagios.CheckOutputEOL,
@@ -372,18 +372,18 @@ func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool, ver
 			if component.IsOKState() && omitOKComponents {
 				continue
 			}
-			fmt.Fprint(&report, printVerboseComponent(component, i+1))
+			_, _ = fmt.Fprint(&report, printVerboseComponent(component, i+1))
 			componentsEmitted = true
 		}
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 	}
 
 	// Evaluate all components, regardless of "ignore" or exclusion
 	// status.
 	if !componentsSet.IsOKState(true) {
 
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&report,
 			"%sComponents (%d) in a non-OK state:%s%s",
 			nagios.CheckOutputEOL,
@@ -394,23 +394,23 @@ func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool, ver
 
 		for i, component := range componentsSet.ProblemComponents(true) {
 			if !component.IsOKState() {
-				fmt.Fprint(&report, printVerboseComponent(component, i+1))
+				_, _ = fmt.Fprint(&report, printVerboseComponent(component, i+1))
 			}
 		}
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 
 	}
 
 	switch {
 	case !componentsEmitted && omitOKComponents:
-		fmt.Fprint(
+		_, _ = fmt.Fprint(
 			&report,
 			"* All components are operational. No problems to report.",
 			nagios.CheckOutputEOL,
 		)
 	case !componentsEmitted && !omitOKComponents:
-		fmt.Fprint(
+		_, _ = fmt.Fprint(
 			&report,
 			"* Skipping OK components was not requested, but no components were emitted. Bug?",
 			nagios.CheckOutputEOL,
@@ -419,7 +419,7 @@ func ComponentsVerbose(componentsSet *components.Set, omitOKComponents bool, ver
 
 	componentsStatusSummary(&report, componentsSet, omitOKComponents)
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+	_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 
 	// Emit this based on http client used to retrieve JSON feed"
 	//
@@ -464,15 +464,15 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool, ve
 	componentsEmitted := false
 
 	if verbose {
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 
 		componentsReportHeader(&report, componentsSet)
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
 	}
 
 	if omitOKComponents {
-		fmt.Fprint(
+		_, _ = fmt.Fprint(
 			&report,
 			"NOTE: Omitting OK/operational components as requested.",
 			nagios.CheckOutputEOL,
@@ -490,7 +490,7 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool, ve
 
 			componentsEmitted = true
 
-			fmt.Fprintf(
+			_, _ = fmt.Fprintf(
 				&report,
 				"%s [%s]%s",
 				component.Name,
@@ -519,7 +519,7 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool, ve
 
 				componentsEmitted = true
 
-				fmt.Fprintf(
+				_, _ = fmt.Fprintf(
 					&report,
 					"%s%s [%s]%s",
 					nagios.CheckOutputEOL,
@@ -538,7 +538,7 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool, ve
 
 						componentsEmitted = true
 
-						fmt.Fprintf(
+						_, _ = fmt.Fprintf(
 							&report,
 							"\t%s%s",
 							subcomponent.Name,
@@ -547,7 +547,7 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool, ve
 					default:
 						componentsEmitted = true
 
-						fmt.Fprintf(
+						_, _ = fmt.Fprintf(
 							&report,
 							"\t%s [%s]%s",
 							subcomponent.Name,
@@ -560,17 +560,17 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool, ve
 		}
 	}
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+	_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 
 	switch {
 	case !componentsEmitted && omitOKComponents:
-		fmt.Fprint(
+		_, _ = fmt.Fprint(
 			&report,
 			"* All components are operational. No problems to report.",
 			nagios.CheckOutputEOL,
 		)
 	case !componentsEmitted && !omitOKComponents:
-		fmt.Fprint(
+		_, _ = fmt.Fprint(
 			&report,
 			"* Skipping OK components was not requested, but no components were emitted. Bug?",
 			nagios.CheckOutputEOL,
@@ -578,15 +578,15 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool, ve
 	}
 
 	if len(errsEncountered) > 0 {
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&report,
 			"Errors encountered while generating this report:%s",
 			nagios.CheckOutputEOL,
 		)
 		for i, err := range errsEncountered {
-			fmt.Fprintf(
+			_, _ = fmt.Fprintf(
 				&report,
 				"* %02d): %s%s",
 				i+1,
@@ -596,11 +596,11 @@ func ComponentsOverview(componentsSet *components.Set, omitOKComponents bool, ve
 		}
 	}
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+	_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 
 	componentsStatusSummary(&report, componentsSet, omitOKComponents)
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+	_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 
 	return report.String()
 
@@ -658,15 +658,15 @@ func ComponentsTable(
 	var errsEncountered []error
 
 	if verbose {
-		fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
 		componentsReportHeader(&componentsTable.report, componentsSet)
 
-		fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 	}
 
 	if omitOKComponents {
-		fmt.Fprint(
+		_, _ = fmt.Fprint(
 			&componentsTable.report,
 			"NOTE: Omitting OK/operational components as requested.",
 			nagios.CheckOutputEOL,
@@ -838,22 +838,22 @@ func ComponentsTable(
 		})
 	}
 
-	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
+	_, _ = fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
 	if err := componentsTable.tabWriter.Flush(); err != nil {
 		errsEncountered = append(errsEncountered, err)
 	}
 
 	if len(errsEncountered) > 0 {
-		fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&componentsTable.report,
 			"Errors encountered while generating this report:%s",
 			nagios.CheckOutputEOL,
 		)
 		for i, err := range errsEncountered {
-			fmt.Fprintf(
+			_, _ = fmt.Fprintf(
 				&componentsTable.report,
 				"* %02d): %s%s",
 				i+1,
@@ -863,13 +863,13 @@ func ComponentsTable(
 		}
 	}
 
-	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
+	_, _ = fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
 	if !omitResultsSummary {
 		componentsStatusSummary(&componentsTable.report, componentsSet, omitOKComponents)
 	}
 
-	fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
+	_, _ = fmt.Fprint(&componentsTable.report, nagios.CheckOutputEOL)
 
 	return componentsTable.report.String()
 
@@ -894,11 +894,11 @@ func ComponentsIDList(componentsSet *components.Set, verbose bool) string {
 	columnsPerRow := 4
 
 	if verbose {
-		fmt.Fprint(&report, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 
 		componentsReportHeader(&report, componentsSet)
 
-		fmt.Fprint(&report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
+		_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL, nagios.CheckOutputEOL)
 	}
 
 	notExcludedComponents := componentsSet.NotExcludedComponents()
@@ -910,17 +910,17 @@ func ComponentsIDList(componentsSet *components.Set, verbose bool) string {
 
 	for i := 0; i < len(notExcluded); {
 		for j := 0; j < columnsPerRow && i < len(notExcluded); j++ {
-			fmt.Fprintf(&report, `"%s", `, notExcluded[i])
+			_, _ = fmt.Fprintf(&report, `"%s", `, notExcluded[i])
 			i++
 		}
-		fmt.Fprintln(&report)
+		_, _ = fmt.Fprintln(&report)
 	}
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+	_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 
 	componentsStatusSummary(&report, componentsSet, true)
 
-	fmt.Fprint(&report, nagios.CheckOutputEOL)
+	_, _ = fmt.Fprint(&report, nagios.CheckOutputEOL)
 
 	return report.String()
 
@@ -933,7 +933,7 @@ func componentsStatusSummary(
 	componentsSet *components.Set,
 	omitOKComponents bool,
 ) {
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"%sSummary:%s%s",
 		nagios.CheckOutputEOL,
@@ -941,7 +941,7 @@ func componentsStatusSummary(
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Page: %s (%s)%s",
 		componentsSet.Page.Name,
@@ -949,7 +949,7 @@ func componentsStatusSummary(
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Last Updated (%s): %s%s",
 		componentsSet.Page.TimeZone,
@@ -957,7 +957,7 @@ func componentsStatusSummary(
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Last Updated (%s): %s%s",
 		"Local",
@@ -965,63 +965,63 @@ func componentsStatusSummary(
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Filtering applied to components set: %t%s",
 		componentsSet.FilterApplied,
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Evaluating all components in the set: %t%s",
 		componentsSet.EvalAllComponents,
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Omitting OK/operational components (if requested): %t%s",
 		omitOKComponents,
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Number of total top-level components: %d%s",
 		componentsSet.NumTopLevel(),
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Number of total component groups: %d%s",
 		componentsSet.NumGroups(),
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Number of total subcomponents: %d%s",
 		componentsSet.NumSubcomponents(),
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Number of total problem components: %d%s",
 		componentsSet.NumProblemComponents(true),
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Number of ignored problem components: %d%s",
 		componentsSet.NumProblemComponents(true)-componentsSet.NumProblemComponents(false),
 		nagios.CheckOutputEOL,
 	)
 
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"* Number of remaining problem components: %d%s",
 		componentsSet.NumProblemComponents(false),
@@ -1031,7 +1031,7 @@ func componentsStatusSummary(
 }
 
 func componentsReportHeader(w io.Writer, componentsSet *components.Set) {
-	fmt.Fprintf(
+	_, _ = fmt.Fprintf(
 		w,
 		"%s (%s)%s",
 		componentsSet.Page.Name,
@@ -1131,7 +1131,7 @@ func ComponentsReport(
 	switch {
 	case !componentsSet.EvalAllComponents:
 		if verbose {
-			fmt.Fprintf(
+			_, _ = fmt.Fprintf(
 				&report,
 				"Specified filter: %s%s",
 				filter,
@@ -1140,7 +1140,7 @@ func ComponentsReport(
 		}
 	default:
 		if verbose {
-			fmt.Fprintf(
+			_, _ = fmt.Fprintf(
 				&report,
 				"NOTE: Evaluating all components as requested.%s",
 				nagios.CheckOutputEOL,
@@ -1169,11 +1169,11 @@ func ComponentsReport(
 	switch {
 
 	case omitOKComponents:
-		fmt.Fprint(&report, ComponentsTable(componentsSet, true, omitSummaryResults, &columnFilter, verbose))
+		_, _ = fmt.Fprint(&report, ComponentsTable(componentsSet, true, omitSummaryResults, &columnFilter, verbose))
 
 	case componentsSet.NumComponents() > fullTableOutputComponentsLimit:
 
-		fmt.Fprintf(
+		_, _ = fmt.Fprintf(
 			&report,
 			"NOTE: Component count (%d) is higher than display limit (%d);"+
 				" overriding default display of OK components.%s",
@@ -1182,10 +1182,10 @@ func ComponentsReport(
 			nagios.CheckOutputEOL,
 		)
 
-		fmt.Fprint(&report, ComponentsTable(componentsSet, true, omitSummaryResults, &columnFilter, verbose))
+		_, _ = fmt.Fprint(&report, ComponentsTable(componentsSet, true, omitSummaryResults, &columnFilter, verbose))
 
 	default:
-		fmt.Fprint(&report, ComponentsTable(componentsSet, false, omitSummaryResults, &columnFilter, verbose))
+		_, _ = fmt.Fprint(&report, ComponentsTable(componentsSet, false, omitSummaryResults, &columnFilter, verbose))
 	}
 
 	return report.String()
