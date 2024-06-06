@@ -26,6 +26,24 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.5.10] - 2024-06-06
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-467) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.20.4 to go-ci-oldstable-build-v0.20.5 in /dependabot/docker/builds
+- (GH-470) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.20.5 to go-ci-oldstable-build-v0.20.6 in /dependabot/docker/builds
+- (GH-479) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.20.6 to go-ci-oldstable-build-v0.20.7 in /dependabot/docker/builds
+- (GH-469) Go Dependency: Bump github.com/rs/zerolog from 1.32.0 to 1.33.0
+- (GH-475) Go Dependency: Bump golang.org/x/sys from 0.20.0 to 0.21.0
+- (GH-478) Go Runtime: Bump golang from 1.21.10 to 1.21.11 in /dependabot/docker/go
+
+### Fixed
+
+- (GH-472) Remove inactive maligned linter
+- (GH-473) Fix errcheck linting errors
+
 ## [v0.5.9] - 2024-05-11
 
 ### Changed
@@ -727,7 +745,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.9...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.10...HEAD
+[v0.5.10]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.10
 [v0.5.9]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.9
 [v0.5.8]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.8
 [v0.5.7]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.7
