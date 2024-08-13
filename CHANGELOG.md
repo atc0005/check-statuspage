@@ -26,6 +26,24 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.5.12] - 2024-08-13
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-505) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.21.4 to go-ci-oldstable-build-v0.21.5 in /dependabot/docker/builds
+- (GH-509) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.21.5 to go-ci-oldstable-build-v0.21.6 in /dependabot/docker/builds
+- (GH-512) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.21.6 to go-ci-oldstable-build-v0.21.7 in /dependabot/docker/builds
+- (GH-519) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.21.7 to go-ci-oldstable-build-v0.21.8 in /dependabot/docker/builds
+- (GH-516) Go Dependency: Bump golang.org/x/sys from 0.22.0 to 0.23.0
+- (GH-521) Go Dependency: Bump golang.org/x/sys from 0.23.0 to 0.24.0
+- (GH-517) Go Runtime: Bump golang from 1.21.12 to 1.21.13 in /dependabot/docker/go
+
+#### Other
+
+- (GH-513) Push `REPO_VERSION` var into containers for builds
+
 ## [v0.5.11] - 2024-07-10
 
 ### Changed
@@ -759,7 +777,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.11...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.12...HEAD
+[v0.5.12]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.12
 [v0.5.11]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.11
 [v0.5.10]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.10
 [v0.5.9]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.9
