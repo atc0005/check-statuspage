@@ -13,7 +13,7 @@ require (
 	github.com/atc0005/go-nagios v0.19.0
 	github.com/google/go-cmp v0.6.0
 	github.com/rs/zerolog v1.33.0
-	github.com/sanity-io/litter v1.5.5
+	github.com/sanity-io/litter v1.5.6
 )
 
 require (
