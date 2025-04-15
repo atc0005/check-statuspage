@@ -26,6 +26,29 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.5.15] - 2025-04-15
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-567) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.21.15 to go-ci-oldstable-build-v0.21.16 in /dependabot/docker/builds
+- (GH-573) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.21.16 to go-ci-oldstable-build-v0.21.17 in /dependabot/docker/builds
+- (GH-639) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.21.17 to go-ci-oldstable-build-v0.22.9 in /dependabot/docker/builds
+- (GH-640) Disable Dependabot automatic PR rebasing
+- (GH-569) Go Dependency: Bump github.com/atc0005/go-nagios from 0.17.1 to 0.18.0
+- (GH-571) Go Dependency: Bump github.com/atc0005/go-nagios from 0.18.0 to 0.18.1
+- (GH-574) Go Dependency: Bump github.com/atc0005/go-nagios from 0.18.1 to 0.19.0
+- (GH-614) Go Dependency: Bump github.com/google/go-cmp from 0.6.0 to 0.7.0
+- (GH-587) Go Dependency: Bump github.com/mattn/go-colorable from 0.1.13 to 0.1.14
+- (GH-633) Go Dependency: Bump github.com/rs/zerolog from 1.33.0 to 1.34.0
+- (GH-612) Go Dependency: Bump github.com/sanity-io/litter from 1.5.5 to 1.5.8
+- (GH-642) Go Dependency: Bump golang.org/x/sys from 0.27.0 to 0.32.0
+- (GH-636) Go Runtime: Bump golang from 1.22.10 to 1.23.8 in /dependabot/docker/go
+- (GH-578) Go Runtime: Bump golang from 1.22.9 to 1.22.10 in /dependabot/docker/go
+- (GH-629) go.mod: update minimum Go version to 1.23.0
+- (GH-618) Update project to Go 1.23 series
+
 ## [v0.5.14] - 2024-11-12
 
 ### Changed
@@ -802,7 +825,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.14...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.15...HEAD
+[v0.5.15]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.15
 [v0.5.14]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.14
 [v0.5.13]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.13
 [v0.5.12]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.12
