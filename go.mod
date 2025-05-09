@@ -10,7 +10,7 @@ module github.com/atc0005/check-statuspage
 go 1.23.0
 
 require (
-	github.com/atc0005/go-nagios v0.19.0
+	github.com/atc0005/go-nagios v0.20.0
 	github.com/google/go-cmp v0.7.0
 	github.com/rs/zerolog v1.34.0
 	github.com/sanity-io/litter v1.5.8
