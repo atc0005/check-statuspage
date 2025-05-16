@@ -26,6 +26,17 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.5.16] - 2025-05-16
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-654) Build Image: Bump atc0005/go-ci from go-ci-oldstable-build-v0.22.9 to go-ci-oldstable-build-v0.22.10 in /dependabot/docker/builds
+- (GH-648) Go Dependency: Bump github.com/atc0005/go-nagios from 0.19.0 to 0.20.0
+- (GH-650) Go Dependency: Bump golang.org/x/sys from 0.32.0 to 0.33.0
+- (GH-651) Go Runtime: Bump golang from 1.23.8 to 1.23.9 in /dependabot/docker/go
+
 ## [v0.5.15] - 2025-04-15
 
 ### Changed
@@ -825,7 +836,8 @@ of Statuspage powered sites. This evaluation is performed using official APIs.
 - `check_statuspage_components`, a Nagios plugin to monitor one, many or all
   components.
 
-[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.15...HEAD
+[Unreleased]: https://github.com/atc0005/check-statuspage/compare/v0.5.16...HEAD
+[v0.5.16]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.16
 [v0.5.15]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.15
 [v0.5.14]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.14
 [v0.5.13]: https://github.com/atc0005/check-statuspage/releases/tag/v0.5.13
